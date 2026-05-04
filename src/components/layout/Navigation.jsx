@@ -10,9 +10,11 @@ const navData = [
   { value: 'settings', label: <IconSettings style={{ width: rem(22), height: rem(22) }} stroke={1.5} /> },
 ];
 
-export default function Navigation() {
+export default function Navigation({ value, onChange }) {
   return (
     <SegmentedControl
+      value={value}
+      onChange={onChange}
       data={navData}
       orientation="vertical"
       fullWidth
