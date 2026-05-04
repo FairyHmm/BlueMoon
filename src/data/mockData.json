@@ -1,0 +1,94 @@
+{
+  "apartments": [
+    { "id": "101", "area": 75.5, "type": "Standard", "floor": 1 },
+    { "id": "102", "area": 45.0, "type": "Studio", "floor": 1 },
+    { "id": "204", "area": 120.0, "type": "Duplex", "floor": 2 },
+    { "id": "301", "area": 150.5, "type": "Penthouse", "floor": 3 },
+    { "id": "302", "area": 85.0, "type": "Standard", "floor": 3 }
+  ],
+  "residents": [
+    {
+      "id": 1,
+      "apartment_id": "101",
+      "name": "Alex Rivers",
+      "is_head": true,
+      "status": "active"
+    },
+    {
+      "id": 2,
+      "apartment_id": "101",
+      "name": "Sam Rivers",
+      "is_head": false,
+      "status": "active"
+    },
+    {
+      "id": 3,
+      "apartment_id": "102",
+      "name": "Jordan Smith",
+      "is_head": true,
+      "status": "active"
+    },
+    {
+      "id": 4,
+      "apartment_id": "204",
+      "name": "Casey Morgan",
+      "is_head": true,
+      "status": "pending"
+    },
+    {
+      "id": 5,
+      "apartment_id": "301",
+      "name": "Taylor Reed",
+      "is_head": true,
+      "status": "inactive"
+    }
+  ],
+  "vehicles": [
+    { "plate_number": "ABC-1234", "apartment_id": "101", "type": "car" },
+    { "plate_number": "MOTO-99", "apartment_id": "101", "type": "motorbike" },
+    { "plate_number": "XYZ-7890", "apartment_id": "204", "type": "car" }
+  ],
+  "fee_types": [
+    { "id": 1, "name": "Management", "price": 15.0, "calc_method": "per_m2" },
+    { "id": 2, "name": "Parking (Car)", "price": 50.0, "calc_method": "fixed" },
+    { "id": 3, "name": "Parking (Bike)", "price": 20.0, "calc_method": "fixed" }
+  ],
+  "bills": [
+    {
+      "id": 1001,
+      "apartment_id": "101",
+      "fee_id": 1,
+      "amount": 1132.5,
+      "status": "paid",
+      "due_date": "2026-04-01",
+      "paid_date": "2026-03-28"
+    },
+    {
+      "id": 1002,
+      "apartment_id": "101",
+      "fee_id": 2,
+      "amount": 50.0,
+      "status": "unpaid",
+      "due_date": "2026-05-01",
+      "paid_date": null
+    }
+  ],
+  "users": [
+    { "username": "arivers_admin", "role": "admin", "resident_id": 1 },
+    { "username": "jsmith_user", "role": "resident", "resident_id": 3 }
+  ],
+  "absence_logs": [
+    {
+      "id": 501,
+      "resident_id": 3,
+      "type": "vacation",
+      "log_date": "2026-05-10"
+    },
+    {
+      "id": 502,
+      "resident_id": 5,
+      "type": "moved_out",
+      "log_date": "2026-01-15"
+    }
+  ]
+}
