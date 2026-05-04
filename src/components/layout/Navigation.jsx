@@ -12,18 +12,16 @@ const navData = [
 
 export default function Navigation() {
   return (
-    <div className={classes['nav-wrapper']}>
-      <SegmentedControl
-        data={navData}
-        orientation="vertical"
-        fullWidth
-        classNames={{
-          root: scClasses['base-control'],
-          control: scClasses['control-item'],
-          label: scClasses['control-label'],
-          indicator: scClasses['control-indicator'],
-        }}
-      />
-    </div>
+    <SegmentedControl
+      data={navData}
+      orientation="vertical"
+      fullWidth
+      classNames={{
+        root: `${scClasses['base-control']} ${classes['nav-root']}`,
+        control: scClasses['control-item'],
+        label: scClasses['control-label'],
+        indicator: scClasses['control-indicator'],
+      }}
+    />
   );
 }
