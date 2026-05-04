@@ -28,7 +28,7 @@ export default function MainShell() {
         <Header />
       </AppShell.Header>
 
-      <AppShell.Navbar>
+      <AppShell.Navbar p={0}>
         <Navigation value={activeTab} onChange={handleTabChange} />
       </AppShell.Navbar>
 
