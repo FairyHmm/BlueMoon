@@ -17,7 +17,10 @@ export default function MainShell() {
   return (
     <AppShell
       header={{ height: "var(--bm-header-height)" }}
-      navbar={{ width: "var(--bm-rail-width)", breakpoint: "md" }}
+      navbar={{
+        width: "var(--bm-rail-width)",
+        breakpoint: "md",
+      }}
       classNames={{
         header: classes["shell-header"],
         navbar: classes["shell-navbar"],

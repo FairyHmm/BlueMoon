@@ -6,13 +6,22 @@
 .shell-navbar {
   background-color: var(--color-bg-body);
   border-right: 1px solid var(--color-bg-card);
+
+  @media (max-width: 64em) {
+    width: 0 !important;
+    border: none !important;
+    background: none !important;
+  }
 }
 
 .shell-main {
   background-color: var(--color-bg-body);
   color: var(--color-text);
+  min-height: 100vh;
 
-  @media (max-width: 63.99em) {
-    padding-bottom: 80px;
+  @media (max-width: 64em) {
+    padding-left: var(--spacing-md) !important;
+    padding-right: var(--spacing-md) !important;
+    padding-bottom: 80px !important;
   }
 }

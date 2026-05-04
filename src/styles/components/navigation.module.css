@@ -29,6 +29,7 @@
     bottom: 0;
     left: 0;
     right: 0;
+    width: 100vw !important;
     height: 64px !important;
     z-index: 200;
 
