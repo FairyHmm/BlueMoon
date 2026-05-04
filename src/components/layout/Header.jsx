@@ -4,20 +4,22 @@ import classes from "../../styles/components/header.module.css";
 
 export default function Header() {
   return (
-    <div className={classes["header-container"]}>
-      <Group gap="xs">
-        <Text size="xl" className={classes["logo-text"]}>
-          BlueMoon
-        </Text>
-      </Group>
+    <Group
+      component="header"
+      justify="space-between"
+      className={classes["header-root"]}
+    >
+      <Text size="xl" className={classes["logo-text"]}>
+        BlueMoon
+      </Text>
 
-      <div className={classes["search-wrapper"]}>
-        <TextInput
-          placeholder="Search..."
-          leftSection={<IconSearch size="1.1rem" stroke={1.5} />}
-          radius="md"
-        />
-      </div>
+      <TextInput
+        placeholder="Search..."
+        leftSection={<IconSearch size="1.1rem" stroke={1.5} />}
+        radius="md"
+        className={classes["search-input"]}
+        classNames={{ input: classes["inner-input"] }}
+      />
 
       <Group gap="xs" className={classes["action-group"]}>
         <ActionIcon
@@ -36,6 +38,6 @@ export default function Header() {
           <IconUserCircle size="1.4rem" stroke={1.5} />
         </ActionIcon>
       </Group>
-    </div>
+    </Group>
   );
 }
