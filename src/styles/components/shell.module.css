@@ -1,0 +1,18 @@
+.shell-header {
+  background-color: var(--color-bg-body);
+  border-bottom: 1px solid var(--color-bg-card);
+}
+
+.shell-navbar {
+  background-color: var(--color-bg-body);
+  border-right: 1px solid var(--color-bg-card);
+}
+
+.shell-main {
+  background-color: var(--color-bg-body);
+  color: var(--color-text);
+
+  @media (max-width: 63.99em) {
+    padding-bottom: 80px;
+  }
+}

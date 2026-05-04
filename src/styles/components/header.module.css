@@ -1,0 +1,47 @@
+.header-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 var(--spacing-md);
+
+  .logo-text {
+    color: var(--color-primary);
+    font-weight: 900;
+  }
+
+  .search-wrapper {
+    flex: 1;
+    max-width: 480px;
+
+    :global(.mantine-TextInput-input) {
+      background-color: var(--color-bg-card);
+      border-color: var(--color-border);
+      color: var(--color-text);
+
+      &:focus {
+        border-color: var(--color-primary);
+      }
+    }
+  }
+}
+
+.action-group {
+  display: flex;
+  gap: var(--spacing-sm);
+
+  .icon-button {
+    background: transparent !important;
+    border: none !important;
+    color: var(--color-text-muted);
+    transition: all 0.2s ease;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-primary);
+      background-color: var(--color-bg-card) !important;
+    }
+    
+    class[]
+  }
+}

@@ -1,0 +1,60 @@
+:root {
+  /* Backgrounds */
+  --color-bg-body: oklch(20.8% 0.042 265.755); /* slate-900 */
+  --color-bg-card: oklch(27.9% 0.041 260.031); /* slate-800 */
+  --color-bg-input: oklch(37.2% 0.044 257.287); /* slate-700 */
+  --color-bg-hover: oklch(44.6% 0.043 257.281); /* slate-600 */
+
+  /* Text */
+  --color-text: oklch(98.4% 0.003 247.858); /* slate-50 */
+  --color-text-muted: oklch(70.4% 0.04 256.788); /* slate-400 */
+
+  /* Brand */
+  --color-primary: oklch(62.3% 0.214 259.815); /* blue-500 */
+  --color-primary-hover:oklch(48.8% 0.243 264.376); /* blue-700 */
+  --color-primary-bg: oklch(39.8% 0.195 277.366); /* indigo-800 */
+
+  /* Indicator */
+  --color-danger: oklch(81% 0.117 11.638); /* rose-300 */
+  --color-danger-bg: oklch(41% 0.159 10.272); /* rose-900 */
+  --color-success:oklch(84.5% 0.143 164.978); /* emerald-300 */
+  --color-success-bg: oklch(37.8% 0.077 168.94); /* emerald-900 */
+  --color-incomplete: oklch(86.5% 0.127 207.078); /* sky-300 */
+  --color-incomplete-bg: oklch(39.8% 0.07 227.392); /* sky-900 */
+  --color-warning: oklch(87.9% 0.169 91.605); /* amber-300 */
+  --color-warning-bg: oklch(41.4% 0.112 45.904); /* amber-900 */
+
+  /* Borders & Dividers */
+  --color-border: oklch(55.4% 0.046 257.417); /* slate-500 */
+
+  /* Spacing */
+  --spacing-xs: 0.5rem;   /* 8px */
+  --spacing-sm: 0.75rem;  /* 12px */
+  --spacing-md: 1rem;     /* 16px */
+  --spacing-lg: 1.5rem;   /* 24px */
+  --spacing-xl: 2rem;     /* 32px */
+  --spacing-xxl: 3rem;    /* 48px */
+
+  /* Typography */
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.75rem;
+
+  /* Border Radius */
+  --radius-sm: 0.125rem; /* 2px */
+  --radius-md: 0.5rem;   /* 4px */
+  --radius-lg: 0.75rem;  /* 6px */
+
+  /* Layout Helper */
+  --bm-rail-width: 80px;
+  --bm-header-height: 64px;
+}
+
+body {
+  background-color: var(--color-bg-body);
+  color: var(--color-text);
+  font-family: var(--mantine-font-family-sans);
+  -webkit-font-smoothing: antialiased;
+}
