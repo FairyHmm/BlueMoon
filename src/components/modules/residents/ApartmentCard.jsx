@@ -7,7 +7,7 @@ import {
   Button,
 } from "@mantine/core";
 import { IconUserPlus, IconHome } from "@tabler/icons-react";
-import classes from "../../../styles/components/apartment-card.module.css";
+import classes from "../../../styles/components/modules/residents/apartment-card.module.css";
 
 export default function ApartmentCard({ unit, onAddMember }) {
   return (

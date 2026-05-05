@@ -1,6 +1,6 @@
 import { SegmentedControl, rem } from '@mantine/core';
 import { IconHome, IconUsers, IconReceipt, IconSettings } from '@tabler/icons-react';
-import classes from '../../styles/components/navigation.module.css';
+import classes from '../../styles/components/layout/navigation.module.css';
 import scClasses from '../../styles/mantine/segmented-control.module.css';
 
 const navData = [

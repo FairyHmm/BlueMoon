@@ -1,6 +1,6 @@
 import { Group, Text, TextInput, ActionIcon } from "@mantine/core";
 import { IconSearch, IconBell, IconUserCircle } from "@tabler/icons-react";
-import classes from "../../styles/components/header.module.css";
+import classes from "../../styles/components/layout/header.module.css";
 
 export default function Header() {
   return (
