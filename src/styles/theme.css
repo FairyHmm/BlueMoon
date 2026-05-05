@@ -26,6 +26,7 @@
 
   /* Borders & Dividers */
   --color-border: oklch(55.4% 0.046 257.417); /* slate-500 */
+  --color-border-hover: oklch(70.4% 0.04 256.788); /* slate-400 */
 
   /* Spacing */
   --spacing-xs: 0.5rem; /* 8px */

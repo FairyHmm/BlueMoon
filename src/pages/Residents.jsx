@@ -1,17 +1,21 @@
-import { useState, useMemo } from "react";
-import { SimpleGrid } from "@mantine/core";
+import { useState } from "react";
+import { SimpleGrid, Loader, Center } from "@mantine/core";
+import { useResidentActions } from "../hooks/useResidentActions";
 import DataRegistry from "../components/ui/DataRegistry";
 import ApartmentCard from "../components/modules/residents/ApartmentCard";
-import { useRegistry } from "../hooks/useRegistry";
-import { getResidentRegistry } from "../utils/queries/residentQueries";
 
 export default function Residents() {
   const [query, setQuery] = useState("");
-  const db = useRegistry();
-  const displayData = useMemo(
-    () => getResidentRegistry(db, query),
-    [db, query],
-  );
+  const { displayData, availableResidents, actions, isLoading } =
+    useResidentActions(query);
+
+  if (isLoading) {
+    return (
+      <Center h={400}>
+        <Loader />
+      </Center>
+    );
+  }
 
   return (
     <DataRegistry
@@ -24,7 +28,10 @@ export default function Residents() {
           <ApartmentCard
             key={unit.id}
             unit={unit}
-            onAddMember={(id) => console.log("Target Unit:", id)}
+            availableResidents={availableResidents}
+            onUpdateResident={actions.updateResident}
+            onAddMember={actions.addMember}
+            onRemoveMember={actions.removeMember}
           />
         ))}
       </SimpleGrid>

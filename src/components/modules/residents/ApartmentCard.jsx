@@ -1,66 +1,42 @@
-import {
-  Text,
-  Group,
-  Stack,
-  Badge,
-  Divider,
-  Button,
-} from "@mantine/core";
-import { IconUserPlus, IconHome } from "@tabler/icons-react";
+import { useState } from "react";
+import { Stack, Divider } from "@mantine/core";
+import UnitHeader from "./UnitHeader";
+import ResidentRow from "./ResidentRow";
+import AddMember from "./AddMember";
 import classes from "../../../styles/components/modules/residents/apartment-card.module.css";
 
-export default function ApartmentCard({ unit, onAddMember }) {
+export default function ApartmentCard({
+  unit,
+  availableResidents,
+  onUpdateResident,
+  onAddMember,
+  onRemoveMember,
+}) {
+  const [isAdding, setIsAdding] = useState(false);
+
   return (
     <Stack gap="xs" p="md" radius="md" className={classes.card}>
-      <Group justify="space-between">
-        <Stack gap={0}>
-          <Group gap={6}>
-            <IconHome size={16} color="var(--color-primary)" />
-            <Text fw={900}>Unit {unit.id}</Text>
-          </Group>
-          <Text size="xs" c="dimmed" className="mono">
-            {unit.type} • {unit.area}m²
-          </Text>
-        </Stack>
-        {unit.hasUnpaidBills && (
-          <Badge color="red" variant="dot" size="xs">
-            DEBT
-          </Badge>
-        )}
-      </Group>
-
+      <UnitHeader unit={unit} />
       <Divider variant="dotted" />
 
       <Stack gap={2}>
         {unit.residents.map((res) => (
-          <Group
+          <ResidentRow
             key={res.id}
-            justify="space-between"
-            className={classes["resident-item"]}
-          >
-            <Text size="sm" fw={res.is_head ? 700 : 400}>
-              {res.name}
-            </Text>
-            <Badge
-              size="xs"
-              color={res.status === "active" ? "green" : "orange"}
-            >
-              {res.status}
-            </Badge>
-          </Group>
+            res={res}
+            onUpdate={onUpdateResident}
+            onRemove={onRemoveMember}
+          />
         ))}
       </Stack>
 
-      <Button
-        onClick={() => onAddMember(unit.id)}
-        color={"var(--color-primary)"}
-        variant="outline"
-      >
-        <IconUserPlus size={14} />
-        <Text size="xs" fw={700} >
-          Add members
-        </Text>
-      </Button>
+      <AddMember
+        unitId={unit.id}
+        isAdding={isAdding}
+        setIsAdding={setIsAdding}
+        availableResidents={availableResidents}
+        onAdd={onAddMember}
+      />
     </Stack>
   );
 }

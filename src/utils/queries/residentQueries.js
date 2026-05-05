@@ -1,22 +1,26 @@
 import { join } from "../dataEngine";
 
 export const getResidentRegistry = (db, search = "") => {
-  // 1. Perform the Join
-  let data = join(
-    db.apartments,
-    db.residents,
-    "id",
-    "apartment_id",
-    "residents",
-  );
+  // Defensive destructuring: default to empty arrays if db is loading/empty
+  const { apartments = [], residents = [], bills = [] } = db || {};
 
-  // 2. Apply View-Specific Logic (Search)
+  // 1. Join Residents and Bills to Apartments
+  let data = join(apartments, residents, "id", "apartment_id", "residents");
+  data = join(data, bills, "id", "apartment_id", "bills");
+
+  // 2. Add derived UI state (like the Debt Badge requirement)
+  data = data.map(apt => ({
+    ...apt,
+    hasUnpaidBills: apt.bills?.some(b => b.status === "unpaid") ?? false
+  }));
+
+  // 3. Apply Search
   if (search) {
     const q = search.toLowerCase();
-    data = data.filter(
+    return data.filter(
       (apt) =>
-        apt.id.includes(q) ||
-        apt.residents.some((r) => r.name.toLowerCase().includes(q)),
+        apt.id.toLowerCase().includes(q) ||
+        apt.residents.some((r) => r.name.toLowerCase().includes(q))
     );
   }
 
@@ -24,10 +28,13 @@ export const getResidentRegistry = (db, search = "") => {
 };
 
 export const getDebtSummary = (db) => {
-  const data = join(db.apartments, db.bills, "id", "apartment_id", "bills");
+  const { apartments = [], bills = [] } = db || {};
+
+  const data = join(apartments, bills, "id", "apartment_id", "bills");
+
   return data.map((apt) => ({
     id: apt.id,
-    totalDebt: apt.bills
+    totalDebt: (apt.bills || [])
       .filter((b) => b.status === "unpaid")
       .reduce((sum, b) => sum + b.amount, 0),
   }));
