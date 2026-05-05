@@ -1,0 +1,39 @@
+.registry-root {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--bm-header-height));
+  background-color: var(--color-bg-body);
+
+  .registry-paper {
+    flex: 1;
+    background-color: var(--color-bg-body) !important;
+    border: 1px solid var(--color-bg-card) !important;
+    overflow-y: auto;
+    padding-bottom: 80px;
+  }
+
+  .registry-table {
+    width: 100%;
+
+    thead tr th {
+      background-color: var(--color-bg-card) !important;
+      color: var(--color-text-muted) !important;
+      font-size: 10px;
+      text-transform: uppercase;
+      padding: var(--spacing-xs) var(--spacing-sm) !important;
+      border-bottom: 2px solid var(--color-border) !important;
+    }
+
+    tbody tr td {
+      padding: var(--spacing-xs) var(--spacing-sm) !important;
+      border-bottom: 1px solid var(--color-bg-card) !important;
+      color: var(--color-text);
+    }
+  }
+
+  .registry-footer {
+    background-color: var(--color-bg-card);
+    border-top: 1px solid var(--color-border);
+    padding: 4px;
+  }
+}
