@@ -11,12 +11,14 @@ export default function ApartmentCard({
   onUpdateResident,
   onAddMember,
   onRemoveMember,
+  onUpdateUnit,
+  onRemoveUnit,
 }) {
   const [isAdding, setIsAdding] = useState(false);
 
   return (
     <Stack gap="xs" p="md" radius="md" className={classes.card}>
-      <UnitHeader unit={unit} />
+      <UnitHeader unit={unit} onUpdate={onUpdateUnit} onRemove={onRemoveUnit} />
       <Divider variant="dotted" />
 
       <Stack gap={2}>

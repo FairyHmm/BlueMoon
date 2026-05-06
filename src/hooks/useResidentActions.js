@@ -1,17 +1,14 @@
 import { useMemo, useCallback } from "react";
-import { useRegistry } from "./useRegistry";
 import { getResidentRegistry } from "../utils/queries/residentQueries";
 
-export function useResidentActions(searchQuery = "") {
-  const db = useRegistry();
-
+export function useResidentActions(db, searchQuery = "") {
   const displayData = useMemo(
-    () => getResidentRegistry(db, searchQuery),
+    () => (db?.apartments ? getResidentRegistry(db, searchQuery) : []),
     [db, searchQuery],
   );
 
   const availableResidents = useMemo(
-    () => db.residents.filter((r) => !r.apartment_id),
+    () => (db?.residents || []).filter((r) => !r.apartment_id),
     [db.residents],
   );
 

@@ -1,0 +1,53 @@
+/* Update these in your module.css */
+
+.header-root {
+  padding-bottom: var(--spacing-xs);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--spacing-xs);
+}
+
+.clickable-text {
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.15s ease;
+  padding: 0 2px;
+}
+
+.clickable-text:hover {
+  background-color: var(--color-bg-hover);
+}
+
+.edit-input {
+  /* Using your brand tokens for a seamless dark-mode experience */
+  :global(.mantine-Input-input) {
+    min-height: unset;
+    height: 1.4rem;
+    padding: 0 4px;
+
+    /* Use transparent bg to prevent the "white box" flicker */
+    background-color: transparent !important;
+
+    /* Informatics Style: Underline only */
+    border: none;
+    border-bottom: 2px solid var(--color-primary);
+    border-radius: 0;
+
+    color: var(--color-text);
+    font-size: inherit;
+    font-weight: inherit;
+    font-family: inherit;
+    transition: border-bottom-color 0.2s ease;
+  }
+
+  :global(.mantine-Input-input:focus) {
+    border-bottom-color: var(--color-primary-hover);
+    outline: none;
+  }
+}
+
+:global(.mono) {
+  /* Pulls from your JetBrains Mono definition in theme.css */
+  font-family: var(--font-family-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--font-size-sm);
+}

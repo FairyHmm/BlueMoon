@@ -1,13 +1,25 @@
 import { useState } from "react";
-import { SimpleGrid, Loader, Center } from "@mantine/core";
+import { Center, Loader } from "@mantine/core";
+import { useRegistry } from "../hooks/useRegistry";
 import { useResidentActions } from "../hooks/useResidentActions";
-import DataRegistry from "../components/ui/DataRegistry";
-import ApartmentCard from "../components/modules/residents/ApartmentCard";
+import { useApartmentActions } from "../hooks/useApartmentActions";
+import ResidentRegistry from "../components/modules/residents/ResidentRegistry";
+import mockDB from "../data/mockData.json";
 
 export default function Residents() {
   const [query, setQuery] = useState("");
-  const { displayData, availableResidents, actions, isLoading } =
-    useResidentActions(query);
+  const db = useRegistry(mockDB);
+
+  // 1. Fetch Person Data
+  const {
+    displayData,
+    availableResidents,
+    actions: resActions,
+    isLoading,
+  } = useResidentActions(db);
+
+  // 2. Fetch Unit Data
+  const { actions: aptActions } = useApartmentActions(db);
 
   if (isLoading) {
     return (
@@ -17,24 +29,15 @@ export default function Residents() {
     );
   }
 
+  // 3. Pass everything to the UI layer
   return (
-    <DataRegistry
-      title="Resident Management"
-      searchQuery={query}
-      setSearchQuery={setQuery}
-    >
-      <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="md">
-        {displayData.map((unit) => (
-          <ApartmentCard
-            key={unit.id}
-            unit={unit}
-            availableResidents={availableResidents}
-            onUpdateResident={actions.updateResident}
-            onAddMember={actions.addMember}
-            onRemoveMember={actions.removeMember}
-          />
-        ))}
-      </SimpleGrid>
-    </DataRegistry>
+    <ResidentRegistry
+      query={query}
+      setQuery={setQuery}
+      displayData={displayData}
+      availableResidents={availableResidents}
+      resActions={resActions}
+      aptActions={aptActions}
+    />
   );
 }

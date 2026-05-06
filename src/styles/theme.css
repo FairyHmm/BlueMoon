@@ -53,13 +53,36 @@
   --bm-header-height: 64px;
 
   /* Fonts */
+  --font-family-sans: "Helvetica Neue", Arial, -apple-system, sans-serif;
   --font-family-mono: "JetBrains Mono", "Fira Code", monospace;
+}
+
+/* Global Component Overrides */
+.mantine-Modal-content {
+  background-color: var(--color-bg-card);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.mantine-Select-dropdown,
+.mantine-Popover-dropdown {
+  background-color: var(--color-bg-input);
+  border: 1px solid var(--color-border);
+}
+
+.mantine-Select-option {
+  color: var(--color-text);
+}
+
+.mantine-Select-option:hover,
+.mantine-Select-option[data-combobox-selected] {
+  background-color: var(--color-primary-bg);
 }
 
 body {
   background-color: var(--color-bg-body);
   color: var(--color-text);
-  font-family: var(--mantine-font-family-sans);
+  font-family: var(--font-family-sans);
   -webkit-font-smoothing: antialiased;
 }
 

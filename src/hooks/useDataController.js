@@ -1,33 +1,34 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from "react";
 
 export function useDataController(collectionKey, initialData = []) {
   const [data, setData] = useState(initialData);
+  const [isLoaded, setIsLoaded] = useState(false); // New gate
   const storageKey = `bluemoon_${collectionKey}`;
 
-  // Load Data
+  // 1. Load Data
   useEffect(() => {
     const saved = localStorage.getItem(storageKey);
-    setData(saved ? JSON.parse(saved) : initialData);
+    if (saved) {
+      setData(JSON.parse(saved));
+    }
+    setIsLoaded(true); // Mark as ready
   }, [storageKey]);
 
-  // Sync Data
+  // 2. Sync Data - Only if isLoaded is true
   useEffect(() => {
-    if (data.length > 0) {
+    if (isLoaded) {
       localStorage.setItem(storageKey, JSON.stringify(data));
     }
-  }, [data, storageKey]);
+  }, [data, storageKey, isLoaded]);
 
   const addItem = (newItem) => {
-    const entry = {
-      ...newItem,
-      id: Date.now(), // Temporary ID generator
-    };
+    const entry = { ...newItem, id: Date.now() };
     setData((prev) => [...prev, entry]);
   };
 
   const deleteItem = (id) => {
-    setData((prev) => prev.filter(item => item.id !== id));
+    setData((prev) => prev.filter((item) => item.id !== id));
   };
 
-  return { data, setData, addItem, deleteItem };
+  return { data, setData, addItem, deleteItem, loading: !isLoaded };
 }

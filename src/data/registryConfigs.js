@@ -1,3 +1,9 @@
+import {
+  IconSmartHome,
+  IconHome,
+  IconBuildingCommunity,
+} from "@tabler/icons-react";
+
 export const RESIDENT_STATUS = {
   ACTIVE: {
     value: "active",
@@ -19,3 +25,27 @@ export const RESIDENT_STATUS = {
 export const getStatusConfig = (statusValue) =>
   Object.values(RESIDENT_STATUS).find((s) => s.value === statusValue) ||
   RESIDENT_STATUS.PENDING;
+
+export const UNIT_TYPES = {
+  STUDIO: {
+    value: "studio",
+    label: "Studio",
+    color: "cyan",
+    icon: IconSmartHome,
+  },
+  STANDARD: {
+    value: "standard",
+    label: "Standard",
+    color: "blue",
+    icon: IconHome,
+  },
+  DUPLEX: {
+    value: "Duplex",
+    label: "Duplex",
+    color: "indigo",
+    icon: IconBuildingCommunity,
+  },
+};
+
+export const getUnitConfig = (val) =>
+  Object.values(UNIT_TYPES).find((u) => u.value === val) || UNIT_TYPES.STANDARD;

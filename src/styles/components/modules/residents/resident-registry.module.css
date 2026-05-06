@@ -1,0 +1,39 @@
+.registry-grid {
+  margin-top: var(--spacing-md);
+}
+
+/* Button overrides using your OKLCH tokens */
+.add-unit-button {
+  background-color: var(--color-primary);
+  border-radius: var(--radius-md);
+  transition: background-color 0.2s ease;
+}
+
+.add-unit-button:hover {
+  background-color: var(--color-primary-hover);
+}
+
+/* Modal styling to match BlueMoon dark slate aesthetic */
+.modal-content {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.modal-header {
+  background-color: var(--color-bg-card);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--spacing-md);
+}
+
+.modal-title {
+  font-weight: 600; /* fw-bold */
+}
+
+.modal-close {
+  color: var(--color-text-muted);
+}
+
+.modal-close:hover {
+  background-color: var(--color-bg-hover);
+}
