@@ -1,5 +1,5 @@
 import { useMemo, useCallback } from "react";
-import { getResidentRegistry } from "../utils/queries/residentQueries";
+import { getResidentRegistry } from "../../utils/queries/residentQueries";
 
 export function useResidentActions(db, searchQuery = "") {
   const displayData = useMemo(

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Center, Loader } from "@mantine/core";
 import { useRegistry } from "../hooks/useRegistry";
-import { useResidentActions } from "../hooks/useResidentActions";
-import { useApartmentActions } from "../hooks/useApartmentActions";
+import { useResidentActions } from "../hooks/residents/useResidentActions";
+import { useApartmentActions } from "../hooks/residents/useApartmentActions";
 import ResidentRegistry from "../components/modules/residents/ResidentRegistry";
 import mockDB from "../data/mockData.json";
 
