@@ -16,6 +16,7 @@ import classes from "../../../styles/components/modules/residents/unit-header.mo
 
 export default function UnitHeader({ unit, onUpdate, onRemove }) {
   const cfg = getUnitConfig(unit.type);
+  const dynamicColor = `var(--mantine-color-${cfg.color}-filled)`;
   const Icon = cfg.icon || IconHome;
 
   return (
@@ -26,8 +27,7 @@ export default function UnitHeader({ unit, onUpdate, onRemove }) {
     >
       <Stack gap={0}>
         <Group gap={6}>
-          {/* Using brand primary variable for the icon */}
-          <Icon size={16} style={{ color: "var(--color-primary)" }} />
+          <Icon size={16} color={dynamicColor} />
           <Group gap={4}>
             <Text fw={900} size="sm" className={classes["title-label"]}>
               Unit
@@ -38,6 +38,8 @@ export default function UnitHeader({ unit, onUpdate, onRemove }) {
               onSave={(v) => onUpdate(unit.id, { id: v })}
               fw={900}
               size="sm"
+              style={{ "--accent-color": dynamicColor }}
+              className={classes["id-field"]}
             />
           </Group>
         </Group>
@@ -58,6 +60,8 @@ export default function UnitHeader({ unit, onUpdate, onRemove }) {
               </Text>
             )}
             comboboxProps={{ zIndex: 2000, withinPortal: true }}
+            style={{ "--accent-color": dynamicColor }}
+            className={classes["id-field"]}
           />
           <Text size="xs" className="color-muted">
             •
@@ -72,6 +76,8 @@ export default function UnitHeader({ unit, onUpdate, onRemove }) {
                 {v}m²
               </Text>
             )}
+            style={{ "--accent-color": dynamicColor }}
+            className={classes["id-field"]}
           />
         </Group>
       </Stack>

@@ -30,19 +30,19 @@ export const UNIT_TYPES = {
   STUDIO: {
     value: "studio",
     label: "Studio",
-    color: "cyan",
+    color: "orange",
     icon: IconSmartHome,
   },
   STANDARD: {
     value: "standard",
     label: "Standard",
-    color: "blue",
+    color: "indigo",
     icon: IconHome,
   },
   DUPLEX: {
     value: "Duplex",
     label: "Duplex",
-    color: "indigo",
+    color: "teal",
     icon: IconBuildingCommunity,
   },
 };

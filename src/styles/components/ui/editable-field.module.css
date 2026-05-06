@@ -1,36 +1,26 @@
 /* styles/components/ui/editable-field.module.css */
 
-.clickable-box {
-  cursor: pointer;
-  border-radius: var(--radius-md);
-  padding: 0 var(--spacing-xs);
-  margin: 0 calc(var(--spacing-xs) * -1);
-  display: inline-block;
-  transition: background-color 0.15s ease;
-}
-
-.clickable-box:hover {
-  background-color: var(--color-bg-input);
-}
-
 .edit-input :global(.mantine-Input-input) {
-  /* Strip default box */
   border: none;
-  border-bottom: 2px solid var(--color-primary);
+  /* Use the variable directly for the border */
+  border-bottom: 2px solid var(--accent-color, var(--color-primary));
   border-radius: 0;
   background-color: transparent !important;
 
-  /* Layout & Typography */
   padding: 0 2px;
   min-height: unset;
   height: auto;
-  color: var(--color-text);
+
+  /* Force text to stay white/standard text color */
+  color: var(--color-text) !important;
   font-family: inherit;
   font-size: inherit;
   font-weight: inherit;
 }
 
 .edit-input :global(.mantine-Input-input:focus) {
-  border-bottom-color: var(--color-primary-hover);
   outline: none;
+  /* Optional: make the border glow slightly on focus */
+  border-bottom-color: var(--accent-color, var(--color-primary));
+  filter: brightness(1.2);
 }

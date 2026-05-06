@@ -18,21 +18,29 @@ export default function ApartmentCard({
 
   return (
     <Stack gap="xs" p="md" radius="md" className={classes.card}>
-      <UnitHeader unit={unit} onUpdate={onUpdateUnit} onRemove={onRemoveUnit} />
-      <Divider variant="dotted" />
+      <Stack>
+        <UnitHeader
+          unit={unit}
+          onUpdate={onUpdateUnit}
+          onRemove={onRemoveUnit}
+        />
 
-      <Stack gap={2}>
-        {unit.residents.map((res) => (
-          <ResidentRow
-            key={res.id}
-            res={res}
-            onUpdate={onUpdateResident}
-            onRemove={onRemoveMember}
-          />
-        ))}
+        <Divider variant="dotted" />
+
+        <Stack gap={2}>
+          {unit.residents.map((res) => (
+            <ResidentRow
+              key={res.id}
+              res={res}
+              onUpdate={onUpdateResident}
+              onRemove={onRemoveMember}
+            />
+          ))}
+        </Stack>
       </Stack>
 
       <AddMember
+        unit={unit}
         unitId={unit.id}
         isAdding={isAdding}
         setIsAdding={setIsAdding}
