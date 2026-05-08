@@ -1,17 +1,15 @@
-import { Group, Text, ActionIcon, Menu, Badge } from "@mantine/core";
-import { IconUserStar, IconTrash, IconChevronDown } from "@tabler/icons-react";
-import classes from "../../../styles/components/modules/residents/resident-row.module.css";
+import { Group, Text, ActionIcon } from "@mantine/core";
+import { IconUserStar, IconTrash } from "@tabler/icons-react";
+import StatusMenu from "../../ui/StatusMenu"; // Updated import
 import {
   RESIDENT_STATUS,
   getStatusConfig,
 } from "../../../data/registryConfigs";
+import classes from "../../../styles/components/modules/residents/resident-row.module.css";
 
 export default function ResidentRow({ res, onUpdate, onRemove }) {
-  const statusCfg = getStatusConfig(res.status);
-
   return (
     <Group wrap="nowrap" className={classes["resident-item"]} gap="xs">
-      {/* 1. Name Section: Automatically shows Star if head */}
       <Group
         gap={4}
         wrap="nowrap"
@@ -26,7 +24,6 @@ export default function ResidentRow({ res, onUpdate, onRemove }) {
         </Text>
       </Group>
 
-      {/* 2. Actions Section: Replaced divs with Group */}
       <Group gap="sm" wrap="nowrap" className={classes["actions-container"]}>
         <Group gap={4} wrap="nowrap" className={classes["hover-actions"]}>
           {!res.is_head && (
@@ -48,35 +45,12 @@ export default function ResidentRow({ res, onUpdate, onRemove }) {
           </ActionIcon>
         </Group>
 
-        <Menu
-          position="bottom-end"
-          withinPortal
-          shadow="md"
-          classNames={{
-            dropdown: classes.dropdown,
-            item: classes.item,
-          }}
-        >
-          <Menu.Target>
-            <Badge
-              className={classes["status-badge"]}
-              color={statusCfg.color}
-              rightSection={<IconChevronDown size={10} />}
-            >
-              {statusCfg.label}
-            </Badge>
-          </Menu.Target>
-          <Menu.Dropdown>
-            {Object.values(RESIDENT_STATUS).map((status) => (
-              <Menu.Item
-                key={status.value}
-                onClick={() => onUpdate(res.id, { status: status.value })}
-              >
-                {status.label}
-              </Menu.Item>
-            ))}
-          </Menu.Dropdown>
-        </Menu>
+        <StatusMenu
+          value={res.status}
+          options={RESIDENT_STATUS}
+          getConfig={getStatusConfig}
+          onUpdate={(newStatus) => onUpdate(res.id, { status: newStatus })}
+        />
       </Group>
     </Group>
   );

@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { Stack, Divider } from "@mantine/core";
-import UnitHeader from "./UnitHeader";
+import UnitCard from "../../ui/UnitCard";
 import ResidentRow from "./ResidentRow";
 import AddMember from "./AddMember";
-import classes from "../../../styles/components/modules/residents/apartment-card.module.css";
 
 export default function ApartmentCard({
   unit,
@@ -17,36 +15,29 @@ export default function ApartmentCard({
   const [isAdding, setIsAdding] = useState(false);
 
   return (
-    <Stack gap="xs" p="md" radius="md" className={classes.card}>
-      <Stack>
-        <UnitHeader
+    <UnitCard
+      unit={unit}
+      onUpdateUnit={onUpdateUnit}
+      onRemoveUnit={onRemoveUnit}
+      footer={
+        <AddMember
           unit={unit}
-          onUpdate={onUpdateUnit}
-          onRemove={onRemoveUnit}
+          unitId={unit.id}
+          isAdding={isAdding}
+          setIsAdding={setIsAdding}
+          availableResidents={availableResidents}
+          onAdd={onAddMember}
         />
-
-        <Divider variant="dotted" />
-
-        <Stack gap={2}>
-          {unit.residents.map((res) => (
-            <ResidentRow
-              key={res.id}
-              res={res}
-              onUpdate={onUpdateResident}
-              onRemove={onRemoveMember}
-            />
-          ))}
-        </Stack>
-      </Stack>
-
-      <AddMember
-        unit={unit}
-        unitId={unit.id}
-        isAdding={isAdding}
-        setIsAdding={setIsAdding}
-        availableResidents={availableResidents}
-        onAdd={onAddMember}
-      />
-    </Stack>
+      }
+    >
+      {unit.residents.map((res) => (
+        <ResidentRow
+          key={res.id}
+          res={res}
+          onUpdate={onUpdateResident}
+          onRemove={onRemoveMember}
+        />
+      ))}
+    </UnitCard>
   );
 }

@@ -49,3 +49,35 @@ export const UNIT_TYPES = {
 
 export const getUnitConfig = (val) =>
   Object.values(UNIT_TYPES).find((u) => u.value === val) || UNIT_TYPES.STANDARD;
+
+export const BILL_STATUS = {
+  PAID: { value: "paid", label: "Paid", color: "teal" },
+  DUE: { value: "due", label: "Due", color: "blue" },
+  OVERDUE: { value: "overdue", label: "Overdue", color: "red" },
+  WAIT: { value: "wait", label: "Wait", color: "gray" },
+};
+
+export const getBillStatusConfig = (status) =>
+  Object.values(BILL_STATUS).find((s) => s.value === status) || BILL_STATUS.DUE;
+
+export const filterBills = (bills, activeFilter) => {
+  const now = new Date();
+  return bills.filter((b) => {
+    const isFuture = new Date(b.due_date) > now;
+
+    switch (activeFilter) {
+      case "paid":
+        return b.status === "paid";
+      case "due":
+        return b.status === "due" || b.status === "overdue";
+      case "all":
+        return (
+          b.status === "paid" || b.status === "due" || b.status === "overdue"
+        );
+      case "wait":
+        return b.status === "wait" || isFuture;
+      default:
+        return true;
+    }
+  });
+};

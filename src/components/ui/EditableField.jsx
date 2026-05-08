@@ -8,6 +8,7 @@ export default function EditableField({
   component: Component = TextInput,
   immediate = false,
   renderDisplay,
+  readOnly = false,
   ...props
 }) {
   const [editing, setEditing] = useState(false);
@@ -31,7 +32,7 @@ export default function EditableField({
     setEditing(false);
   };
 
-  if (editing) {
+  if (editing && !readOnly) {
     return (
       <Component
         {...props}

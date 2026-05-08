@@ -16,7 +16,7 @@
   }
 }
 
-.name {
+.resident-name {
   flex-shrink: 1;
   white-space: nowrap;
   overflow: hidden;
@@ -25,14 +25,9 @@
 }
 
 .actions-container {
+  display: flex;
+  align-items: center;
   margin-left: auto;
-}
-
-.resident-name {
-  flex-shrink: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .hover-actions {
@@ -40,38 +35,4 @@
   gap: 4px;
   opacity: 0;
   transition: opacity 0.2s ease;
-}
-
-.dropdown {
-  background-color: var(--color-bg-card) !important;
-  border: 1px solid var(--color-border) !important;
-  padding: 4px;
-}
-
-.item {
-  color: var(--color-text) !important;
-  font-size: var(--font-size-sm);
-  border-radius: var(--radius-sm);
-  transition: background-color 0.15s ease;
-
-  &:hover {
-    background-color: var(--color-bg-hover) !important;
-  }
-
-  /* Target the label inside the item if needed */
-  &[data-hovered] {
-    background-color: var(--color-bg-hover) !important;
-  }
-}
-
-/* Ensure the badge looks clickable */
-.status-badge {
-  min-width: 80px;
-  cursor: pointer;
-  user-select: none;
-  transition: filter 0.2s ease;
-
-  &:hover {
-    filter: brightness(1.1);
-  }
 }
