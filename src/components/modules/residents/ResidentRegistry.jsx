@@ -4,6 +4,7 @@ import { IconPlus } from "@tabler/icons-react";
 import DataRegistry from "../../ui/DataRegistry";
 import ApartmentCard from "./ApartmentCard";
 import UnitModal from "./UnitModal";
+import rClasses from "../../../styles/components/ui/registry.module.css";
 import classes from "../../../styles/components/modules/residents/resident-registry.module.css";
 
 export default function ResidentRegistry({
@@ -26,6 +27,7 @@ export default function ResidentRegistry({
           leftSection={<IconPlus size={16} />}
           onClick={open}
           className={classes["add-unit-button"]}
+          color="blue"
         >
           Add Unit
         </Button>
@@ -34,7 +36,7 @@ export default function ResidentRegistry({
       <SimpleGrid
         cols={{ base: 1, sm: 2, lg: 3 }}
         spacing="var(--spacing-md)"
-        className={classes["registry-grid"]}
+        className={rClasses["registry-grid"]} // Using shared grid spacing
       >
         {displayData.map((unit) => (
           <ApartmentCard
@@ -57,10 +59,10 @@ export default function ResidentRegistry({
         centered
         zIndex={1000}
         classNames={{
-          content: classes["modal-content"],
-          header: classes["modal-header"],
-          title: classes["modal-title"],
-          close: classes["modal-close"],
+          content: rClasses["modal-content"], // Shared Slate aesthetic
+          header: rClasses["modal-header"],
+          title: rClasses["modal-title"],
+          close: rClasses["modal-close"],
         }}
       >
         <UnitModal

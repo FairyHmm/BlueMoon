@@ -1,12 +1,26 @@
 import { useState, useMemo } from "react";
-import { SegmentedControl, Stack, Divider, Text, Group } from "@mantine/core";
+import {
+  SegmentedControl,
+  Stack,
+  Divider,
+  Text,
+  Group,
+  ActionIcon,
+} from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
 import UnitCard from "../../ui/UnitCard";
 import BillRow from "./BillRow";
 // Import BILL_STATUS instead of FINANCE_FILTERS
 import { BILL_STATUS, filterBills } from "../../../data/registryConfigs";
 import scClasses from "../../../styles/mantine/segmented-control.module.css";
 
-export default function FinanceCard({ unit, bills, feeTypes, onUpdateBill }) {
+export default function FinanceCard({
+  unit,
+  bills,
+  feeTypes,
+  onUpdateBill,
+  onOpenAddBill,
+}) {
   const [filter, setFilter] = useState("due");
 
   // Derive SegmentedControl data directly from BILL_STATUS
@@ -32,6 +46,15 @@ export default function FinanceCard({ unit, bills, feeTypes, onUpdateBill }) {
 
   return (
     <UnitCard unit={unit} isReadOnly={true}>
+      <Group justify="space-between" mb="xs">
+        <Text size="xs" fw={700} c="dimmed">
+          BILLING RECORDS
+        </Text>
+        <ActionIcon size="sm" color="blue" onClick={onOpenAddBill}>
+          <IconPlus size={12} />
+        </ActionIcon>
+      </Group>
+
       <SegmentedControl
         size="xs"
         fullWidth

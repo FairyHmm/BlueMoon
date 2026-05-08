@@ -1,0 +1,28 @@
+.wrapper {
+  /* Use your app's card/container background */
+  background-color: var(--color-bg-card);
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-md);
+}
+
+.description {
+  background-color: var(--color-bg-input);
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--color-primary);
+}
+
+.inputField {
+  background-color: var(--color-bg-input) !important;
+  border: 1px solid var(--color-border) !important;
+  color: var(--color-text) !important;
+
+  &:focus {
+    border-color: var(--color-primary) !important;
+  }
+
+  &:disabled {
+    background-color: var(--color-bg-hover) !important;
+    opacity: 0.7;
+  }
+}

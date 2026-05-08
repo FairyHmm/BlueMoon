@@ -15,7 +15,9 @@ export default function Finance() {
     feeTypes,
     isLoading,
     updateBillStatus,
-    addBill
+    addBill,
+    openBillModal,
+    modalProps,
   } = useFinanceActions(db);
 
   if (isLoading) {
@@ -28,7 +30,7 @@ export default function Finance() {
 
   // FIXED: Access 'id' instead of 'unit_number' and added safety checks
   const filteredApartments = apartments.filter((apt) =>
-    apt.id?.toLowerCase().includes(query.toLowerCase())
+    apt.id?.toLowerCase().includes(query.toLowerCase()),
   );
 
   return (
@@ -40,6 +42,8 @@ export default function Finance() {
       feeTypes={feeTypes}
       onUpdateBill={updateBillStatus}
       onAddBill={addBill}
+      openBillModal={openBillModal}
+      modalProps={modalProps}
     />
   );
 }
