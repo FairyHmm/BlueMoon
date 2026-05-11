@@ -1,17 +1,17 @@
-import { MantineProvider } from '@mantine/core';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { theme } from './styles/theme';
+import { MantineProvider } from "@mantine/core";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { theme } from "./styles/theme";
 
 /* Styles */
-import '@mantine/core/styles.css';
-import './styles/theme.css';
+import "@mantine/core/styles.css";
+import "./styles/theme.css";
 
 /* Layout & Pages */
-import MainShell from './components/layout/MainShell';
-import Dashboard from './pages/Dashboard';
-import Residents from './pages/Residents';
-import Finance from './pages/Finance';
-import Settings from './pages/Settings';
+import MainShell from "./components/MainShell";
+import Dashboard from "../pages/Dashboard";
+import Residents from "../pages/Residents";
+import Finance from "../pages/Finance";
+import Settings from "../pages/Settings";
 
 export default function App() {
   return (
