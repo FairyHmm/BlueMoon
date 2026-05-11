@@ -5,7 +5,7 @@ import DataRegistry from "../../../shared/components/DataRegistry";
 import ApartmentCard from "./ApartmentCard";
 import UnitModal from "./UnitModal";
 import drClasses from "../../../shared/styles/data-registry.module.css";
-import classes from "../../../styles/components/modules/residents/resident-registry.module.css";
+import classes from "../styles/resident-registry.module.css";
 
 export default function ResidentRegistry({
   query,

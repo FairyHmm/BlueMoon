@@ -5,7 +5,7 @@ import {
   RESIDENT_STATUS,
   getStatusConfig,
 } from "../../../shared/data/registryConfigs";
-import classes from "../../../styles/components/modules/residents/resident-row.module.css";
+import classes from "../styles/resident-row.module.css";
 
 export default function ResidentRow({ res, onUpdate, onRemove }) {
   return (
