@@ -6,7 +6,7 @@ import {
   IconSettings,
 } from "@tabler/icons-react";
 import classes from "../styles/navigation.module.css";
-import scClasses from "../../styles/mantine/segmented-control.module.css";
+import scClasses from "../../shared/styles/mantine/segmented-control.module.css";
 
 const navData = [
   {

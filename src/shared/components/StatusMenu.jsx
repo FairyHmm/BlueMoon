@@ -1,6 +1,6 @@
 import { Menu, Badge } from "@mantine/core";
 import { IconChevronDown } from "@tabler/icons-react";
-import classes from "../../styles/components/ui/status-menu.module.css";
+import classes from "../styles/status-menu.module.css";
 
 export default function StatusMenu({
   value,

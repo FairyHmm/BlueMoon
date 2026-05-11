@@ -1,10 +1,10 @@
 import { SimpleGrid, Button, Modal } from "@mantine/core";
 import { IconCashBanknotePlus } from "@tabler/icons-react";
-import DataRegistry from "../../ui/DataRegistry";
+import DataRegistry from "../../../shared/components/DataRegistry";
 import FinanceCard from "./FinanceCard";
 import BillModal from "./BillModal";
 
-import rClasses from "../../../styles/components/ui/registry.module.css";
+import drClasses from "../../../shared/styles/data-registry.module.css";
 import classes from "../../../styles/components/modules/finance/finance-registry.module.css";
 
 export default function FinanceRegistry({
@@ -37,7 +37,7 @@ export default function FinanceRegistry({
       <SimpleGrid
         cols={{ base: 1, sm: 2, lg: 3 }}
         spacing="var(--spacing-md)"
-        className={rClasses["registry-grid"]}
+        className={drClasses["registry-grid"]}
       >
         {apartments.map((unit) => (
           <FinanceCard
@@ -58,10 +58,10 @@ export default function FinanceRegistry({
         centered
         zIndex={1000}
         classNames={{
-          content: rClasses["modal-content"],
-          header: rClasses["modal-header"],
-          title: rClasses["modal-title"],
-          close: rClasses["modal-close"],
+          content: drClasses["modal-content"],
+          header: drClasses["modal-header"],
+          title: drClasses["modal-title"],
+          close: drClasses["modal-close"],
         }}
       >
         <BillModal

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import UnitCard from "../../ui/UnitCard";
+import UnitCard from "../../../shared/components/UnitCard";
 import ResidentRow from "./ResidentRow";
 import AddMember from "./AddMember";
 

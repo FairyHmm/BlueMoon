@@ -1,11 +1,11 @@
 import { Group, Text, Stack, ActionIcon, Tooltip } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
-import StatusMenu from "../../ui/StatusMenu";
+import StatusMenu from "../../../shared/components/StatusMenu";
 // Assuming these exist in your registryConfigs.js
 import {
   BILL_STATUS,
   getBillStatusConfig,
-} from "../../../data/registryConfigs";
+} from "../../../shared/data/registryConfigs";
 
 export default function BillRow({ bill, feeType, onUpdateStatus }) {
   return (

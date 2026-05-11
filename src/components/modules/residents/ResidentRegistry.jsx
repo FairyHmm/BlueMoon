@@ -1,10 +1,10 @@
 import { SimpleGrid, Button, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
-import DataRegistry from "../../ui/DataRegistry";
+import DataRegistry from "../../../shared/components/DataRegistry";
 import ApartmentCard from "./ApartmentCard";
 import UnitModal from "./UnitModal";
-import rClasses from "../../../styles/components/ui/registry.module.css";
+import drClasses from "../../../shared/styles/data-registry.module.css";
 import classes from "../../../styles/components/modules/residents/resident-registry.module.css";
 
 export default function ResidentRegistry({
@@ -36,7 +36,7 @@ export default function ResidentRegistry({
       <SimpleGrid
         cols={{ base: 1, sm: 2, lg: 3 }}
         spacing="var(--spacing-md)"
-        className={rClasses["registry-grid"]} // Using shared grid spacing
+        className={drClasses["registry-grid"]} // Using shared grid spacing
       >
         {displayData.map((unit) => (
           <ApartmentCard
@@ -59,10 +59,10 @@ export default function ResidentRegistry({
         centered
         zIndex={1000}
         classNames={{
-          content: rClasses["modal-content"], // Shared Slate aesthetic
-          header: rClasses["modal-header"],
-          title: rClasses["modal-title"],
-          close: rClasses["modal-close"],
+          content: drClasses["modal-content"], // Shared Slate aesthetic
+          header: drClasses["modal-header"],
+          title: drClasses["modal-title"],
+          close: drClasses["modal-close"],
         }}
       >
         <UnitModal

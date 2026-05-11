@@ -10,8 +10,8 @@ import {
 } from "@mantine/core";
 import { IconHome, IconDotsVertical, IconTrash } from "@tabler/icons-react";
 import EditableField from "./EditableField";
-import { UNIT_TYPES, getUnitConfig } from "../../data/registryConfigs";
-import classes from "../../styles/components/ui/unit-header.module.css";
+import { UNIT_TYPES, getUnitConfig } from "../data/registryConfigs";
+import classes from "../styles/unit-header.module.css";
 
 export default function UnitHeader({
   unit,

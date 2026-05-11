@@ -1,6 +1,6 @@
 import { Stack, Divider } from "@mantine/core";
 import UnitHeader from "./UnitHeader"; // Updated path
-import classes from "../../styles/components/ui/unit-card.module.css";
+import classes from "../styles/unit-card.module.css";
 
 export default function UnitCard({
   unit,

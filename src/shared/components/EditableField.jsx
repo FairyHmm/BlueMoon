@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { TextInput, Box, Text } from "@mantine/core";
-import classes from "../../styles/components/ui/editable-field.module.css";
+import classes from "../styles/editable-field.module.css";
 
 export default function EditableField({
   value,

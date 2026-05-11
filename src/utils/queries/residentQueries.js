@@ -1,4 +1,4 @@
-import { $, sumBy, groupBy } from "../dataEngine";
+import { $, sumBy, groupBy } from "../../shared/utils/dataEngine";
 
 export const getResidentRegistry = (db, search = "") => {
   let data = $(db, db.apartments)

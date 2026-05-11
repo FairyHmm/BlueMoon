@@ -8,11 +8,11 @@ import {
   ActionIcon,
 } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
-import UnitCard from "../../ui/UnitCard";
+import UnitCard from "../../../shared/components/UnitCard";
 import BillRow from "./BillRow";
 // Import BILL_STATUS instead of FINANCE_FILTERS
-import { BILL_STATUS, filterBills } from "../../../data/registryConfigs";
-import scClasses from "../../../styles/mantine/segmented-control.module.css";
+import { BILL_STATUS, filterBills } from "../../../shared/data/registryConfigs";
+import scClasses from "../../../shared/styles/mantine/segmented-control.module.css";
 
 export default function FinanceCard({
   unit,

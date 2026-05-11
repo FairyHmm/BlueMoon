@@ -1,6 +1,6 @@
 import { Stack, Group, Text, TextInput, Box } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
-import classes from "../../styles/components/ui/data-registry.module.css";
+import classes from "../styles/data-registry.module.css";
 
 export default function DataRegistry({
   title,

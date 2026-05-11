@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { TextInput, Select, NumberInput, Button, Box } from "@mantine/core";
-import { UNIT_TYPES } from "../../../data/registryConfigs";
+import { UNIT_TYPES } from "../../../shared/data/registryConfigs";
 import classes from "../../../styles/components/modules/residents/unit-modal.module.css";
 
 export default function UnitModal({ onSave }) {

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Center, Loader } from "@mantine/core";
-import { useRegistry } from "../hooks/useRegistry";
+import { useRegistry } from "../shared/hooks/useRegistry";
 import { useFinanceActions } from "../hooks/finance/useFinanceActions";
 import FinanceRegistry from "../components/modules/finance/FinanceRegistry";
-import mockDB from "../data/mockData.json";
+import mockDB from "../shared/data/mockData.json";
 
 export default function Finance() {
   const [query, setQuery] = useState("");

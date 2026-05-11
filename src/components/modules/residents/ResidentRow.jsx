@@ -1,10 +1,10 @@
 import { Group, Text, ActionIcon } from "@mantine/core";
 import { IconUserStar, IconTrash } from "@tabler/icons-react";
-import StatusMenu from "../../ui/StatusMenu"; // Updated import
+import StatusMenu from "../../../shared/components/StatusMenu";
 import {
   RESIDENT_STATUS,
   getStatusConfig,
-} from "../../../data/registryConfigs";
+} from "../../../shared/data/registryConfigs";
 import classes from "../../../styles/components/modules/residents/resident-row.module.css";
 
 export default function ResidentRow({ res, onUpdate, onRemove }) {

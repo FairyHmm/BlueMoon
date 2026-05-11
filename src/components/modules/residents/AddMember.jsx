@@ -2,7 +2,7 @@
 import { Button, Select, Text } from "@mantine/core";
 import { IconUserPlus } from "@tabler/icons-react";
 import classes from "../../../styles/components/modules/residents/add-member.module.css";
-import { UNIT_TYPES, getUnitConfig } from "../../../data/registryConfigs";
+import { UNIT_TYPES, getUnitConfig } from "../../../shared/data/registryConfigs";
 
 export default function AddMember({
   unit,
