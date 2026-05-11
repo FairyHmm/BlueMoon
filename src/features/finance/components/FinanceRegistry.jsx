@@ -5,7 +5,7 @@ import FinanceCard from "./FinanceCard";
 import BillModal from "./BillModal";
 
 import drClasses from "../../../shared/styles/data-registry.module.css";
-import classes from "../../../styles/components/modules/finance/finance-registry.module.css";
+import classes from "../styles/finance-registry.module.css";
 
 export default function FinanceRegistry({
   query,

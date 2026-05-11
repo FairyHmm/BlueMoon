@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Center, Loader } from "@mantine/core";
 import { useRegistry } from "../shared/hooks/useRegistry";
-import { useFinanceActions } from "../hooks/finance/useFinanceActions";
-import FinanceRegistry from "../components/modules/finance/FinanceRegistry";
+import { useFinanceActions } from "../features/finance/hooks/useFinanceActions";
+import FinanceRegistry from "../features/finance/components/FinanceRegistry";
 import mockDB from "../shared/data/mockData.json";
 
 export default function Finance() {

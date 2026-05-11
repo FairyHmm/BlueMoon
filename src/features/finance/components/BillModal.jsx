@@ -14,7 +14,7 @@ import {
   IconUser,
   IconCoin,
 } from "@tabler/icons-react";
-import classes from "../../../styles/components/modules/finance/bill-modal.module.css";
+import classes from "../styles/bill-modal.module.css";
 
 export default function BillModal({
   feeTypes,
