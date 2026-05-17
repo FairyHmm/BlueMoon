@@ -1,19 +1,17 @@
 import { useState, useMemo } from "react";
-import {
-  SegmentedControl,
-  Stack,
-  Divider,
-  Text,
-  Group,
-  ActionIcon,
-} from "@mantine/core";
-import { IconPlus } from "@tabler/icons-react";
+import { SegmentedControl, Stack, Divider, Text, Group } from "@mantine/core";
 import UnitCard from "../../../shared/components/UnitCard";
 import BillRow from "./BillRow";
+import RecordHeader from "../../../shared/components/RecordHeader";
 import { BILL_STATUS, filterBills } from "../../../shared/data/registryConfigs";
 import scClasses from "../../../shared/styles/mantine/segmented-control.module.css";
 
-export default function FinanceCard({ unit, bills, feeTypes, onOpenAddBill }) {
+export default function FinanceCard({
+  unit,
+  bills,
+  feeTypes,
+  onOpenAddBill,
+}) {
   const [filter, setFilter] = useState("due");
 
   const filterOptions = useMemo(
@@ -23,29 +21,42 @@ export default function FinanceCard({ unit, bills, feeTypes, onOpenAddBill }) {
       { label: "All", value: "all" },
       { label: BILL_STATUS.WAIT.label, value: "wait" },
     ],
-    [],
+    []
   );
 
   const filteredBills = useMemo(
     () => filterBills(bills, filter),
-    [bills, filter],
+    [bills, filter]
   );
 
   const totalAmount = useMemo(
     () => filteredBills.reduce((sum, b) => sum + b.amount, 0),
-    [filteredBills],
+    [filteredBills]
   );
 
   return (
-    <UnitCard unit={unit} isReadOnly={true}>
-      <Group justify="space-between" mb="xs">
-        <Text size="xs" fw={700} c="dimmed">
-          BILLING RECORDS
-        </Text>
-        <ActionIcon size="sm" color="blue" onClick={onOpenAddBill}>
-          <IconPlus size={12} />
-        </ActionIcon>
-      </Group>
+    <UnitCard
+      unit={unit}
+      isReadOnly={true}
+      footer={
+        <>
+          <Divider variant="dotted" mb="sm" />
+          <Group justify="space-between" px={4}>
+            <Text size="xs" fw={700} c="dimmed">
+              TOTAL
+            </Text>
+            <Text
+              size="xs"
+              fw={900}
+              c={filter === "due" && totalAmount > 0 ? "red" : "var(--color-text)"}
+            >
+              ${totalAmount.toLocaleString()}
+            </Text>
+          </Group>
+        </>
+      }
+    >
+      <RecordHeader title="Billing Records" onAdd={onOpenAddBill} color="blue" />
 
       <SegmentedControl
         size="xs"
@@ -77,20 +88,6 @@ export default function FinanceCard({ unit, bills, feeTypes, onOpenAddBill }) {
           </Text>
         )}
       </Stack>
-
-      <Divider variant="dotted" mt="sm" />
-      <Group justify="space-between" px={4} pt={4}>
-        <Text size="xs" fw={700} c="dimmed">
-          TOTAL
-        </Text>
-        <Text
-          size="xs"
-          fw={900}
-          c={filter === "due" && totalAmount > 0 ? "red" : "var(--color-text)"}
-        >
-          ${totalAmount.toLocaleString()}
-        </Text>
-      </Group>
     </UnitCard>
   );
 }

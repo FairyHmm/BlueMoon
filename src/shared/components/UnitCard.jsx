@@ -1,5 +1,5 @@
 import { Stack, Divider } from "@mantine/core";
-import UnitHeader from "./UnitHeader"; // Updated path
+import UnitHeader from "./UnitHeader";
 import classes from "../styles/unit-card.module.css";
 
 export default function UnitCard({
@@ -22,7 +22,11 @@ export default function UnitCard({
       <Stack gap={2} style={{ flexGrow: 1 }}>
         {children}
       </Stack>
-      {footer && <Stack mt="auto" pt="sm">{footer}</Stack>}
+      {footer && (
+        <Stack mt="auto" pt="sm">
+          {footer}
+        </Stack>
+      )}
     </Stack>
   );
 }
