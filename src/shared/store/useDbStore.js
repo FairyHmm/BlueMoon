@@ -14,7 +14,7 @@ const createActions = (set) => {
 
     actions[`add${Name}`] = (item) =>
       set((state) => ({
-        [key]: [...state[key], { ...item, id: crypto.randomUUID() }],
+        [key]: [...state[key], { ...item, id: item.id || crypto.randomUUID() }],
       }));
 
     actions[`update${Name}`] = (id, updates) =>
