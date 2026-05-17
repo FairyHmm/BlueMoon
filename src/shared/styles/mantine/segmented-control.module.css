@@ -2,34 +2,34 @@
   background-color: var(--color-bg-card);
   border: 1px solid var(--color-bg-input);
   border-radius: var(--radius-md);
+}
 
-  .control-item::before {
-    display: none !important;
-  }
+/* Remove Mantine's default vertical divider lines between tabs */
+.base-control :global(.mantine-SegmentedControl-control)::before {
+  display: none !important;
+}
 
-  .control-label {
-    color: var(--color-text-muted);
-    transition: color 0.2s ease;
-    padding: var(--spacing-sm) !important;
+.control-label {
+  color: var(--color-text-muted);
+  transition: color 0.2s ease;
+  padding: var(--spacing-sm) !important;
+}
 
-    &[data-active="true"] {
-      color: var(--color-text) !important;
-    }
-  }
+.control-label[data-active="true"] {
+  color: var(--color-text) !important;
+}
 
-  .control-indicator {
-    background-color: var(--color-primary-bg) !important;
-    border-radius: var(--radius-md);
-    box-shadow: none;
-  }
+.control-indicator {
+  background-color: var(--color-primary-bg) !important;
+  border-radius: var(--radius-md);
+  box-shadow: none;
+}
 
-  :global(.mantine-SegmentedControl-control) {
-    &:hover {
-      background-color: transparent !important;
+/* Hover effects */
+.base-control :global(.mantine-SegmentedControl-control):hover {
+  background-color: transparent !important;
+}
 
-      :global(.mantine-SegmentedControl-label) {
-        color: var(--color-primary) !important;
-      }
-    }
-  }
+.base-control :global(.mantine-SegmentedControl-control):hover :global(.mantine-SegmentedControl-label) {
+  color: var(--color-primary) !important;
 }
