@@ -2,41 +2,27 @@ import { useState } from "react";
 import UnitCard from "../../../shared/components/UnitCard";
 import ResidentRow from "./ResidentRow";
 import AddMember from "./AddMember";
+import { residentActions } from "../store/residentActions";
 
-export default function ApartmentCard({
-  unit,
-  availableResidents,
-  onUpdateResident,
-  onAddMember,
-  onRemoveMember,
-  onUpdateUnit,
-  onRemoveUnit,
-}) {
+export default function ApartmentCard({ unit }) {
   const [isAdding, setIsAdding] = useState(false);
+  const { updateApartment, removeApartment } = residentActions;
 
   return (
     <UnitCard
       unit={unit}
-      onUpdateUnit={onUpdateUnit}
-      onRemoveUnit={onRemoveUnit}
+      onUpdateUnit={updateApartment}
+      onRemoveUnit={removeApartment}
       footer={
         <AddMember
-          unit={unit}
           unitId={unit.id}
           isAdding={isAdding}
           setIsAdding={setIsAdding}
-          availableResidents={availableResidents}
-          onAdd={onAddMember}
         />
       }
     >
-      {unit.residents.map((res) => (
-        <ResidentRow
-          key={res.id}
-          res={res}
-          onUpdate={onUpdateResident}
-          onRemove={onRemoveMember}
-        />
+      {unit.residents?.map((res) => (
+        <ResidentRow key={res.id} res={res} />
       ))}
     </UnitCard>
   );

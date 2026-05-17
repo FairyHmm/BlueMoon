@@ -1,23 +1,17 @@
-// AddMember.jsx
 import { Button, Select, Text } from "@mantine/core";
 import { IconUserPlus } from "@tabler/icons-react";
+import { useResidentRegistry } from "../hooks/useResidentRegistry";
+import { residentActions } from "../store/residentActions";
 import classes from "../styles/add-member.module.css";
-import { UNIT_TYPES, getUnitConfig } from "../../../shared/data/registryConfigs";
 
-export default function AddMember({
-  unit,
-  unitId,
-  isAdding,
-  setIsAdding,
-  availableResidents,
-  onAdd,
-}) {
-  const cfg = getUnitConfig(unit.type);
+export default function AddMember({ unitId, isAdding, setIsAdding }) {
+  const { availableResidents } = useResidentRegistry();
+  const { addMember } = residentActions;
 
   if (!isAdding) {
     return (
       <Button
-        color={cfg.color}
+        color="blue"
         onClick={() => setIsAdding(true)}
         variant="outline"
         fullWidth
@@ -43,7 +37,7 @@ export default function AddMember({
       size="xs"
       onDropdownClose={() => setIsAdding(false)}
       onChange={(val) => {
-        if (val) onAdd(unitId, val);
+        if (val) addMember(unitId, val);
         setIsAdding(false);
       }}
       classNames={{
@@ -51,7 +45,7 @@ export default function AddMember({
         dropdown: classes.dropdown,
         option: classes.option,
       }}
-      comboboxProps={{ withinPortal: true, zIndex: 3000 }} // Ensure it stays on top
+      comboboxProps={{ withinPortal: true, zIndex: 3000 }}
     />
   );
 }

@@ -25,7 +25,7 @@ export default function UnitModal({ onSave }) {
         label="Unit ID"
         placeholder="e.g. 101"
         className={classes["modal-input"]}
-        classNames={{ input: "mono" }} // Ensure ID stays monospace
+        classNames={{ input: "mono" }}
         value={formData.id}
         onChange={(e) => setFormData({ ...formData, id: e.target.value })}
       />
@@ -35,7 +35,7 @@ export default function UnitModal({ onSave }) {
         className={classes["modal-input"]}
         classNames={{ input: "mono" }}
         value={formData.area}
-        onChange={(val) => setFormData({ ...formData, area: val })}
+        onChange={(val) => setFormData({ ...formData, area: val || 0 })}
         min={0}
         decimalScale={1}
       />
@@ -44,7 +44,7 @@ export default function UnitModal({ onSave }) {
         label="Unit Type"
         className={classes["modal-input"]}
         value={formData.type}
-        onChange={(val) => setFormData({ ...formData, type: val })}
+        onChange={(val) => setFormData({ ...formData, type: val || "" })}
         data={selectData}
         comboboxProps={{
           zIndex: 2000,

@@ -5,9 +5,12 @@ import {
   RESIDENT_STATUS,
   getStatusConfig,
 } from "../../../shared/data/registryConfigs";
+import { residentActions } from "../store/residentActions";
 import classes from "../styles/resident-row.module.css";
 
-export default function ResidentRow({ res, onUpdate, onRemove }) {
+export default function ResidentRow({ res }) {
+  const { updateResident, removeMember } = residentActions;
+
   return (
     <Group wrap="nowrap" className={classes["resident-item"]} gap="xs">
       <Group
@@ -30,7 +33,7 @@ export default function ResidentRow({ res, onUpdate, onRemove }) {
             <ActionIcon
               variant="subtle"
               size="xs"
-              onClick={() => onUpdate(res.id, { is_head: true })}
+              onClick={() => updateResident(res.id, { is_head: true })}
             >
               <IconUserStar size={12} />
             </ActionIcon>
@@ -39,7 +42,7 @@ export default function ResidentRow({ res, onUpdate, onRemove }) {
             variant="subtle"
             color="red"
             size="xs"
-            onClick={() => onRemove(res.id)}
+            onClick={() => removeMember(res.id)}
           >
             <IconTrash size={12} />
           </ActionIcon>
@@ -49,7 +52,9 @@ export default function ResidentRow({ res, onUpdate, onRemove }) {
           value={res.status}
           options={RESIDENT_STATUS}
           getConfig={getStatusConfig}
-          onUpdate={(newStatus) => onUpdate(res.id, { status: newStatus })}
+          onUpdate={(newStatus) =>
+            updateResident(res.id, { status: newStatus })
+          }
         />
       </Group>
     </Group>
