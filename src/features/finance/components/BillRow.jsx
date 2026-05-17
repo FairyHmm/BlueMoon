@@ -1,20 +1,21 @@
-import { Group, Text, Stack, ActionIcon, Tooltip } from "@mantine/core";
-import { IconCheck } from "@tabler/icons-react";
+import { Group, Text, Stack } from "@mantine/core";
 import StatusMenu from "../../../shared/components/StatusMenu";
-// Assuming these exist in your registryConfigs.js
 import {
   BILL_STATUS,
   getBillStatusConfig,
 } from "../../../shared/data/registryConfigs";
+import { financeActions } from "../store/financeActions";
 
-export default function BillRow({ bill, feeType, onUpdateStatus }) {
+export default function BillRow({ bill, feeType }) {
+  const { updateBillStatus } = financeActions;
+
   return (
     <Group justify="space-between" wrap="nowrap" gap="xs">
       <Stack gap={0} style={{ flexGrow: 1 }}>
         <Text size="xs" fw={700} truncate>
           {feeType?.name || "General Fee"}
         </Text>
-        <Text size="sx" c="dimmed">
+        <Text size="xs" c="dimmed">
           {bill.status === "paid"
             ? `Paid: ${bill.paid_date}`
             : `Due: ${bill.due_date}`}
@@ -30,7 +31,7 @@ export default function BillRow({ bill, feeType, onUpdateStatus }) {
           value={bill.status}
           options={BILL_STATUS}
           getConfig={getBillStatusConfig}
-          onUpdate={(newStatus) => onUpdateStatus(bill.id, newStatus)}
+          onUpdate={(newStatus) => updateBillStatus(bill.id, newStatus)}
         />
       </Group>
     </Group>

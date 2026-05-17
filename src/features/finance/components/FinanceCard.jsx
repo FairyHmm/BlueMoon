@@ -10,25 +10,17 @@ import {
 import { IconPlus } from "@tabler/icons-react";
 import UnitCard from "../../../shared/components/UnitCard";
 import BillRow from "./BillRow";
-// Import BILL_STATUS instead of FINANCE_FILTERS
 import { BILL_STATUS, filterBills } from "../../../shared/data/registryConfigs";
 import scClasses from "../../../shared/styles/mantine/segmented-control.module.css";
 
-export default function FinanceCard({
-  unit,
-  bills,
-  feeTypes,
-  onUpdateBill,
-  onOpenAddBill,
-}) {
+export default function FinanceCard({ unit, bills, feeTypes, onOpenAddBill }) {
   const [filter, setFilter] = useState("due");
 
-  // Derive SegmentedControl data directly from BILL_STATUS
   const filterOptions = useMemo(
     () => [
       { label: BILL_STATUS.PAID.label, value: "paid" },
       { label: BILL_STATUS.DUE.label, value: "due" },
-      { label: "All", value: "all" }, // Manually added logical filter
+      { label: "All", value: "all" },
       { label: BILL_STATUS.WAIT.label, value: "wait" },
     ],
     [],
@@ -60,7 +52,7 @@ export default function FinanceCard({
         fullWidth
         value={filter}
         onChange={setFilter}
-        data={filterOptions} // Using the derived options
+        data={filterOptions}
         mb="xs"
         classNames={{
           root: scClasses["base-control"],
@@ -77,7 +69,6 @@ export default function FinanceCard({
               key={bill.id}
               bill={bill}
               feeType={feeTypes.find((f) => f.id === bill.fee_id)}
-              onUpdateStatus={onUpdateBill}
             />
           ))
         ) : (

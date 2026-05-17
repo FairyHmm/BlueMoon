@@ -50,9 +50,11 @@ export default function BillModal({
             leftSection={<IconUser size={16} stroke={1.5} />}
             data={apartments.map((a) => ({ value: a.id, label: a.id }))}
             value={formData.apartment_id}
-            onChange={(val) => setFormData({ ...formData, apartment_id: val })}
+            onChange={(val) =>
+              setFormData({ ...formData, apartment_id: val || "" })
+            }
             disabled={!!initialData?.apartment_id}
-            variant="filled" // Uses theme background
+            variant="filled"
             classNames={{ input: classes.inputField }}
           />
 
@@ -66,7 +68,7 @@ export default function BillModal({
               const fee = feeTypes.find((f) => f.id === val);
               setFormData({
                 ...formData,
-                fee_id: val,
+                fee_id: val || "",
                 amount: fee?.default_amount || 0,
               });
             }}
@@ -80,7 +82,9 @@ export default function BillModal({
               prefix="$ "
               leftSection={<IconCoin size={16} stroke={1.5} />}
               value={formData.amount}
-              onChange={(val) => setFormData({ ...formData, amount: val })}
+              onChange={(val) =>
+                setFormData({ ...formData, amount: Number(val) || 0 })
+              }
               variant="filled"
               hideControls
               classNames={{ input: classes.inputField }}

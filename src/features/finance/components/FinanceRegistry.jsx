@@ -1,32 +1,43 @@
+import { useState } from "react";
 import { SimpleGrid, Button, Modal } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { IconCashBanknotePlus } from "@tabler/icons-react";
 import DataRegistry from "../../../shared/components/DataRegistry";
 import FinanceCard from "./FinanceCard";
 import BillModal from "./BillModal";
+import { useFinanceRegistry } from "../hooks/useFinanceRegistry";
+import { financeActions } from "../store/financeActions";
 
 import drClasses from "../../../shared/styles/data-registry.module.css";
 import classes from "../styles/finance-registry.module.css";
 
-export default function FinanceRegistry({
-  query,
-  setQuery,
-  apartments,
-  bills,
-  feeTypes,
-  onUpdateBill,
-  onAddBill,
-  openBillModal,
-  modalProps,
-}) {
+export default function FinanceRegistry() {
+  const [query, setQuery] = useState("");
+  const [opened, { open, close }] = useDisclosure(false);
+  const [activeDraft, setActiveDraft] = useState(null);
+
+  const { apartments, bills, feeTypes } = useFinanceRegistry(query);
+  const { addBill } = financeActions;
+
+  const handleOpenModal = (initialData = null) => {
+    setActiveDraft(initialData);
+    open();
+  };
+
+  const handleSaveBill = (formData) => {
+    addBill(formData);
+    close();
+  };
+
   return (
     <DataRegistry
       title="Financial Management"
       searchQuery={query}
-      setSearchQuery={setQuery}
+      setSearchQuery={(val) => setQuery(typeof val === "string" ? val : "")}
       rightSection={
         <Button
           leftSection={<IconCashBanknotePlus size={16} />}
-          onClick={() => openBillModal()}
+          onClick={() => handleOpenModal(null)}
           color="cyan"
           className={classes["finance-button"]}
         >
@@ -45,15 +56,14 @@ export default function FinanceRegistry({
             unit={unit}
             bills={bills.filter((b) => b.apartment_id === unit.id)}
             feeTypes={feeTypes}
-            onUpdateBill={onUpdateBill}
-            onOpenAddBill={() => openBillModal({ apartment_id: unit.id })}
+            onOpenAddBill={() => handleOpenModal({ apartment_id: unit.id })}
           />
         ))}
       </SimpleGrid>
 
       <Modal
-        opened={modalProps.opened}
-        onClose={modalProps.close}
+        opened={opened}
+        onClose={close}
         title="Issue New Bill"
         centered
         zIndex={1000}
@@ -67,9 +77,9 @@ export default function FinanceRegistry({
         <BillModal
           feeTypes={feeTypes}
           apartments={apartments}
-          initialData={modalProps.activeDraft}
-          onSave={onAddBill}
-          onCancel={modalProps.close}
+          initialData={activeDraft}
+          onSave={handleSaveBill}
+          onCancel={close}
         />
       </Modal>
     </DataRegistry>
