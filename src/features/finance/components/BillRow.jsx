@@ -8,12 +8,25 @@ export default function BillRow({ bill, feeType }) {
     financeActions.updateBillStatus(bill.id, newStatus);
   };
 
+  // Safe internal fallback mapping for human-readable display values
+  const rawInterval = bill.interval || feeType?.interval || "monthly";
+  const readableInterval = rawInterval === "one_time"
+    ? "One-Time"
+    : rawInterval === "yearly"
+    ? "Yearly"
+    : "Monthly";
+
   return (
     <Group justify="space-between" wrap="nowrap" gap="xs">
-      <Stack gap={0} style={{ flexGrow: 1 }}>
+      <Stack gap={0} style={{ flexGrow: 1, minWidth: 0 }}>
+        {/* Added the interval badge text string next to your category title */}
         <Text size="xs" fw={700} truncate>
-          {feeType?.name || "General Fee"}
+          {feeType?.name || "General Fee"}{" "}
+          <Text component="span" fw={500} c="dimmed" size="xs">
+            • {readableInterval}
+          </Text>
         </Text>
+
         <Text size="xs" c="dimmed">
           {bill.status === "paid"
             ? `Paid: ${bill.paid_date}`

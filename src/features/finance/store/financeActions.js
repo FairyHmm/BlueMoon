@@ -15,6 +15,12 @@ export const financeActions = {
   addFeeType: (feeTypeData) => {
     useDbStore.getState().addFeeTypes(feeTypeData);
   },
+  updateFeeType: ({ id, ...updates }) => {
+    useDbStore.getState().updateFeeTypes(id, updates);
+  },
+  deleteFeeType: (id) => {
+    useDbStore.getState().deleteFeeTypes(id);
+  },
 
   updateBillStatus: (billId, newStatus) => {
     const updates = { status: newStatus };
@@ -24,4 +30,8 @@ export const financeActions = {
 
     useDbStore.getState().updateBills(billId, updates);
   },
+};
+
+export const useFeeTypes = () => {
+  return useDbStore((state) => state.fee_types || []);
 };

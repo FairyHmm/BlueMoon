@@ -79,25 +79,11 @@ export default function FinanceRegistry() {
         />
       </Modal>
 
-      {/* Fee Type Config Dialog */}
-      <Modal
+      <FeeTypeModal
         opened={feeOpened}
         onClose={feeActions.close}
-        title="Create Fee Category"
-        centered
-        zIndex={1000}
-        classNames={{
-          content: drClasses["modal-content"],
-          header: drClasses["modal-header"],
-          title: drClasses["modal-title"],
-          close: drClasses["modal-close"],
-        }}
-      >
-        <FeeTypeModal
-          onSaveSuccess={feeActions.close}
-          onCancel={feeActions.close}
-        />
-      </Modal>
+        feeTypes={feeTypes}
+      />
     </DataRegistry>
   );
 }

@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { useDbStore } from "../../../shared/store/useDbStore";
 import { financeActions } from "../store/financeActions";
-import { BILL_STATUS, DEFAULT_BILL_FORM } from "../utils/constants";
-import { getBillCalculation, arrayToMapById } from "../utils/billing";
+import { BILL_STATUS, DEFAULT_BILL_FORM, INTERVAL_OPTIONS } from "../utils/constants";
+import { arrayToMapById } from "../utils/billing";
 
 export const useBillForm = (initialData, onSaveSuccess) => {
   const apartments = useDbStore((s) => s.apartments || []);
@@ -27,21 +27,24 @@ export const useBillForm = (initialData, onSaveSuccess) => {
   const selectedFee = feeTypeMap[formData.fee_id];
   const selectedApartment = apartmentMap[formData.apartment_id];
 
-  const formulaResult = useMemo(
-    () =>
-      getBillCalculation({
-        fee: selectedFee,
-        apartment: selectedApartment,
-        customRate: formData.custom_rate,
-        customQuantity: formData.custom_quantity,
-      }),
-    [
-      selectedFee,
-      selectedApartment,
-      formData.custom_rate,
-      formData.custom_quantity,
-    ],
-  );
+const formulaResult = useMemo(() => {
+  // 1. Calculate your base and total sums (keeping your existing formulas)
+  const base = formData.custom_quantity !== undefined ? formData.custom_quantity : (selectedFee?.base_quantity || 1);
+  const rate = formData.custom_rate !== "" ? Number(formData.custom_rate) : Number(selectedFee?.price || 0);
+  const total = base * rate;
+
+  // 2. Resolve the matching readable human label from your constants lookup array
+  const matchedInterval = INTERVAL_OPTIONS.find(i => i.value === selectedFee?.interval);
+
+  // 3. Fallback safely to "Monthly" if no configuration exists yet
+  const scheduleText = matchedInterval ? matchedInterval.label : "Monthly";
+
+  return {
+    base,
+    total,
+    schedule: scheduleText, // <-- Baked right into the formula payload object!
+  };
+}, [formData.custom_quantity, formData.custom_rate, selectedFee]);
 
   const updateField = useCallback((field, value) => {
     setFormData((prev) => {
@@ -52,20 +55,23 @@ export const useBillForm = (initialData, onSaveSuccess) => {
     });
   }, []);
 
-  const submitForm = useCallback(() => {
-    if (!formData.apartment_id || !formData.fee_id) return false;
+const submitForm = useCallback(() => {
+  if (!formData.apartment_id || !formData.fee_id) return false;
 
-    financeActions.addBill({
-      apartment_id: formData.apartment_id,
-      fee_id: Number(formData.fee_id),
-      amount: formulaResult.total,
-      due_date: formData.due_date,
-      status: BILL_STATUS.DUE.value,
-    });
+  financeActions.addBill({
+    apartment_id: formData.apartment_id,
+    fee_id: Number(formData.fee_id),
+    amount: formulaResult.total,
+    due_date: formData.due_date,
+    status: BILL_STATUS.DUE.value,
 
-    onSaveSuccess?.();
-    return true;
-  }, [formData, formulaResult.total, onSaveSuccess]);
+    // CRITICAL: Ensure the interval gets stamped directly onto the generated bill record!
+    interval: selectedFee?.interval || "monthly",
+  });
+
+  onSaveSuccess?.();
+  return true;
+}, [formData, formulaResult.total, selectedFee, onSaveSuccess]);
 
   return {
     formData,
