@@ -1,37 +1,21 @@
 import { useState, useMemo } from "react";
-import { SegmentedControl, Stack, Divider, Text, Group } from "@mantine/core";
+import { SegmentedControl, Stack, Text, Divider, Group } from "@mantine/core";
+import { FILTER_OPTIONS, filterBills } from "../utils/constants";
 import UnitCard from "../../../shared/components/UnitCard";
-import BillRow from "./BillRow";
 import RecordHeader from "../../../shared/components/RecordHeader";
-import { BILL_STATUS, filterBills } from "../../../shared/data/registryConfigs";
+import BillRow from "./BillRow";
 import scClasses from "../../../shared/styles/mantine/segmented-control.module.css";
 
-export default function FinanceCard({
-  unit,
-  bills,
-  feeTypes,
-  onOpenAddBill,
-}) {
+export default function FinanceCard({ unit, bills, feeTypes, onOpenAddBill }) {
   const [filter, setFilter] = useState("due");
-
-  const filterOptions = useMemo(
-    () => [
-      { label: BILL_STATUS.PAID.label, value: "paid" },
-      { label: BILL_STATUS.DUE.label, value: "due" },
-      { label: "All", value: "all" },
-      { label: BILL_STATUS.WAIT.label, value: "wait" },
-    ],
-    []
-  );
 
   const filteredBills = useMemo(
     () => filterBills(bills, filter),
-    [bills, filter]
+    [bills, filter],
   );
-
   const totalAmount = useMemo(
     () => filteredBills.reduce((sum, b) => sum + b.amount, 0),
-    [filteredBills]
+    [filteredBills],
   );
 
   return (
@@ -48,7 +32,11 @@ export default function FinanceCard({
             <Text
               size="xs"
               fw={900}
-              c={filter === "due" && totalAmount > 0 ? "red" : "var(--color-text)"}
+              c={
+                filter === "due" && totalAmount > 0
+                  ? "red"
+                  : "var(--color-text)"
+              }
             >
               ${totalAmount.toLocaleString()}
             </Text>
@@ -56,14 +44,18 @@ export default function FinanceCard({
         </>
       }
     >
-      <RecordHeader title="Billing Records" onAdd={onOpenAddBill} color="blue" />
+      <RecordHeader
+        title="Billing Records"
+        onAdd={() => onOpenAddBill(unit.id)}
+        color="blue"
+      />
 
       <SegmentedControl
         size="xs"
         fullWidth
         value={filter}
         onChange={setFilter}
-        data={filterOptions}
+        data={FILTER_OPTIONS}
         mb="xs"
         classNames={{
           root: scClasses["base-control"],

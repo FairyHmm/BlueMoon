@@ -51,7 +51,8 @@
   "fee_types": [
     { "id": 1, "name": "Management", "price": 15.0, "calc_method": "per_m2" },
     { "id": 2, "name": "Parking (Car)", "price": 50.0, "calc_method": "fixed" },
-    { "id": 3, "name": "Parking (Bike)", "price": 20.0, "calc_method": "fixed" }
+    { "id": 3, "name": "Parking (Bike)", "price": 20.0, "calc_method": "fixed" },
+    { "id": 4, "name": "Utilities", "price": 4.0, "calc_method": "per_unit" }
   ],
   "bills": [
     {

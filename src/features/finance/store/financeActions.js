@@ -1,34 +1,18 @@
 import { useDbStore } from "../../../shared/store/useDbStore";
 
+const determineInitialStatus = (dueDate) => {
+  if (!dueDate) return "due";
+  const today = new Date().setHours(0, 0, 0, 0);
+  const target = new Date(dueDate).setHours(0, 0, 0, 0);
+  return target < today ? "overdue" : "due";
+};
+
 export const financeActions = {
-  updateBillStatus: (billId, newStatus) => {
-    const { bills, setBills } = useDbStore.getState();
-
-    setBills(
-      bills.map((bill) =>
-        bill.id === billId
-          ? {
-              ...bill,
-              status: newStatus,
-              paid_date:
-                newStatus === "paid"
-                  ? new Date().toISOString().split("T")[0]
-                  : bill.paid_date,
-            }
-          : bill,
-      ),
-    );
-  },
-
   addBill: (billData) => {
-    const { bills, setBills } = useDbStore.getState();
-
-    const newBill = {
-      id: crypto.randomUUID(),
-      ...billData,
-      status: billData.status || "due",
-    };
-
-    setBills([...bills, newBill]);
+    const status = determineInitialStatus(billData.due_date);
+    useDbStore.getState().addRecord("bills", { ...billData, status });
+  },
+  addFeeType: (feeTypeData) => {
+    useDbStore.getState().addRecord("fee_types", feeTypeData);
   },
 };
