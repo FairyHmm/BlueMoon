@@ -1,13 +1,12 @@
 import { Group, Text, Stack } from "@mantine/core";
 import StatusMenu from "../../../shared/components/StatusMenu";
-import {
-  BILL_STATUS,
-  getBillStatusConfig,
-} from "../../../shared/data/registryConfigs";
+import { BILL_STATUS, getBillStatusConfig } from "../utils/constants";
 import { financeActions } from "../store/financeActions";
 
 export default function BillRow({ bill, feeType }) {
-  const { updateBillStatus } = financeActions;
+  const handleStatusUpdate = (newStatus) => {
+    financeActions.updateBillStatus(bill.id, newStatus);
+  };
 
   return (
     <Group justify="space-between" wrap="nowrap" gap="xs">
@@ -31,7 +30,7 @@ export default function BillRow({ bill, feeType }) {
           value={bill.status}
           options={BILL_STATUS}
           getConfig={getBillStatusConfig}
-          onUpdate={(newStatus) => updateBillStatus(bill.id, newStatus)}
+          onUpdate={handleStatusUpdate}
         />
       </Group>
     </Group>

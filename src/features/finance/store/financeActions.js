@@ -10,9 +10,18 @@ const determineInitialStatus = (dueDate) => {
 export const financeActions = {
   addBill: (billData) => {
     const status = determineInitialStatus(billData.due_date);
-    useDbStore.getState().addRecord("bills", { ...billData, status });
+    useDbStore.getState().addBills({ ...billData, status });
   },
   addFeeType: (feeTypeData) => {
-    useDbStore.getState().addRecord("fee_types", feeTypeData);
+    useDbStore.getState().addFeeTypes(feeTypeData);
+  },
+
+  updateBillStatus: (billId, newStatus) => {
+    const updates = { status: newStatus };
+
+    updates.paid_date =
+      newStatus === "paid" ? new Date().toISOString().split("T")[0] : null;
+
+    useDbStore.getState().updateBills(billId, updates);
   },
 };

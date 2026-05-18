@@ -38,6 +38,9 @@ export const FILTER_OPTIONS = [
   { label: "Wait", value: "wait" },
 ];
 
+export const getBillStatusConfig = (status) =>
+  Object.values(BILL_STATUS).find((s) => s.value === status) || BILL_STATUS.DUE;
+
 export const filterBills = (bills, activeFilter) => {
   const now = new Date();
   return bills.filter((b) => {
