@@ -1,9 +1,25 @@
-import { Group, Text, TextInput, ActionIcon, Image } from "@mantine/core";
-import { IconSearch, IconBell, IconUserCircle } from "@tabler/icons-react";
-import classes from "../styles//header.module.css";
+import { Group, Text, TextInput, ActionIcon, Image, Menu } from "@mantine/core";
+import {
+  IconSearch,
+  IconBell,
+  IconUserCircle,
+  IconLogout,
+  IconSettings,
+} from "@tabler/icons-react";
+import { useNavigate } from "react-router-dom";
+import classes from "../styles/header.module.css";
 import logo from "../../shared/assets/BlueMoon.svg?react";
+import { useAuthStore } from "../../shared/store/useAuthStore";
 
 export default function Header() {
+  const { user, logout } = useAuthStore();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
     <Group
       component="header"
@@ -34,13 +50,38 @@ export default function Header() {
           <IconBell size="1.4rem" stroke={1.5} />
         </ActionIcon>
 
-        <ActionIcon
-          size="lg"
-          className={classes["icon-button"]}
-          aria-label="User profile"
-        >
-          <IconUserCircle size="1.4rem" stroke={1.5} />
-        </ActionIcon>
+        {/* User Menu */}
+        <Menu shadow="md" width={200} position="bottom-end">
+          <Menu.Target>
+            <ActionIcon
+              size="lg"
+              className={classes["icon-button"]}
+              aria-label="User menu"
+            >
+              <IconUserCircle size="1.4rem" stroke={1.5} />
+            </ActionIcon>
+          </Menu.Target>
+
+          <Menu.Dropdown>
+            <Menu.Label>
+              {user?.username} ({user?.role})
+            </Menu.Label>
+            <Menu.Divider />
+            <Menu.Item
+              leftSection={<IconSettings size={14} />}
+              onClick={() => navigate("/settings")}
+            >
+              Settings
+            </Menu.Item>
+            <Menu.Item
+              color="red"
+              leftSection={<IconLogout size={14} />}
+              onClick={handleLogout}
+            >
+              Logout
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
       </Group>
     </Group>
   );

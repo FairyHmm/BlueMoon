@@ -99,8 +99,34 @@
     }
   ],
   "users": [
-    { "username": "arivers_admin", "role": "admin", "resident_id": 1 },
-    { "username": "jsmith_user", "role": "resident", "resident_id": 3 }
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "admin",
+      "role": "admin",
+      "resident_id": null
+    },
+    {
+      "id": 2,
+      "username": "alex",
+      "password": "password",
+      "role": "resident",
+      "resident_id": 1
+    },
+    {
+      "id": 3,
+      "username": "sam",
+      "password": "password",
+      "role": "resident",
+      "resident_id": 2
+    },
+    {
+      "id": 4,
+      "username": "staff",
+      "password": "staff",
+      "role": "staff",
+      "resident_id": null
+    }
   ],
   "absence_logs": [
     {
