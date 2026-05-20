@@ -2,7 +2,7 @@ import { AppShell } from "@mantine/core";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import Header from "./Header";
 import Navigation from "./Navigation";
-import classes from "../styles//main-shell.module.css";
+import classes from "../styles/main-shell.module.css";
 
 export default function MainShell() {
   const navigate = useNavigate();

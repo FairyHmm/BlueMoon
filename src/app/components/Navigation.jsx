@@ -1,46 +1,39 @@
-import { SegmentedControl, rem } from "@mantine/core";
-import {
-  IconHome,
-  IconUsers,
-  IconReceipt,
-  IconSettings,
-} from "@tabler/icons-react";
+import { useMemo } from "react";
+import { rem, SegmentedControl } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
+
+import { NAV_ITEMS } from "../utils/navigationConfigs";
+import { useAuthStore } from "../../shared/store/useAuthStore";
+
 import classes from "../styles/navigation.module.css";
 import scClasses from "../../shared/styles/mantine/segmented-control.module.css";
 
-const navData = [
-  {
-    value: "dashboard",
-    label: (
-      <IconHome style={{ width: rem(22), height: rem(22) }} stroke={1.5} />
-    ),
-  },
-  {
-    value: "residents",
-    label: (
-      <IconUsers style={{ width: rem(22), height: rem(22) }} stroke={1.5} />
-    ),
-  },
-  {
-    value: "finance",
-    label: (
-      <IconReceipt style={{ width: rem(22), height: rem(22) }} stroke={1.5} />
-    ),
-  },
-  {
-    value: "settings",
-    label: (
-      <IconSettings style={{ width: rem(22), height: rem(22) }} stroke={1.5} />
-    ),
-  },
-];
-
 export default function Navigation({ value, onChange }) {
+  const { user } = useAuthStore();
+  const navigate = useNavigate();
+
+  if (!user?.role) return null;
+
+  const filteredItems = useMemo(() => {
+    if (!user?.role) return [];
+    return NAV_ITEMS.filter((item) => item.allowedRoles.includes(user.role));
+  }, [user]);
+
+  const data = filteredItems.map((item) => ({
+    value: item.value,
+    label: (
+      <item.icon style={{ width: rem(22), height: rem(22) }} stroke={1.5} />
+    ),
+  }));
+
   return (
     <SegmentedControl
       value={value}
-      onChange={onChange}
-      data={navData}
+      onChange={(val) => {
+        onChange(val);
+        navigate(`/${val}`);
+      }}
+      data={data}
       orientation="vertical"
       fullWidth
       classNames={{
