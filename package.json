@@ -10,6 +10,7 @@
     "build": "vite build --base ./"
   },
   "dependencies": {
+    "@mantine/charts": "^9.2.1",
     "@mantine/core": "^9.0.0",
     "@mantine/form": "^9.2.1",
     "@mantine/hooks": "^9.0.0",
