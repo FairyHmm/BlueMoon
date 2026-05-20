@@ -1,6 +1,7 @@
-import { Group, Text, TextInput, ActionIcon } from "@mantine/core";
+import { Group, Text, TextInput, ActionIcon, Image } from "@mantine/core";
 import { IconSearch, IconBell, IconUserCircle } from "@tabler/icons-react";
 import classes from "../styles//header.module.css";
+import logo from "../../shared/assets/BlueMoon.svg?react";
 
 export default function Header() {
   return (
@@ -9,9 +10,12 @@ export default function Header() {
       justify="space-between"
       className={classes["header-root"]}
     >
-      <Text size="xl" className={classes["logo-text"]}>
-        BlueMoon
-      </Text>
+      <Group>
+        <Image h={"40px"} w="auto" src={logo} />
+        <Text size="xl" className={classes["logo-text"]}>
+          BlueMoon
+        </Text>
+      </Group>
 
       <TextInput
         placeholder="Search..."
