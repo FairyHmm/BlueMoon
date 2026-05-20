@@ -8,29 +8,33 @@ import {
   PasswordInput,
   Image,
 } from "@mantine/core";
-import { useNavigate } from "react-router-dom"; // Import this
+import { useNavigate } from "react-router-dom";
+import { useForm } from "@mantine/form"; // Import Mantine Form
 import { useAuthStore } from "../../../shared/store/useAuthStore";
-import { useState } from "react";
 import logo from "../../../shared/assets/BlueMoon.svg?react";
 
 export default function LoginForm() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
   const login = useAuthStore((s) => s.login);
-  const navigate = useNavigate(); // Hook to change pages
+  const navigate = useNavigate();
 
-  const handleSubmit = () => {
-    setError("");
-    const result = login(username, password);
+  const form = useForm({
+    initialValues: {
+      username: "",
+      password: "",
+    },
 
-    if (!result.success) {
-      setError(result.message || "Login failed");
-    } else {
-      // SUCCESS: Manually navigate to Dashboard
-      navigate("/dashboard", { replace: true });
-    }
+    validate: {
+      username: (value) => (value.length < 1 ? "Username required" : null),
+      password: (value) => (value.length < 1 ? "Password required" : null),
+    },
+  });
+
+  const handleSubmit = (values) => {
+    const result = login(values.username, values.password);
+
+    if (!result.success)
+      form.setErrors({ password: result.message || "Login failed" });
+    else navigate("/dashboard", { replace: true });
   };
 
   return (
@@ -49,33 +53,36 @@ export default function LoginForm() {
           <Image h={"40px"} w="auto" src={logo} />
           <Title c="var(--color-primary)">BlueMoon</Title>
         </Group>
+
         <Text size="sm" ta="center">
           Login to your account
         </Text>
 
-        <TextInput
-          label="Username"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          <Stack>
+            <TextInput
+              label="Username"
+              placeholder="Username"
+              {...form.getInputProps("username")}
+            />
 
-        <PasswordInput
-          label="Password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+            <PasswordInput
+              label="Password"
+              placeholder="Password"
+              {...form.getInputProps("password")}
+            />
 
-        {error && (
-          <Text c="red" size="sm" ta="center">
-            {error}
-          </Text>
-        )}
+            {form.errors.password && (
+              <Text c="red" size="sm" ta="center">
+                {form.errors.password}
+              </Text>
+            )}
 
-        <Button fullWidth onClick={handleSubmit}>
-          Login
-        </Button>
+            <Button type="submit" fullWidth>
+              Login
+            </Button>
+          </Stack>
+        </form>
       </Stack>
     </Group>
   );
