@@ -3,7 +3,7 @@ import {
   IconCalendarEvent,
   IconCalendarMonth,
   IconCalculator,
-  IconRulerMeasure
+  IconRulerMeasure,
 } from "@tabler/icons-react";
 
 export const CALC_METHODS = {
@@ -19,6 +19,8 @@ export const CALC_METHOD_OPTIONS = [
     color: "blue",
     icon: IconCalculator,
     priceLabel: "Flat Rate Cost",
+    quantityDisabled: false,
+    quantityLabel: "Units",
   },
   {
     value: CALC_METHODS.PER_M2,
@@ -26,13 +28,17 @@ export const CALC_METHOD_OPTIONS = [
     color: "grape",
     icon: IconRulerMeasure,
     priceLabel: "Price Rate per m²",
+    quantityDisabled: true,
+    quantityLabel: "Area (m²)",
   },
   {
     value: CALC_METHODS.PER_UNIT,
     label: "Per Unit",
-    color: "oramge",
+    color: "orange",
     icon: IconRulerMeasure,
     priceLabel: "Price Rate per Unit",
+    quantityDisabled: false,
+    quantityLabel: "Quantity",
   },
 ];
 
@@ -46,7 +52,6 @@ export const BILLING_INTERVALS = {
   YEARLY: "yearly",
 };
 
-// User-friendly UI Select labels for Billing Intervals
 export const INTERVAL_OPTIONS = [
   {
     value: BILLING_INTERVALS.ONE_TIME,
@@ -93,45 +98,3 @@ export const FILTER_OPTIONS = [
   { label: "All", value: "all" },
   { label: "Wait", value: "wait" },
 ];
-
-/**
- * Resolves context labels dynamically based on current calculation method rules
- */
-export const getBillingLabels = (method) => {
-  const isPerM2 = method === CALC_METHODS.PER_M2;
-  const isFixed = method === CALC_METHODS.FIXED;
-
-  return {
-    quantityDisabled: isPerM2 || isFixed,
-    quantityLabel: isPerM2 ? "Area (m²)" : "Quantity",
-    rateLabel: isPerM2 ? "Rate per m²" : "Unit Price",
-  };
-};
-
-/**
- * Returns configuration colors/labels matching a specific string token
- */
-export const getBillStatusConfig = (status) =>
-  Object.values(BILL_STATUS).find((s) => s.value === status) || BILL_STATUS.DUE;
-
-/**
- * Filter ledger matrices securely using global status logic pipelines
- */
-export const filterBills = (bills, activeFilter) => {
-  const now = new Date();
-  return bills.filter((b) => {
-    const isFuture = new Date(b.due_date) > now;
-    switch (activeFilter) {
-      case "paid":
-        return b.status === "paid";
-      case "due":
-        return b.status === "due" || b.status === "overdue";
-      case "all":
-        return ["paid", "due", "overdue"].includes(b.status);
-      case "wait":
-        return b.status === "wait" || isFuture;
-      default:
-        return true;
-    }
-  });
-};

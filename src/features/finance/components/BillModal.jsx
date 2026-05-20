@@ -1,11 +1,10 @@
 import { Button, Flex, Select, Stack, TextInput } from "@mantine/core";
 import { IconCalendar, IconReceipt } from "@tabler/icons-react";
 import { useBillForm } from "../hooks/useBillForm";
-import { getBillingLabels } from "../utils/constants";
+import { CALC_METHOD_MAP } from "../utils/constants";
 import CalculationRow from "./CalculationRow";
 
 export default function BillModal({ initialData, onSave, onCancel }) {
-  // 1. Delegate all logic to the hook
   const {
     formData,
     feeTypes,
@@ -15,11 +14,16 @@ export default function BillModal({ initialData, onSave, onCancel }) {
     submitForm,
   } = useBillForm(initialData, onSave);
 
-  const labels = getBillingLabels(selectedFee?.calc_method);
+  const methodConfig = CALC_METHOD_MAP[selectedFee?.calc_method] || CALC_METHOD_MAP["fixed"];
+
+  const labels = {
+    quantityDisabled: methodConfig.quantityDisabled,
+    quantityLabel: methodConfig.quantityLabel,
+    rateLabel: methodConfig.priceLabel,
+  };
 
   return (
     <Stack spacing="sm">
-      {/* --- Header (Inline) --- */}
       <Flex gap="xs" justify="center" align="center">
         <Select
           label="Fee Category"
@@ -45,7 +49,6 @@ export default function BillModal({ initialData, onSave, onCancel }) {
         />
       </Flex>
 
-      {/* --- Calculation Row (Delegated Component) --- */}
       {selectedFee && (
         <CalculationRow
           selectedFee={selectedFee}
@@ -56,7 +59,6 @@ export default function BillModal({ initialData, onSave, onCancel }) {
         />
       )}
 
-      {/* --- Footer (Inline) --- */}
       <Flex gap="xs" justify="flex-end">
         <Button color="gray" size="sm" onClick={onCancel}>
           Cancel

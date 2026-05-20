@@ -1,21 +1,38 @@
 import { useState, useMemo } from "react";
-import { SegmentedControl, Stack, Text, Divider, Group } from "@mantine/core";
-import { FILTER_OPTIONS, filterBills } from "../utils/constants";
+import { SegmentedControl, Stack, Divider, Text, Group } from "@mantine/core";
 import UnitCard from "../../../shared/components/UnitCard";
-import RecordHeader from "../../../shared/components/RecordHeader";
 import BillRow from "./BillRow";
+import RecordHeader from "../../../shared/components/RecordHeader";
+import { BILL_STATUS } from "../utils/constants";
+import { filterBills } from "../utils/billing";
 import scClasses from "../../../shared/styles/mantine/segmented-control.module.css";
 
-export default function FinanceCard({ unit, bills, feeTypes, onOpenAddBill }) {
+export default function FinanceCard({
+  unit,
+  bills,
+  feeTypes,
+  onOpenAddBill,
+}) {
   const [filter, setFilter] = useState("due");
+
+  const filterOptions = useMemo(
+    () => [
+      { label: BILL_STATUS.PAID.label, value: "paid" },
+      { label: BILL_STATUS.DUE.label, value: "due" },
+      { label: "All", value: "all" },
+      { label: BILL_STATUS.WAIT.label, value: "wait" },
+    ],
+    []
+  );
 
   const filteredBills = useMemo(
     () => filterBills(bills, filter),
-    [bills, filter],
+    [bills, filter]
   );
+
   const totalAmount = useMemo(
     () => filteredBills.reduce((sum, b) => sum + b.amount, 0),
-    [filteredBills],
+    [filteredBills]
   );
 
   return (
@@ -32,11 +49,7 @@ export default function FinanceCard({ unit, bills, feeTypes, onOpenAddBill }) {
             <Text
               size="xs"
               fw={900}
-              c={
-                filter === "due" && totalAmount > 0
-                  ? "red"
-                  : "var(--color-text)"
-              }
+              c={filter === "due" && totalAmount > 0 ? "red" : "var(--color-text)"}
             >
               ${totalAmount.toLocaleString()}
             </Text>
@@ -46,6 +59,7 @@ export default function FinanceCard({ unit, bills, feeTypes, onOpenAddBill }) {
     >
       <RecordHeader
         title="Billing Records"
+        // FIX: Pass the ID, not the object
         onAdd={() => onOpenAddBill(unit.id)}
         color="blue"
       />
@@ -55,7 +69,7 @@ export default function FinanceCard({ unit, bills, feeTypes, onOpenAddBill }) {
         fullWidth
         value={filter}
         onChange={setFilter}
-        data={FILTER_OPTIONS}
+        data={filterOptions}
         mb="xs"
         classNames={{
           root: scClasses["base-control"],
@@ -71,7 +85,7 @@ export default function FinanceCard({ unit, bills, feeTypes, onOpenAddBill }) {
             <BillRow
               key={bill.id}
               bill={bill}
-              feeType={feeTypes.find((f) => f.id === bill.fee_id)}
+              feeType={feeTypes.find((f) => f.id == bill.fee_id)}
             />
           ))
         ) : (

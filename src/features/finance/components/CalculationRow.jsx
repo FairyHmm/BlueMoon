@@ -17,7 +17,7 @@ export default function CalculationRow({
 
   // Generate contextual headers for the currency form fields
   const rateSuffix = selectedFee?.interval === "one_time"
-    ? "(One-Time)"
+    ? "(one-time)"
     : `(/ ${selectedFee?.interval === "yearly" ? "yr" : "mo"})`;
 
   return (
@@ -47,7 +47,7 @@ export default function CalculationRow({
         </Text>
 
         <NumberInput
-          label={`${labels.rateLabel} ${rateSuffix}`}
+          label={`Rate ${rateSuffix}`}
           value={customRate !== "" ? customRate : undefined}
           onChange={(v) => updateField("custom_rate", normaliseNumber(v))}
           min={0}
@@ -78,14 +78,6 @@ export default function CalculationRow({
           {...inputBaseProps}
         />
       </Flex>
-
-      <Text size="xs" c="dimmed">
-        Billing Strategy:{" "}
-        <Text span fw={600} c="white">
-          {/* Automatically pulls "Monthly", "Yearly", or "One-Time" from hook calculation context */}
-          {formulaResult.schedule}
-        </Text>
-      </Text>
     </Stack>
   );
 }

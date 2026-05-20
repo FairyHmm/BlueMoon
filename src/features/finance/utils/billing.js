@@ -1,4 +1,4 @@
-import { CALC_METHODS } from "./constants.js";
+import { CALC_METHODS, BILL_STATUS } from "./constants.js";
 
 // Normalize a value into a number or empty string
 export function normaliseNumber(value) {
@@ -69,3 +69,64 @@ export function arrayToMapById(array) {
 
   return map;
 }
+
+// Returns configuration colors/labels matching a specific string token
+export const getBillStatusConfig = (status) =>
+  Object.values(BILL_STATUS).find((s) => s.value === status) || BILL_STATUS.DUE;
+
+// Filter ledger matrices securely using global status logic pipelines
+export const filterBills = (bills, activeFilter) => {
+  const now = new Date();
+  return bills.filter((b) => {
+    const isFuture = new Date(b.due_date) > now;
+    switch (activeFilter) {
+      case "paid":
+        return b.status === "paid";
+      case "due":
+        return b.status === "due" || b.status === "overdue";
+      case "all":
+        return ["paid", "due", "overdue"].includes(b.status);
+      case "wait":
+        return b.status === "wait" || isFuture;
+      default:
+        return true;
+    }
+  });
+};
+
+const normaliseDate = (dateStr) => {
+  if (!dateStr) return null;
+  const d = new Date(dateStr);
+  d.setHours(0, 0, 0, 0);
+  return d;
+};
+
+export const isDateFuture = (dateStr) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const target = normaliseDate(dateStr);
+  return target > today;
+};
+
+export const isDateOverdue = (dateStr) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const target = normaliseDate(dateStr);
+  return today > target;
+};
+
+// Determines the visual status of a bill
+export const getBillDisplayStatus = (bill) => {
+  if (bill.status === "paid") return "paid";
+  const isDue = isDateOverdue(bill.due_date);
+  if (bill.status === "wait")
+    return isDue ? "overdue" : "wait";
+  return isDue ? "overdue" : "due";
+};
+
+// Format date string to DD/MM/YYYY
+export const formatDate = (dateStr) => {
+  if (!dateStr) return "-";
+  const [y, m, d] = dateStr.split("-");
+  return `${d}/${m}/${y}`;
+};
