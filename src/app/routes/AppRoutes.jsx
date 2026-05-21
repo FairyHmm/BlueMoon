@@ -4,6 +4,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
 import { NAV_ITEMS } from "../utils/navigationConfigs";
 import LoginForm from "../../features/auth/components/LoginForm";
+import RegisterForm from "../../features/auth/components/RegisterForm";
 
 export default function AppRoutes() {
   return (
@@ -13,6 +14,10 @@ export default function AppRoutes() {
         <Route
           path="/login"
           element={<PublicRoute element={<LoginForm />} />}
+        />
+        <Route
+          path="/register"
+          element={<PublicRoute element={<RegisterForm />} />}
         />
 
         {/* Protected routes */}
