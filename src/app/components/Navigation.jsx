@@ -20,7 +20,7 @@ export default function Navigation({ value, onChange }) {
   }, [user]);
 
   const data = filteredItems.map((item) => ({
-    value: item.value,
+    value: item.path,
     label: (
       <item.icon style={{ width: rem(22), height: rem(22) }} stroke={1.5} />
     ),
@@ -29,9 +29,9 @@ export default function Navigation({ value, onChange }) {
   return (
     <SegmentedControl
       value={value}
-      onChange={(val) => {
-        onChange(val);
-        navigate(`/${val}`);
+      onChange={(path) => {
+        onChange(path);
+        navigate(path);
       }}
       data={data}
       orientation="vertical"

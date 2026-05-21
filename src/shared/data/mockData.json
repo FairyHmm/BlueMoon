@@ -110,21 +110,21 @@
       "id": 2,
       "username": "alex",
       "password": "password",
-      "role": "resident",
+      "role": "user",
       "resident_id": 1
     },
     {
       "id": 3,
       "username": "sam",
       "password": "password",
-      "role": "resident",
+      "role": "user",
       "resident_id": 2
     },
     {
       "id": 4,
-      "username": "staff",
-      "password": "staff",
-      "role": "staff",
+      "username": "manager",
+      "password": "manager",
+      "role": "manager",
       "resident_id": null
     }
   ],

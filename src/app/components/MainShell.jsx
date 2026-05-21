@@ -8,10 +8,11 @@ export default function MainShell() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const activeTab = location.pathname.split("/")[1] || "dashboard";
+  const activeTab =
+    location.pathname === "/" ? "/dashboard" : location.pathname;
 
-  const handleTabChange = (value) => {
-    navigate(`/${value}`);
+  const handleTabChange = (path) => {
+    navigate(path);
   };
 
   return (

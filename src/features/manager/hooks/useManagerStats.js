@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useDbStore } from "../../../shared/store/useDbStore";
 import { countBy, groupBy, sumBy } from "../../../shared/utils/dataEngine";
 
-export function useAdminStats() {
+export function useManagerStats() {
   const db = useDbStore();
   const apartments = db.apartments || [];
   const residents = db.residents || [];

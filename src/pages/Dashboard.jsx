@@ -1,18 +1,27 @@
 import { useAuthStore } from "../shared/store/useAuthStore";
 import { Navigate } from "react-router-dom";
-import AdminDashboard from "../features/admin/components/AdminDashboard";
+import ManagerDashboard from "../features/manager/components/ManagerDashboard";
 import UserDashboard from "../features/user/components/UserDashboard";
 
 export default function Dashboard() {
   const { user } = useAuthStore();
 
-  if (!user) {
+  if (!user)
     return <Navigate to="/login" replace />;
-  }
 
-  if (user.role === "resident") {
-    return <UserDashboard />;
-  }
+  switch (user.role) {
+    case "user":
+      return <UserDashboard />;
 
-  return <AdminDashboard />;
+    case "manager":
+      return <ManagerDashboard />;
+
+    case "admin":
+      return <ManagerDashboard />;
+      // return <AdminDashboard />;
+
+    default:
+      console.warn(`Unauthorized role access attempted: ${user.role}`);
+      return <Navigate to="/login" replace />;
+  }
 }

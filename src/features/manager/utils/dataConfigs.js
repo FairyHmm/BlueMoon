@@ -1,8 +1,6 @@
 import {
-  IconHomeHeart,
   IconUsers,
   IconCar,
-  IconClock,
   IconCurrencyDollar,
   IconAlertCircle,
 } from "@tabler/icons-react";
