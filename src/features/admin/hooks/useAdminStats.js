@@ -1,99 +1,74 @@
 import { useMemo } from "react";
 import { useDbStore } from "../../../shared/store/useDbStore";
+import { countBy, groupBy, sumBy } from "../../../shared/utils/dataEngine";
 
 export function useAdminStats() {
-  const apartments = useDbStore((s) => s.apartments) || [];
-  const residents = useDbStore((s) => s.residents) || [];
-  const vehicles = useDbStore((s) => s.vehicles) || [];
-  const bills = useDbStore((s) => s.bills) || [];
-  const absenceLogs = useDbStore((s) => s.absence_logs) || [];
+  const db = useDbStore();
+  const apartments = db.apartments || [];
+  const residents = db.residents || [];
+  const vehicles = db.vehicles || [];
+  const bills = db.bills || [];
+  const absenceLogs = db.absence_logs || [];
 
   return useMemo(() => {
-    // Apartments
+    // 1. Apartments
     const occupiedUnits = new Set(
-      residents.filter((r) => r.status === "active").map((r) => r.apartment_id),
+      residents.filter((r) => r.status === "active").map((r) => r.apartment_id)
     ).size;
-    const totalUnits = apartments.length;
 
-    // Residents
-    const residentStatus = residents.reduce((acc, r) => {
-      acc[r.status] = (acc[r.status] || 0) + 1;
-      return acc;
-    }, {});
+    // 2. Residents
     const heads = residents.filter((r) => r.is_head).length;
-    const dependents = residents.filter((r) => !r.is_head).length;
 
-    // Vehicles
-    const vehicleTypes = vehicles.reduce((acc, v) => {
-      acc[v.type] = (acc[v.type] || 0) + 1;
-      return acc;
-    }, {});
+    // 3. Billing split by status using our updated plain-object groupBy
+    const { paid = [], unpaid = [] } = groupBy(bills, "status");
 
-    // Billing
-    const billing = bills.reduce(
-      (acc, { status, amount, fee_id }) => {
-        if (status === "paid") {
-          acc.revenue += amount;
-          acc.paid += 1;
-          acc.byFee[fee_id] = (acc.byFee[fee_id] || 0) + amount;
-        } else {
-          acc.outstanding += amount;
-          acc.unpaid += 1;
-        }
-        return acc;
-      },
-      { revenue: 0, outstanding: 0, paid: 0, unpaid: 0, byFee: {} },
-    );
-
-    // Recent Activity
-    const recentActivity = bills
-      .filter((b) => b.status === "paid" && b.paid_date)
+    // 4. Recent Activity
+    const recentActivity = [...paid]
       .sort((a, b) => new Date(b.paid_date) - new Date(a.paid_date))
       .slice(0, 5)
-      .map((b) => ({
-        id: b.id,
-        apt: b.apartment_id,
-        amount: b.amount,
-        date: b.paid_date,
+      .map(({ id, apartment_id, amount, paid_date }) => ({
+        id, apt: apartment_id, amount, date: paid_date
       }));
 
-    // Absences
-    const absencesByType = absenceLogs.reduce((acc, log) => {
-      acc[log.type] = (acc[log.type] || 0) + 1;
-      return acc;
-    }, {});
+    // 5. Absences
+    const currentMonth = new Date().getMonth();
     const monthlyAbsences = absenceLogs.filter(
-      (log) => new Date(log.log_date).getMonth() === new Date().getMonth(),
+      (log) => new Date(log.log_date).getMonth() === currentMonth
     ).length;
-
-    // Apartment types
-    const apartmentTypes = apartments.reduce((acc, { type }) => {
-      acc[type] = (acc[type] || 0) + 1;
-      return acc;
-    }, {});
 
     return {
       units: {
-        total: totalUnits,
+        total: apartments.length,
         occupied: occupiedUnits,
-        vacant: totalUnits - occupiedUnits,
-        types: apartmentTypes,
+        vacant: apartments.length - occupiedUnits,
+        types: countBy(apartments, "type"),
       },
       residents: {
         total: residents.length,
-        status: residentStatus,
+        status: countBy(residents, "status"),
         heads,
-        dependents,
+        dependents: residents.length - heads,
       },
       vehicles: {
         total: vehicles.length,
-        types: vehicleTypes,
+        types: countBy(vehicles, "type"),
       },
-      billing,
+      billing: {
+        revenue: sumBy(paid, (b) => b.amount),
+        outstanding: sumBy(unpaid, (b) => b.amount),
+        paid: paid.length,
+        unpaid: unpaid.length,
+        // Calculate total amount collected per fee ID
+        byFee: paid.reduce((acc, b) => {
+          acc[b.fee_id] = (acc[b.fee_id] || 0) + b.amount;
+          return acc;
+        }, {}),
+      },
       recentActivity,
       absences: {
         total: absenceLogs.length,
-        byType: absencesByType,
+        byType: countBy(absenceLogs, "type"),
+        monthly: monthlyAbsences,
       },
     };
   }, [apartments, residents, vehicles, bills, absenceLogs]);

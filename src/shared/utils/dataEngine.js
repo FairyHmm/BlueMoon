@@ -1,5 +1,5 @@
 /**
- * Lightweight JS relational engine with fully automatic join keys
+ * Lightweight JS relational & aggregation engine
  */
 
 export const indexBy = (data, key) => {
@@ -18,16 +18,49 @@ export const join = (rows, index, key, alias) =>
     [alias]: index.get(row[key]) || [],
   }));
 
-export const groupBy = (data, key) => {
-  const map = new Map();
-  for (const item of data || []) {
-    const k = typeof key === "function" ? key(item) : item[key];
-    if (!map.has(k)) map.set(k, []);
-    map.get(k).push(item);
-  }
-  return map;
+// ====================
+// Helpers
+// ====================
+
+/**
+ * Groups an array into a plain object of arrays.
+ * Accepts a string key or a selector function.
+ */
+export const groupBy = (data, keyOrFn) => {
+  return (data || []).reduce((acc, item) => {
+    const k = typeof keyOrFn === "function" ? keyOrFn(item) : item[keyOrFn];
+    if (!acc[k]) acc[k] = [];
+    acc[k].push(item);
+    return acc;
+  }, {});
 };
 
+/**
+ * Counts the frequencies of items in an array.
+ * Converts ['apt', 'house', 'apt'] to { apt: 2, house: 1 }
+ */
+export const countBy = (data, keyOrFn) => {
+  return (data || []).reduce((acc, item) => {
+    const k = typeof keyOrFn === "function" ? keyOrFn(item) : item[keyOrFn];
+    acc[k] = (acc[k] || 0) + 1;
+    return acc;
+  }, {});
+};
+
+/**
+ * Creates a flat key-to-object map for O(1) single-item lookups.
+ * Useful if you ever need to find a specific apartment details by its ID instantly.
+ */
+export const indexOne = (data, key) => {
+  return (data || []).reduce((acc, item) => {
+    acc[item[key]] = item;
+    return acc;
+  }, {});
+};
+
+/**
+ * Sums up values using an accessor function.
+ */
 export const sumBy = (items, fn) =>
   (items || []).reduce((sum, x) => sum + fn(x), 0);
 
