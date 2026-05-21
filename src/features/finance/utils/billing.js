@@ -57,19 +57,6 @@ export function getBillCalculation({
   }
 }
 
-// Generic helper: convert an array of objects into a map keyed by string ID
-export function arrayToMapById(array) {
-  const map = {};
-  if (!Array.isArray(array)) return map;
-
-  for (let i = 0; i < array.length; i++) {
-    const item = array[i];
-    map[String(item.id)] = item;
-  }
-
-  return map;
-}
-
 // Returns configuration colors/labels matching a specific string token
 export const getBillStatusConfig = (status) =>
   Object.values(BILL_STATUS).find((s) => s.value === status) || BILL_STATUS.DUE;

@@ -2,11 +2,13 @@ import { useEffect, useMemo, useState, useCallback } from "react";
 import { useDbStore } from "../../../shared/store/useDbStore";
 import { financeActions } from "../store/financeActions";
 import { BILL_STATUS, DEFAULT_BILL_FORM } from "../utils/constants";
-import { arrayToMapById, getBillCalculation } from "../utils/billing";
+import { getBillCalculation } from "../utils/billing";
+import { indexOne } from "../../../shared/utils/dataEngine";
 
 export const useBillForm = (initialData, onSaveSuccess) => {
-  const apartments = useDbStore((s) => s.apartments || []);
-  const feeTypes = useDbStore((s) => s.fee_types || []);
+  const db = useDbStore();
+  const feeTypes = db.fee_types || [];
+  const apartments = db.apartments || [];
 
   const [formData, setFormData] = useState(DEFAULT_BILL_FORM);
 
@@ -19,8 +21,8 @@ export const useBillForm = (initialData, onSaveSuccess) => {
     });
   }, [initialData]);
 
-  const feeTypeMap = useMemo(() => arrayToMapById(feeTypes), [feeTypes]);
-  const apartmentMap = useMemo(() => arrayToMapById(apartments), [apartments]);
+  const feeTypeMap = useMemo(() => indexOne(feeTypes, "id"), [feeTypes]);
+  const apartmentMap = useMemo(() => indexOne(apartments, "id"), [apartments]);
 
   const selectedFee = feeTypeMap[formData.fee_id];
   const selectedApartment = apartmentMap[formData.apartment_id];
@@ -32,7 +34,12 @@ export const useBillForm = (initialData, onSaveSuccess) => {
       customRate: formData.custom_rate,
       customQuantity: formData.custom_quantity,
     });
-  }, [selectedFee, selectedApartment, formData.custom_rate, formData.custom_quantity]);
+  }, [
+    selectedFee,
+    selectedApartment,
+    formData.custom_rate,
+    formData.custom_quantity,
+  ]);
 
   const updateField = useCallback((field, value) => {
     setFormData((prev) => {

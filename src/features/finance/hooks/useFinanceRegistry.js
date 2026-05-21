@@ -2,10 +2,11 @@ import { useMemo } from "react";
 import { useDbStore } from "../../../shared/store/useDbStore";
 
 export const useFinanceRegistry = (query = "") => {
-  const apartments = useDbStore((s) => s.apartments);
-  const bills = useDbStore((s) => s.bills);
+  const db = useDbStore();
 
-  const feeTypes = useDbStore((s) => s.fee_types || []);
+  const apartments = db.apartments || [];
+  const bills = db.bills || [];
+  const feeTypes = db.fee_types || [];
 
   const filteredApartments = useMemo(() => {
     const safeQuery =
