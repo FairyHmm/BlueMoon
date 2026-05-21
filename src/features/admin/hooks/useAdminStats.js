@@ -13,27 +13,34 @@ export function useAdminStats() {
   return useMemo(() => {
     // 1. Apartments
     const occupiedUnits = new Set(
-      residents.filter((r) => r.status === "active").map((r) => r.apartment_id)
+      residents.filter((r) => r.status === "active").map((r) => r.apartment_id),
     ).size;
 
     // 2. Residents
     const heads = residents.filter((r) => r.is_head).length;
 
-    // 3. Billing split by status using our updated plain-object groupBy
-    const { paid = [], unpaid = [] } = groupBy(bills, "status");
+    // 3. Billing split using your custom selector function rule
+    const { paid = [], unpaid = [] } = groupBy(bills, (b) => {
+      if (b.status === "paid") return "paid";
+      if (b.status === "due" || b.status === "overdue") return "unpaid";
+      return "wait";
+    });
 
     // 4. Recent Activity
     const recentActivity = [...paid]
       .sort((a, b) => new Date(b.paid_date) - new Date(a.paid_date))
       .slice(0, 5)
       .map(({ id, apartment_id, amount, paid_date }) => ({
-        id, apt: apartment_id, amount, date: paid_date
+        id,
+        apt: apartment_id,
+        amount,
+        date: paid_date,
       }));
 
     // 5. Absences
     const currentMonth = new Date().getMonth();
     const monthlyAbsences = absenceLogs.filter(
-      (log) => new Date(log.log_date).getMonth() === currentMonth
+      (log) => new Date(log.log_date).getMonth() === currentMonth,
     ).length;
 
     return {
@@ -58,7 +65,6 @@ export function useAdminStats() {
         outstanding: sumBy(unpaid, (b) => b.amount),
         paid: paid.length,
         unpaid: unpaid.length,
-        // Calculate total amount collected per fee ID
         byFee: paid.reduce((acc, b) => {
           acc[b.fee_id] = (acc[b.fee_id] || 0) + b.amount;
           return acc;
