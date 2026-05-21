@@ -3,10 +3,10 @@ import { useDbStore } from "../../../shared/store/useDbStore";
 import { $ } from "../../../shared/utils/dataEngine";
 
 export const useResidentRegistry = (query = "") => {
-  // 1. Reactive database tracking
-  const apartments = useDbStore((s) => s.apartments);
-  const residents = useDbStore((s) => s.residents);
-  const bills = useDbStore((s) => s.bills);
+  const db = useDbStore();
+  const apartments = db.apartments || [];
+  const residents = db.residents || [];
+  const bills = db.bills || [];
 
   // 2. Perform relational mapping and filtering safely
   const displayData = useMemo(() => {

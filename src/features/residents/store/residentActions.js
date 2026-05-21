@@ -43,12 +43,14 @@ export const residentActions = {
 
   updateResident: (residentId, updates) => {
     const { residents, setResidents } = useDbStore.getState();
-    const targetRoom = residents.find((r) => r.id === residentId)?.apartment_id;
+
+    const targetResident = residents.find((r) => r.id === residentId);
+    const targetRoom = targetResident?.apartment_id;
 
     setResidents(
       residents.map((res) => {
         if (res.id === residentId) return { ...res, ...updates };
-        if (updates.is_head && res.apartment_id === targetRoom) {
+        if (updates.is_head && targetRoom && res.apartment_id === targetRoom) {
           return { ...res, is_head: false };
         }
         return res;
