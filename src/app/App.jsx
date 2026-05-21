@@ -2,6 +2,7 @@ import { MantineProvider } from "@mantine/core";
 import { theme } from "./styles/theme";
 import AppRoutes from "./routes/AppRoutes";
 import "@mantine/core/styles.css";
+import "@mantine/charts/styles.css";
 import "./styles/theme.css";
 
 export default function App() {

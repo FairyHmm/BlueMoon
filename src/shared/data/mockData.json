@@ -93,7 +93,7 @@
       "apartment_id": "101",
       "fee_id": 2,
       "amount": 50.0,
-      "status": "unpaid",
+      "status": "due",
       "due_date": "2026-05-01",
       "paid_date": null
     }
