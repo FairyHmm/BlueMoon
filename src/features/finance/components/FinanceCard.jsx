@@ -5,35 +5,40 @@ import BillRow from "./BillRow";
 import RecordHeader from "../../../shared/components/RecordHeader";
 import { BILL_STATUS } from "../utils/constants";
 import { filterBills } from "../utils/billing";
+import { financeActions } from "../store/financeActions";
 import scClasses from "../../../shared/styles/mantine/segmented-control.module.css";
 
 export default function FinanceCard({
   unit,
-  bills,
-  feeTypes,
+  bills = [],
+  feeTypes = [],
   onOpenAddBill,
 }) {
   const [filter, setFilter] = useState("due");
 
-  const filterOptions = useMemo(
-    () => [
-      { label: BILL_STATUS.PAID.label, value: "paid" },
-      { label: BILL_STATUS.DUE.label, value: "due" },
-      { label: "All", value: "all" },
-      { label: BILL_STATUS.WAIT.label, value: "wait" },
-    ],
-    []
-  );
+  const filterOptions = [
+    { label: BILL_STATUS.PAID.label, value: "paid" },
+    { label: BILL_STATUS.DUE.label, value: "due" },
+    { label: "All", value: "all" },
+    { label: BILL_STATUS.WAIT.label, value: "wait" },
+  ];
 
   const filteredBills = useMemo(
     () => filterBills(bills, filter),
-    [bills, filter]
+    [bills, filter],
   );
-
   const totalAmount = useMemo(
     () => filteredBills.reduce((sum, b) => sum + b.amount, 0),
-    [filteredBills]
+    [filteredBills],
   );
+
+  const handleStatusUpdate = (billId, newStatus) =>
+    financeActions.updateBillStatus(billId, newStatus);
+  const handleDelete = (billId) => {
+    if (window.confirm("Are you sure you want to delete this bill?")) {
+      financeActions.deleteBill(billId);
+    }
+  };
 
   return (
     <UnitCard
@@ -49,7 +54,11 @@ export default function FinanceCard({
             <Text
               size="xs"
               fw={900}
-              c={filter === "due" && totalAmount > 0 ? "red" : "var(--color-text)"}
+              c={
+                filter === "due" && totalAmount > 0
+                  ? "red"
+                  : "var(--color-text)"
+              }
             >
               ${totalAmount.toLocaleString()}
             </Text>
@@ -59,7 +68,6 @@ export default function FinanceCard({
     >
       <RecordHeader
         title="Billing Records"
-        // FIX: Pass the ID, not the object
         onAdd={() => onOpenAddBill(unit.id)}
         color="blue"
       />
@@ -86,6 +94,8 @@ export default function FinanceCard({
               key={bill.id}
               bill={bill}
               feeType={feeTypes.find((f) => f.id == bill.fee_id)}
+              onUpdate={handleStatusUpdate}
+              onDelete={handleDelete}
             />
           ))
         ) : (

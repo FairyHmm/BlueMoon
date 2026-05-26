@@ -7,45 +7,32 @@ import {
   getBillDisplayStatus,
   formatDate,
 } from "../utils/billing";
-import { financeActions } from "../store/financeActions";
 
-export default function BillRow({ bill, feeType }) {
-  const handleStatusUpdate = (newStatus) => {
-    financeActions.updateBillStatus(bill.id, newStatus);
-  };
-
-  const handleDelete = () => {
-    if (window.confirm("Are you sure you want to delete this bill?")) {
-      financeActions.deleteBill(bill.id);
-    }
-  };
-
+export default function BillRow({ bill, feeType, onUpdate, onDelete }) {
   const displayStatus = getBillDisplayStatus(bill);
+  const isPaid = bill.status === "paid";
 
   const rawInterval = bill.interval || feeType?.interval || "monthly";
-  const readableInterval =
-    rawInterval === "one_time"
-      ? "One-Time"
-      : rawInterval === "yearly"
-        ? "Yearly"
-        : "Monthly";
+  const intervals = {
+    one_time: "One-Time",
+    yearly: "Yearly",
+    monthly: "Monthly",
+  };
+  const readableInterval = intervals[rawInterval] || "Monthly";
 
   return (
     <Group justify="space-between" wrap="nowrap" gap="xs">
       <Stack gap={2} style={{ flexGrow: 1, minWidth: 0 }}>
         <Text size="xs" fw={700} truncate>
-          {feeType?.name || "General Fee"}{" "}
-          <Text component="span" fw={500} c="dimmed" size="xs">
-            • {readableInterval}
-          </Text>
+          {feeType.name} • {readableInterval}
         </Text>
 
         <Text size="xs" c="dimmed">
           Due: {formatDate(bill.due_date)}
         </Text>
-        {bill.status === "paid" && (
-          <Text size="xs" c="dimmed">
-            Paid: {formatDate(bill.paid_date)}
+        {isPaid && (
+          <Text size="xs" c="teal">
+            Paid: {formatDate(bill.paid_date) || "—"}
           </Text>
         )}
       </Stack>
@@ -55,20 +42,25 @@ export default function BillRow({ bill, feeType }) {
           ${bill.amount.toLocaleString()}
         </Text>
 
-        <ActionIcon
-          color="red"
-          variant="subtle"
-          size="xs"
-          onClick={handleDelete}
-        >
-          <IconTrash size={14} />
-        </ActionIcon>
+        {onDelete && (
+          <ActionIcon
+            color="red"
+            variant="subtle"
+            size="xs"
+            onClick={() => onDelete(bill.id)}
+          >
+            <IconTrash size={14} />
+          </ActionIcon>
+        )}
 
         <StatusMenu
           value={displayStatus}
           options={BILL_STATUS}
           getConfig={getBillStatusConfig}
-          onUpdate={handleStatusUpdate}
+          onUpdate={
+            onUpdate ? (status) => onUpdate(bill.id, status) : undefined
+          }
+          readOnly={!onUpdate}
         />
       </Group>
     </Group>
