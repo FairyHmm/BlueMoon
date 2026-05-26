@@ -1,30 +1,38 @@
-import { Title, Stack, Paper, Text, Group } from "@mantine/core";
-import { IconHome, IconReceipt } from "@tabler/icons-react";
+import { Title, Text, Grid, Stack, SimpleGrid } from "@mantine/core";
 
-export default function ResidentDashboard() {
+import { useUserDashboard } from "../hooks/useUserDashboard";
+
+import UserHouseholdPanel from "./UserHouseholdPanel";
+import UserVehiclePanel from "./UserVehiclePanel";
+import UserLedgerPanel from "./UserLedgerPanel";
+
+export default function UserDashboard() {
+  const data = useUserDashboard();
+
   return (
-    <Stack gap="lg">
-      <Group justify="space-between">
-        <Title order={2}>My Home</Title>
-      </Group>
+    <Stack gap="md" p="md">
+      <Title order={2}>Welcome back, {data?.profile?.name || "Cư dân"}</Title>
 
-      <Paper p="md" radius="md" withBorder>
-        <Group gap="md">
-          <IconHome size={32} color="blue" />
-          <div>
-            <Text size="lg" fw={600}>Unit 101</Text>
-            <Text size="sm" c="dimmed">Welcome back, Alex</Text>
-          </div>
-        </Group>
-      </Paper>
+      <Text size="sm">
+        Unit {data?.apartment?.id || "—"} • {data?.apartment?.type || "—"}
+      </Text>
 
-      <Stack gap="sm">
-        <Title order={4}>My Bills</Title>
-        <Paper p="md" withBorder ta="center" py="xl">
-          <Text c="dimmed">Billing history will appear here.</Text>
-          <IconReceipt size={48} color="gray.3" mt="md" />
-        </Paper>
-      </Stack>
+      <Grid gutter="md">
+        <Grid.Col span={{ base: 12, md: 8 }}>
+          <UserLedgerPanel
+            bills={data?.bills}
+            feeTypes={data?.feeTypes}
+            balanceDue={data?.stats?.balanceDue || 0}
+          />
+        </Grid.Col>
+
+        <Grid.Col span={{ base: 12, md: 4 }}>
+          <SimpleGrid cols={{ base: 2, md: 1 }}>
+            <UserHouseholdPanel household={data?.household} />
+            <UserVehiclePanel vehicles={data?.vehicles} />
+          </SimpleGrid>
+        </Grid.Col>
+      </Grid>
     </Stack>
   );
 }
