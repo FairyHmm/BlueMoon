@@ -15,11 +15,18 @@ export const useAuthStore = create(
           (u) => u.username === username && u.password_hash === password,
         );
 
-        if (foundUser) {
-          set({ user: foundUser });
-          return { success: true };
+        if (!foundUser) {
+          return { success: false, message: "Invalid credentials" };
         }
-        return { success: false, message: "Invalid credentials" };
+
+        set({ user: foundUser });
+
+        // IMPORTANT: initialize DB AFTER auth is set
+        setTimeout(() => {
+          useDbStore.getState().init(foundUser.id);
+        }, 0);
+
+        return { success: true };
       },
 
       register: (displayName, username, password, apartmentId) => {
@@ -56,7 +63,7 @@ export const useAuthStore = create(
         const newUser = {
           id: crypto.randomUUID(),
           username,
-          password,
+          password_hash: password,
           role: "resident",
           resident_id: newResidentId,
         };
@@ -67,10 +74,17 @@ export const useAuthStore = create(
         // 8. Log the user in
         set({ user: newUser });
 
+        setTimeout(() => {
+          useDbStore.getState().init(newUser.id);
+        }, 0);
+
         return { success: true };
       },
 
-      logout: () => set({ user: null }),
+      logout: () => {
+        set({ user: null });
+        useDbStore.getState().init(null);
+      },
     }),
     {
       name: "bluemoon-auth",

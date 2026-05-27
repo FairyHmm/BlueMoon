@@ -12,3 +12,10 @@ export const loadTable = (userId, table, fallback = []) => {
   const raw = localStorage.getItem(getKey(userId, table));
   return raw ? JSON.parse(raw) : fallback;
 };
+
+export const saveTable = (userId, table, data) => {
+  if (typeof window === "undefined") return;
+  if (!userId) return;
+
+  localStorage.setItem(getKey(userId, table), JSON.stringify(data));
+};
