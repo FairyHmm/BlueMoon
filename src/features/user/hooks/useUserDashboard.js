@@ -12,6 +12,7 @@ export function useUserDashboard() {
   const vehicles = db.vehicles || [];
   const bills = db.bills || [];
   const feeTypes = db.fee_types || [];
+  const absenceLogs = db.absence_logs || [];
 
   return useMemo(() => {
     if (!currentUser?.resident_id) return null;
@@ -44,11 +45,12 @@ export function useUserDashboard() {
       vehicles: registeredVehicles,
       bills: myBills,
       feeTypes,
+      absenceLogs,
       stats: {
         balanceDue: unpaidBills.reduce((sum, b) => sum + b.amount, 0),
         vehicleCount: registeredVehicles.length,
         householdSize: householdMembers.length,
       },
     };
-  }, [apartments, residents, vehicles, bills, feeTypes, currentUser]);
+  }, [apartments, residents, vehicles, bills, feeTypes, absenceLogs, currentUser]);
 }
