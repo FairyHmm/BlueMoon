@@ -1,5 +1,5 @@
 {
-  "name": "BlueMoon",
+  "name": "bluemoon",
   "description": "A hotel management system.",
   "version": "0.0.1",
   "author": "Fairy",
@@ -15,6 +15,7 @@
     "@mantine/form": "^9.2.1",
     "@mantine/hooks": "^9.0.0",
     "@tabler/icons-react": "^3.41.1",
+    "firebase": "^12.13.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router-dom": "^7.14.2",
