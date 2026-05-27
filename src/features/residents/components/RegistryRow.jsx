@@ -11,6 +11,7 @@ export default function RegistryRow({
   hoverActions,
   status,
   indented = false,
+  readOnly
 }) {
   const { value, options, getConfig, onUpdate } = status || {};
 
@@ -55,6 +56,7 @@ export default function RegistryRow({
             options={Object.values(options)}
             getConfig={getConfig}
             onUpdate={onUpdate}
+            readOnly={readOnly}
           />
         )}
       </Group>

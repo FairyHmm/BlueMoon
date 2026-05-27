@@ -1,6 +1,7 @@
 import { useAuthStore } from "../shared/store/useAuthStore";
 import { Navigate } from "react-router-dom";
 import ManagerDashboard from "../features/manager/components/ManagerDashboard";
+import AdminDashboard from "../features/admin/components/AdminDashboard";
 import UserDashboard from "../features/user/components/UserDashboard";
 
 export default function Dashboard() {
@@ -17,8 +18,7 @@ export default function Dashboard() {
       return <ManagerDashboard />;
 
     case "admin":
-      return <ManagerDashboard />;
-      // return <AdminDashboard />;
+      return <AdminDashboard />;
 
     default:
       console.warn(`Unauthorized role access attempted: ${user.role}`);
