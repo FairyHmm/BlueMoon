@@ -26,10 +26,6 @@ export const useAuthStore = create(
 
         set({ user: foundUser });
 
-        setTimeout(() => {
-          useDbStore.getState().init(foundUser.id);
-        }, 0);
-
         return { success: true };
       },
 
@@ -72,16 +68,11 @@ export const useAuthStore = create(
 
         set({ user: newUser });
 
-        setTimeout(() => {
-          useDbStore.getState().init(newUser.id);
-        }, 0);
-
         return { success: true };
       },
 
       logout: () => {
         set({ user: null });
-        useDbStore.getState().init(null);
       },
     }),
     {
