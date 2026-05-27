@@ -1,21 +1,8 @@
 import { db } from "../config/firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
-const safe = (v) => {
-  if (v === undefined || v === null) return null;
-  return String(v);
-};
-
-const getRef = (userId, table) => {
-  const uid = safe(userId);
-  const t = safe(table);
-
-  if (!uid || !t) {
-    throw new Error(`Invalid Firestore path: userId=${uid}, table=${t}`);
-  }
-
-  return doc(db, "users", uid, "tables", t);
-};
+const getRef = (userId, table) =>
+  doc(db, "users", String(userId), "tables", table);
 
 export const loadTable = async (userId, table, fallback = []) => {
   if (!userId) return fallback;

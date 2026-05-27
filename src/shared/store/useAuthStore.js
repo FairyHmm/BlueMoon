@@ -8,13 +8,7 @@ export const useAuthStore = create(
       user: null,
 
       login: (username, password) => {
-        const db = useDbStore.getState();
-
-        if (!db.isReady) {
-          return { success: false, message: "Loading..." };
-        }
-
-        const users = db.users || [];
+        const users = useDbStore.getState().users || [];
 
         const foundUser = users.find(
           (u) => u.username === username && u.password_hash === password,
@@ -35,26 +29,24 @@ export const useAuthStore = create(
         const existingUser = db.users.find((u) => u.username === username);
 
         if (existingUser) {
-          return { success: false, message: "Username already taken" };
+          return { success: false, message: "Username taken" };
         }
 
         const apartment = db.apartments.find((a) => a.id === apartmentId);
 
         if (!apartment) {
-          return { success: false, message: "Invalid Apartment ID" };
+          return { success: false, message: "Invalid apartment" };
         }
 
         const newResidentId = crypto.randomUUID();
 
-        const newResident = {
+        db.addresidents({
           id: newResidentId,
           apartment_id: apartmentId,
           name: displayName,
           is_head: false,
           status: "pending",
-        };
-
-        db.addResidents(newResident);
+        });
 
         const newUser = {
           id: crypto.randomUUID(),
@@ -64,16 +56,14 @@ export const useAuthStore = create(
           resident_id: newResidentId,
         };
 
-        db.addUsers(newUser);
+        db.addusers(newUser);
 
         set({ user: newUser });
 
         return { success: true };
       },
 
-      logout: () => {
-        set({ user: null });
-      },
+      logout: () => set({ user: null }),
     }),
     {
       name: "bluemoon-auth",
