@@ -7,24 +7,48 @@ export const useResidentRegistry = (query = "") => {
   const apartments = db.apartments || [];
   const residents = db.residents || [];
   const bills = db.bills || [];
+  const vehicles = db.vehicles || [];
+  const absenceLogs = db.absence_logs || [];
 
-  // 2. Perform relational mapping and filtering safely
   const displayData = useMemo(() => {
-    const mockDbForEngine = { apartments, residents, bills };
+    const mockDbForEngine = { apartments, residents, bills, vehicles };
     const safeQuery =
       typeof query === "string" ? query.toLowerCase().trim() : "";
 
-    // Run the data relationship engine
+    // 1. Map tables that share direct apartment_id links
     let data = $(mockDbForEngine, apartments)
       .with("residents")
       .with("bills")
-      .map((a) => ({
-        ...a,
-        hasUnpaidBills: a.bills?.some((b) => b.status === "unpaid") ?? false,
-      }))
+      .with("vehicles")
       .unwrap();
 
-    // Apply lookahead query matching if text exists
+    // 2. Decorate residents with their active/pending absence statuses
+    data = data.map((apt) => {
+      const enhancedResidents = (apt.residents || []).map((member) => {
+        // Find if this specific member has an unresolved absence record
+        const matchingLog = absenceLogs.find(
+          (log) =>
+            log.resident_id === member.id &&
+            (log.status === "pending" || log.status === "approved"),
+        );
+
+        return {
+          ...member,
+          absenceStatus: matchingLog ? matchingLog.status : null, // "pending", "approved", or null
+          absenceLogId: matchingLog ? matchingLog.id : null,
+          absenceType: matchingLog ? matchingLog.type : null,
+          absenceDate: matchingLog ? matchingLog.log_date : null,
+        };
+      });
+
+      return {
+        ...apt,
+        hasUnpaidBills: apt.bills?.some((b) => b.status === "unpaid") ?? false,
+        residents: enhancedResidents,
+        allVehicles: apt.vehicles || [],
+      };
+    });
+
     if (safeQuery) {
       data = data.filter(
         (apt) =>
@@ -34,15 +58,13 @@ export const useResidentRegistry = (query = "") => {
     }
 
     return data;
-  }, [apartments, residents, bills, query]);
-
-  // 3. Compute structural lookups for unassigned members
-  const availableResidents = useMemo(() => {
-    return residents.filter((r) => !r.apartment_id);
-  }, [residents]);
+  }, [apartments, residents, bills, vehicles, absenceLogs, query]);
 
   return {
     displayData,
-    availableResidents,
+    availableResidents: useMemo(
+      () => residents.filter((r) => !r.apartment_id),
+      [residents],
+    ),
   };
 };
