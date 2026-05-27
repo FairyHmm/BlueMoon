@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { loadTable } from "../utils/localUserDb";
+import { loadTable, saveTable } from "../utils/firebaseDb";
 import mockDB from "../data/mockData.json";
 
 const tables = Object.keys(mockDB);
@@ -8,7 +8,9 @@ const tables = Object.keys(mockDB);
 const toPascal = (str) =>
   str.replace(/(^\w|_\w)/g, (match) => match.replace("_", "").toUpperCase());
 
-// Generate CRUD actions dynamically
+// --------------------
+// CRUD
+// --------------------
 const createActions = (set, get) => {
   return tables.reduce((actions, key) => {
     const Name = toPascal(key);
@@ -42,7 +44,6 @@ const createActions = (set, get) => {
         return { [key]: updated };
       });
 
-    // Explicitly merge incoming state data
     actions[`set${Name}`] = (data) =>
       set((state) => {
         const value = typeof data === "function" ? data(state[key]) : data;
@@ -55,7 +56,9 @@ const createActions = (set, get) => {
   }, {});
 };
 
-// INITIALIZE FACTORY: Safely load initial data per key from localStorage, falling back to mockDB
+// --------------------
+// STORE
+// --------------------
 export const useDbStore = create(
   persist(
     (set, get) => ({
@@ -69,16 +72,30 @@ export const useDbStore = create(
       users: [],
       absence_logs: [],
 
-      init: (userId) => {
-        const nextState = {};
+      isReady: false,
 
-        tables.forEach((key) => {
-          nextState[key] = loadTable(userId, key, mockDB[key]);
+      // --------------------
+      // FIXED INIT (AWAIT ALL DATA)
+      // --------------------
+      init: async (userId) => {
+        const uid = userId ? String(userId) : null;
+
+        const results = await Promise.all(
+          tables.map(async (key) => {
+            const data = await loadTable(uid, key, mockDB[key]);
+            return [key, Array.isArray(data) ? data : []];
+          }),
+        );
+
+        const next = {};
+        results.forEach(([key, data]) => {
+          next[key] = data;
         });
 
         set({
-          userId,
-          ...nextState,
+          userId: uid,
+          ...next,
+          isReady: true,
         });
       },
 
@@ -86,13 +103,9 @@ export const useDbStore = create(
 
       save: (table, data) => {
         const userId = get().getUserId();
-
         if (!userId) return;
 
-        localStorage.setItem(
-          `bluemoon_user_${userId}_${table}`,
-          JSON.stringify(data),
-        );
+        saveTable(userId, table, data);
       },
 
       ...createActions(set, get),
@@ -102,11 +115,9 @@ export const useDbStore = create(
 
       partialize: (state) => {
         const cleaned = {};
-
         tables.forEach((key) => {
           cleaned[key] = state[key];
         });
-
         return cleaned;
       },
     },
