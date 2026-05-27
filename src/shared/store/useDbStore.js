@@ -1,91 +1,124 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import { loadTable, saveTable } from "../utils/firebaseDb";
+import {
+  loadTable,
+  saveTable,
+  loadGlobalTable,
+  saveGlobalTable,
+} from "../utils/localUserDb";
+import { enqueue } from "../utils/syncQueue";
+import { startSync, stopSync, syncNow as runSyncNow } from "../utils/syncEngine";
 import mockDB from "../data/mockData.json";
 
 const tables = Object.keys(mockDB);
+const GLOBAL_TABLES = ["users", "apartments", "fee_types"];
 
-const createActions = (set, get) => {
-  return tables.reduce((actions, key) => {
-    actions[`add${key}`] = (item) =>
-      set((state) => {
-        const updated = [
-          ...state[key],
-          { ...item, id: item.id || crypto.randomUUID() },
-        ];
+export const useDbStore = create((set, get) => {
+  const tableActions = tables.reduce((acc, key) => {
+    acc[`add${key}`] = (item) =>
+      set((state) => ({
+        [key]: [...state[key], { ...item, id: item.id || crypto.randomUUID() }],
+      }));
 
-        get().save(key, updated);
-        return { [key]: updated };
-      });
+    acc[`update${key}`] = (id, updates) =>
+      set((state) => ({
+        [key]: state[key].map((x) => (x.id === id ? { ...x, ...updates } : x)),
+      }));
 
-    actions[`update${key}`] = (id, updates) =>
-      set((state) => {
-        const updated = state[key].map((x) =>
-          x.id === id ? { ...x, ...updates } : x,
-        );
+    acc[`delete${key}`] = (id) =>
+      set((state) => ({
+        [key]: state[key].filter((x) => x.id !== id),
+      }));
 
-        get().save(key, updated);
-        return { [key]: updated };
-      });
-
-    actions[`delete${key}`] = (id) =>
-      set((state) => {
-        const updated = state[key].filter((x) => x.id !== id);
-
-        get().save(key, updated);
-        return { [key]: updated };
-      });
-
-    return actions;
+    return acc;
   }, {});
-};
 
-export const useDbStore = create(
-  persist(
-    (set, get) => ({
-      userId: null,
+  return {
+    userId: null,
+    ready: false,
+    lastSyncedAt: null,
 
-      apartments: [],
-      residents: [],
-      vehicles: [],
-      bills: [],
-      fee_types: [],
-      users: [],
-      absence_logs: [],
+    apartments: [],
+    residents: [],
+    vehicles: [],
+    bills: [],
+    fee_types: [],
+    users: [],
+    absence_logs: [],
 
-      // 🔥 SIMPLE INIT (NO READY STATE)
-      init: async (userId) => {
-        const uid = userId ? String(userId) : null;
-
-        const results = await Promise.all(
-          tables.map(async (key) => {
-            const data = await loadTable(uid, key, mockDB[key]);
-            return [key, Array.isArray(data) ? data : []];
-          }),
-        );
-
-        set({
-          userId: uid,
-          ...Object.fromEntries(results),
-        });
-      },
-
-      save: (table, data) => {
-        const uid = get().userId;
-        if (!uid) return;
-
-        saveTable(uid, table, data);
-      },
-
-      ...createActions(set, get),
-    }),
-    {
-      name: "bluemoon-storage",
-      partialize: (state) => {
-        const cleaned = {};
-        tables.forEach((k) => (cleaned[k] = state[k]));
-        return cleaned;
-      },
+    bootstrap: () => {
+      const globalData = {};
+      GLOBAL_TABLES.forEach((key) => {
+        globalData[key] = loadGlobalTable(key, mockDB[key]);
+      });
+      set(globalData);
     },
-  ),
-);
+
+    init: async (userId) => {
+      const uid = userId ? String(userId) : null;
+      if (!uid) {
+        set({ ready: false, userId: null });
+        return;
+      }
+
+      const localData = {};
+      tables.forEach((key) => {
+        if (GLOBAL_TABLES.includes(key)) return;
+        localData[key] = loadTable(uid, key, mockDB[key]);
+      });
+
+      set({ userId: uid, ready: true, ...localData });
+
+      const userTables = tables.filter((t) => !GLOBAL_TABLES.includes(t));
+      await startSync(uid, userTables, (updates) => {
+        set((prev) => ({ ...prev, ...updates, lastSyncedAt: Date.now() }));
+      });
+    },
+
+    cleanup: () => {
+      stopSync();
+      set({
+        userId: null,
+        ready: false,
+        lastSyncedAt: null,
+        residents: [],
+        vehicles: [],
+        bills: [],
+        absence_logs: [],
+      });
+    },
+
+    syncNow: async () => {
+      set({ syncing: true });
+      await runSyncNow();
+      set({ syncing: false, lastSyncedAt: Date.now() });
+    },
+
+    ...tableActions,
+  };
+});
+
+// Monkey-patch setState to auto-save changes
+const originalSetState = useDbStore.setState;
+
+useDbStore.setState = (partial, replace) => {
+  const oldState = useDbStore.getState();
+  originalSetState(partial, replace);
+  const newState = useDbStore.getState();
+  const userId = newState.userId;
+
+  if (!userId) return;
+
+  for (const table of tables) {
+    const oldTable = oldState[table];
+    const newTable = newState[table];
+
+    if (oldTable !== newTable) {
+      if (GLOBAL_TABLES.includes(table)) {
+        saveGlobalTable(table, newTable);
+      } else {
+        saveTable(userId, table, newTable);
+        enqueue(userId, table);
+      }
+    }
+  }
+};
