@@ -102,28 +102,28 @@
     {
       "id": 1,
       "username": "admin",
-      "password": "admin",
+      "password_hash": "admin",
       "role": "admin",
       "resident_id": null
     },
     {
       "id": 2,
       "username": "alex",
-      "password": "password",
+      "password_hash": "password",
       "role": "user",
       "resident_id": 1
     },
     {
       "id": 3,
       "username": "sam",
-      "password": "password",
+      "password_hash": "password",
       "role": "user",
       "resident_id": 2
     },
     {
       "id": 4,
       "username": "manager",
-      "password": "manager",
+      "password_hash": "manager",
       "role": "manager",
       "resident_id": null
     }

@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { loadTable } from "../utils/localUserDb";
 import mockDB from "../data/mockData.json";
 
 const tables = Object.keys(mockDB);
@@ -31,7 +32,7 @@ const createActions = (set) => {
     actions[`set${Name}`] = (data) =>
       set((state) => ({
         ...state,
-        [key]: typeof data === 'function' ? data(state[key]) : data
+        [key]: typeof data === "function" ? data(state[key]) : data,
       }));
 
     return actions;
@@ -41,14 +42,14 @@ const createActions = (set) => {
 // INITIALIZE FACTORY: Safely load initial data per key from localStorage, falling back to mockDB
 const getInitialState = () => {
   const initialState = {};
+
+  const user = useAuthStore.getState().user;
+  const userId = user?.id;
+
   tables.forEach((key) => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem(`bluemoon_${key}`);
-      initialState[key] = stored ? JSON.parse(stored) : mockDB[key];
-    } else {
-      initialState[key] = mockDB[key];
-    }
+    initialState[key] = loadTable(userId, key, mockDB[key]);
   });
+
   return initialState;
 };
 
@@ -70,6 +71,6 @@ export const useDbStore = create(
         // Return an empty object to the main storage name so it doesn't duplicate space
         return {};
       },
-    }
-  )
+    },
+  ),
 );

@@ -12,7 +12,7 @@ export const useAuthStore = create(
         const users = useDbStore.getState().users;
 
         const foundUser = users.find(
-          (u) => u.username === username && u.password === password,
+          (u) => u.username === username && u.password_hash === password,
         );
 
         if (foundUser) {
