@@ -16,8 +16,8 @@ export default function LoginForm() {
     },
   });
 
-  const handleSubmit = (values) => {
-    const result = login(values.username, values.password);
+  const handleSubmit = async (values) => {
+    const result = await login(values.username, values.password);
 
     if (result && !result.success) {
       form.setFieldError("password", result.message || "Invalid credentials");

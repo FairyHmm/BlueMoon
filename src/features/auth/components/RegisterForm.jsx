@@ -26,8 +26,8 @@ export default function RegisterForm() {
     },
   });
 
-  const handleSubmit = (values) => {
-    const result = register(
+  const handleSubmit = async (values) => {
+    const result = await register(
       values.displayName,
       values.username,
       values.password,
