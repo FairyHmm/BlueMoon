@@ -11,22 +11,21 @@ export const useAuthStore = create(
       login: async (username, password) => {
         const db = useDbStore.getState();
 
-        // 1. Wait for the database to be ready (Global data loaded)
+        // 1. Wait for the database to be ready
         if (!db.ready) {
           return { success: false, message: "System loading, please wait..." };
         }
 
         let usersToCheck = db.users;
 
-        // 2. If online, force a fetch of the 'users' table from Firebase
+        // 2. If online, force a fresh fetch of users from Firebase
         // This solves the "I just registered on another device" sync delay
         if (navigator.onLine) {
           try {
             const freshData = await pullAppData("users");
-            if (freshData && freshData.data) {
-              usersToCheck = freshData.data;
-              // Update the local store immediately so the rest of the app sees the new user
-              useDbStore.setState({ users: freshData.data });
+            if (freshData && Array.isArray(freshData)) {
+              usersToCheck = freshData;
+              useDbStore.setState({ users: freshData });
             }
           } catch (err) {
             console.error(
@@ -45,12 +44,9 @@ export const useAuthStore = create(
           return { success: false, message: "Invalid credentials" };
         }
 
-        // 4. Success! Set the user state
+        // 4. Success
         set({ user: foundUser });
-
-        // 5. CRITICAL: Initialize the DB store with this user's ID
-        // This loads their specific tables (residents, bills, etc.) and starts syncing
-        db.init(foundUser.id);
+        db.init();
 
         return { success: true };
       },
@@ -77,7 +73,7 @@ export const useAuthStore = create(
         const newResidentId = crypto.randomUUID();
 
         // Add Resident
-        db.addresidents({
+        db.addResidents({
           id: newResidentId,
           apartment_id: apartmentId,
           name: displayName,
@@ -94,19 +90,18 @@ export const useAuthStore = create(
           resident_id: newResidentId,
         };
 
-        db.addusers(newUser);
+        db.addUsers(newUser);
 
-        // Optional: Auto-login after register
+        // Auto-login after register
         set({ user: newUser });
-        await db.init(newUser.id);
+        await db.init();
 
         return { success: true };
       },
 
       logout: () => {
         set({ user: null });
-        // Note: We do NOT call db.init(null) here manually.
-        // The App.jsx subscribe listener will detect user -> null and call db.init(null) for us.
+        // App.jsx subscribe listener will detect user -> null and call db.init() for us
       },
     }),
     {
