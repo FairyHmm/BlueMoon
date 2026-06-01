@@ -56,7 +56,7 @@ const createActions = (set) =>
     actions[`update${Name}`] = (id, updates) =>
       set((state) => {
         const updated = state[key].map((x) =>
-          x.id === id ? { ...x, ...updates } : x
+          x.id == id ? { ...x, ...updates } : x
         );
         persistTable(key, updated);
         return { [key]: updated };
@@ -64,7 +64,7 @@ const createActions = (set) =>
 
     actions[`delete${Name}`] = (id) =>
       set((state) => {
-        const updated = state[key].filter((x) => x.id !== id);
+        const updated = state[key].filter((x) => x.id != id);
         persistTable(key, updated);
         return { [key]: updated };
       });

@@ -7,6 +7,20 @@ import VehiclePanel from "./VehiclePanel";
 import LedgerPanel from "./LedgerPanel";
 
 export default function UserDashboard() {
+  const data = useUserDashboard();
+
+  if (!data) {
+    return (
+      <Stack gap="md" p="md">
+        <Title order={2}>Account Pending</Title>
+        <Text size="sm" c="dimmed">
+          Your account is pending approval.
+          Please contact your building manager.
+        </Text>
+      </Stack>
+    );
+  }
+
   const {
     profile,
     apartment,
@@ -16,7 +30,7 @@ export default function UserDashboard() {
     household,
     absenceLogs,
     vehicles,
-  } = useUserDashboard();
+  } = data;
 
   return (
     <Stack gap="md" p="md">

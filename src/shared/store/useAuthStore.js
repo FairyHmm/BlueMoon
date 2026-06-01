@@ -1,111 +1,133 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { auth } from "../config/firebase";
 import { useDbStore } from "./useDbStore";
-import { pullAppData } from "../utils/firebaseDb";
 
-export const useAuthStore = create(
-  persist(
-    (set, get) => ({
-      user: null,
+const toEmail = (username) => `${username}@bluemoon.internal`;
 
-      login: async (username, password) => {
-        const db = useDbStore.getState();
+export const useAuthStore = create((set, get) => ({
+  user: null,
+  ready: false, // true once onAuthStateChanged has fired at least once
 
-        // 1. Wait for the database to be ready
-        if (!db.ready) {
-          return { success: false, message: "System loading, please wait..." };
-        }
+  // Called once from App.jsx on mount — listens for Firebase Auth state changes
+initAuth: () => {
+  const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
+    if (firebaseUser) {
+      // Init db first so users are loaded
+      await useDbStore.getState().init();
 
-        let usersToCheck = db.users;
+      // Now look up the app user
+      const db = useDbStore.getState();
+      const username = firebaseUser.email.replace("@bluemoon.internal", "");
+      const appUser =
+        db.users.find((u) => u.firebase_uid === firebaseUser.uid) ||
+        db.users.find((u) => u.username === username); // fallback for migrated users
 
-        // 2. If online, force a fresh fetch of users from Firebase
-        // This solves the "I just registered on another device" sync delay
-        if (navigator.onLine) {
-          try {
-            const freshData = await pullAppData("users");
-            if (freshData && Array.isArray(freshData)) {
-              usersToCheck = freshData;
-              useDbStore.setState({ users: freshData });
-            }
-          } catch (err) {
-            console.error(
-              "Login: Failed to fetch fresh users, using local cache",
-              err,
-            );
-          }
-        }
+      // Auto-patch firebase_uid if missing (one-time per user)
+      if (appUser && !appUser.firebase_uid) {
+        db.updateUsers(appUser.id, { firebase_uid: firebaseUser.uid });
+      }
 
-        // 3. Check credentials
-        const foundUser = usersToCheck.find(
-          (u) => u.username === username && u.password_hash === password,
-        );
+      set({ user: appUser || null, ready: true });
+    } else {
+      await useDbStore.getState().init();
+      set({ user: null, ready: true });
+    }
+  });
+  return unsub;
+},
 
-        if (!foundUser) {
+  login: async (username, password) => {
+    try {
+      await signInWithEmailAndPassword(auth, toEmail(username), password);
+      // onAuthStateChanged will handle setting user + init db
+      return { success: true };
+    } catch (err) {
+      console.error("[Auth] Login error:", err.code);
+      switch (err.code) {
+        case "auth/user-not-found":
+        case "auth/wrong-password":
+        case "auth/invalid-credential":
           return { success: false, message: "Invalid credentials" };
-        }
+        case "auth/too-many-requests":
+          return { success: false, message: "Too many attempts, try again later" };
+        default:
+          return { success: false, message: "Login failed, please try again" };
+      }
+    }
+  },
 
-        // 4. Success
-        set({ user: foundUser });
-        db.init();
+  register: async (displayName, username, password, apartmentId) => {
+    const db = useDbStore.getState();
 
-        return { success: true };
-      },
+    if (!db.ready) {
+      return { success: false, message: "System loading..." };
+    }
 
-      register: async (displayName, username, password, apartmentId) => {
-        const db = useDbStore.getState();
+    // Check username availability
+    const existingUser = db.users.find((u) => u.username === username);
+    if (existingUser) {
+      return { success: false, message: "Username taken" };
+    }
 
-        if (!db.ready) {
-          return { success: false, message: "System loading..." };
-        }
+    // Validate apartment
+    const apartment = db.apartments.find((a) => a.id === apartmentId);
+    if (!apartment) {
+      return { success: false, message: "Invalid apartment" };
+    }
 
-        // Check username availability
-        const existingUser = db.users.find((u) => u.username === username);
-        if (existingUser) {
-          return { success: false, message: "Username taken" };
-        }
+    try {
+      // Create Firebase Auth account
+      const credential = await createUserWithEmailAndPassword(
+        auth,
+        toEmail(username),
+        password
+      );
 
-        // Validate apartment
-        const apartment = db.apartments.find((a) => a.id === apartmentId);
-        if (!apartment) {
-          return { success: false, message: "Invalid apartment" };
-        }
+      const newResidentId = crypto.randomUUID();
 
-        const newResidentId = crypto.randomUUID();
+      // Add Resident
+      db.addResidents({
+        id: newResidentId,
+        apartment_id: apartmentId,
+        name: displayName,
+        is_head: false,
+        status: "pending",
+      });
 
-        // Add Resident
-        db.addResidents({
-          id: newResidentId,
-          apartment_id: apartmentId,
-          name: displayName,
-          is_head: false,
-          status: "pending",
-        });
+      // Add User (with firebase_uid, no password_hash)
+      const newUser = {
+        id: crypto.randomUUID(),
+        firebase_uid: credential.user.uid,
+        username,
+        role: "user",
+        resident_id: newResidentId,
+      };
 
-        // Add User
-        const newUser = {
-          id: crypto.randomUUID(),
-          username,
-          password_hash: password, // TODO: Hash this in production
-          role: "resident",
-          resident_id: newResidentId,
-        };
+      db.addUsers(newUser);
 
-        db.addUsers(newUser);
+      // onAuthStateChanged will handle setting user + init db
+      return { success: true };
+    } catch (err) {
+      console.error("[Auth] Register error:", err.code);
+      switch (err.code) {
+        case "auth/email-already-in-use":
+          return { success: false, message: "Username already taken" };
+        case "auth/weak-password":
+          return { success: false, message: "Password must be at least 6 characters" };
+        default:
+          return { success: false, message: "Registration failed, please try again" };
+      }
+    }
+  },
 
-        // Auto-login after register
-        set({ user: newUser });
-        await db.init();
-
-        return { success: true };
-      },
-
-      logout: () => {
-        set({ user: null });
-        // App.jsx subscribe listener will detect user -> null and call db.init() for us
-      },
-    }),
-    {
-      name: "bluemoon-auth",
-    },
-  ),
-);
+  logout: async () => {
+    await signOut(auth);
+    // onAuthStateChanged will handle clearing user + re-init db
+  },
+}));
