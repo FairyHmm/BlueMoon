@@ -53,11 +53,11 @@ initAuth: () => {
         case "auth/user-not-found":
         case "auth/wrong-password":
         case "auth/invalid-credential":
-          return { success: false, message: "Invalid credentials" };
+          return { success: false, message: "Thông tin đăng nhập không hợp lệ" };
         case "auth/too-many-requests":
-          return { success: false, message: "Too many attempts, try again later" };
+          return { success: false, message: "Quá nhiều lần thử, vui lòng thử lại sau" };
         default:
-          return { success: false, message: "Login failed, please try again" };
+          return { success: false, message: "Đăng nhập thất bại, vui lòng thử lại" };
       }
     }
   },
@@ -66,19 +66,19 @@ initAuth: () => {
     const db = useDbStore.getState();
 
     if (!db.ready) {
-      return { success: false, message: "System loading..." };
+      return { success: false, message: "Hệ thống đang tải..." };
     }
 
     // Check username availability
     const existingUser = db.users.find((u) => u.username === username);
     if (existingUser) {
-      return { success: false, message: "Username taken" };
+      return { success: false, message: "Tên đăng nhập đã được sử dụng" };
     }
 
     // Validate apartment
     const apartment = db.apartments.find((a) => a.id === apartmentId);
     if (!apartment) {
-      return { success: false, message: "Invalid apartment" };
+      return { success: false, message: "Mã căn hộ không hợp lệ" };
     }
 
     try {
@@ -117,11 +117,11 @@ initAuth: () => {
       console.error("[Auth] Register error:", err.code);
       switch (err.code) {
         case "auth/email-already-in-use":
-          return { success: false, message: "Username already taken" };
+          return { success: false, message: "Tên đăng nhập đã được sử dụng" };
         case "auth/weak-password":
-          return { success: false, message: "Password must be at least 6 characters" };
+          return { success: false, message: "Mật khẩu phải có ít nhất 6 ký tự" };
         default:
-          return { success: false, message: "Registration failed, please try again" };
+          return { success: false, message: "Đăng ký thất bại, vui lòng thử lại" };
       }
     }
   },

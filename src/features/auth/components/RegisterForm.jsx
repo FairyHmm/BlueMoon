@@ -26,12 +26,12 @@ export default function RegisterForm() {
       apartmentId: "",
     },
     validate: {
-      displayName: (v) => (!v ? "Display name required" : null),
-      username: (v) => (!v ? "Username required" : null),
-      password: (v) => (v.length < 6 ? "Minimum 6 characters" : null),
+      displayName: (v) => (!v ? "Vui lòng nhập tên hiển thị" : null),
+      username: (v) => (!v ? "Vui lòng nhập tên đăng nhập" : null),
+      password: (v) => (v.length < 6 ? "Tối thiểu 6 ký tự" : null),
       confirmPassword: (v, values) =>
-        v !== values.password ? "Passwords do not match" : null,
-      apartmentId: (v) => (!v ? "Apartment ID required" : null),
+        v !== values.password ? "Mật khẩu không khớp" : null,
+      apartmentId: (v) => (!v ? "Vui lòng nhập mã căn hộ" : null),
     },
   });
 
@@ -53,48 +53,48 @@ export default function RegisterForm() {
 
   return (
     <AuthLayout
-      title="Create account"
-      subtitle="Join BlueMoon"
-      footerText="Already have an account?"
-      footerLabel="Login"
+      title="Tạo tài khoản"
+      subtitle="Tham gia BlueMoon"
+      footerText="Đã có tài khoản?"
+      footerLabel="Đăng nhập"
       footerHref="/login"
     >
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap="md">
           <TextInput
-            label="Full Name"
-            placeholder="e.g. Alex Rivers"
-            description="This is how residents will see you"
+            label="Họ và tên"
+            placeholder="VD: Nguyễn Văn A"
+            description="Đây là tên mà cư dân sẽ thấy"
             {...form.getInputProps("displayName")}
           />
 
           <TextInput
-            label="Username"
+            label="Tên đăng nhập"
             placeholder="alex"
             {...form.getInputProps("username")}
           />
 
           <PasswordInput
-            label="Password"
-            placeholder="Create password"
+            label="Mật khẩu"
+            placeholder="Tạo mật khẩu"
             {...form.getInputProps("password")}
           />
 
           <PasswordInput
-            label="Confirm Password"
-            placeholder="Confirm password"
+            label="Xác nhận mật khẩu"
+            placeholder="Xác nhận mật khẩu"
             {...form.getInputProps("confirmPassword")}
           />
 
           <TextInput
-            label="Apartment ID"
+            label="Mã căn hộ"
             placeholder="101"
-            description="Enter your assigned unit code"
+            description="Nhập mã căn hộ của bạn"
             {...form.getInputProps("apartmentId")}
           />
 
           <Button type="submit" fullWidth loading={form.submitting}>
-            Create Account
+            Tạo tài khoản
           </Button>
         </Stack>
       </form>
