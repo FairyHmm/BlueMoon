@@ -66,23 +66,18 @@ export const chartConfig = (stats) => [
     data: [
       {
         name: "Standard",
-        value: stats.units.types.Standard,
+        value: stats.units.types.standard || 0,
         color: "var(--color-primary)",
       },
       {
         name: "Studio",
-        value: stats.units.types.Studio,
+        value: stats.units.types.studio || 0,
         color: "var(--color-warning)",
       },
       {
         name: "Duplex",
-        value: stats.units.types.Duplex,
+        value: stats.units.types.duplex || 0,
         color: "var(--color-success)",
-      },
-      {
-        name: "Penthouse",
-        value: stats.units.types.Penthouse,
-        color: "var(--color-danger)",
       },
     ],
   },

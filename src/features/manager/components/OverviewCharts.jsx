@@ -3,7 +3,7 @@ import { useViewportSize } from "@mantine/hooks";
 import ChartCard from "../../../shared/components/ChartCard";
 import { chartConfig } from "../utils/dataConfigs";
 
-export default function AdminOverviewCharts({ stats }) {
+export default function OverviewCharts({ stats }) {
   const { width } = useViewportSize();
   const charts = chartConfig(stats);
 

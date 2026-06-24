@@ -46,7 +46,7 @@ export const UNIT_TYPES = {
     icon: IconHome,
   },
   DUPLEX: {
-    value: "Duplex",
+    value: "duplex",
     label: "Duplex",
     color: "teal",
     icon: IconBuildingCommunity,
