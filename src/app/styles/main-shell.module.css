@@ -19,6 +19,10 @@
   color: var(--color-text);
   min-height: 100vh;
 
+  padding-left: var(--spacing-xl) !important;
+  padding-right: var(--spacing-xl) !important;
+  padding-bottom: var(--spacing-md) !important;
+
   @media (max-width: 64em) {
     padding-left: var(--spacing-md) !important;
     padding-right: var(--spacing-md) !important;

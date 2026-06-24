@@ -12,7 +12,7 @@ export default function AuthLayout({
 }) {
   return (
     <Group justify="center" align="center" h="100vh" bg="var(--color-bg-body)">
-      <Paper w="100%" maw={420} p="xl" radius="md" withBorder>
+      <Paper w="85%" maw={420} p="xl" radius="md" withBorder>
         <Stack gap="xl">
           <Stack align="center" gap="xs">
             <Image src={logo} h={40} w="auto" alt="BlueMoon Logo" />

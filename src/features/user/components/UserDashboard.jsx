@@ -50,7 +50,7 @@ export default function UserDashboard() {
         </Grid.Col>
 
         <Grid.Col span={{ base: 12, md: 4 }}>
-          <SimpleGrid cols={{ base: 2, md: 1 }}>
+          <SimpleGrid cols={{ base: 1, xs: 2, md: 1 }} spacing="md">
             <HouseholdPanel
               household={household}
               absenceLogs={absenceLogs}
