@@ -1,4 +1,4 @@
-import { Group, Text, Stack, ActionIcon } from "@mantine/core";
+import { Group, Text, Stack, ActionIcon, Tooltip } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 import StatusMenu from "../../../shared/components/StatusMenu";
 import { BILL_STATUS } from "../utils/constants";
@@ -11,6 +11,7 @@ import {
 export default function BillRow({ bill, feeType, onUpdate, onDelete }) {
   const displayStatus = getBillDisplayStatus(bill);
   const isPaid = bill.status === "paid";
+  const isOptional = bill.optional === true;
 
   const rawInterval = bill.interval || feeType?.interval || "monthly";
   const intervals = {
@@ -20,25 +21,44 @@ export default function BillRow({ bill, feeType, onUpdate, onDelete }) {
   };
   const readableInterval = intervals[rawInterval] || "Monthly";
 
+  const amountColor = isOptional
+    ? "var(--color-incomplete)"
+    : displayStatus === "overdue"
+      ? "var(--color-danger)"
+      : displayStatus === "due"
+        ? "var(--color-danger)"
+        : undefined;
+
   return (
-    <Group justify="space-between" wrap="nowrap" gap="xs">
-      <Stack gap={2} style={{ flexGrow: 1, minWidth: 0 }}>
-        <Text size="xs" fw={700} truncate>
-          {feeType?.name || "Unknown"} • {readableInterval}
-        </Text>
-
-        <Text size="xs" c="dimmed">
-          Due: {formatDate(bill.due_date)}
-        </Text>
-        {isPaid && (
-          <Text size="xs" c="teal">
-            Paid: {formatDate(bill.paid_date) || "—"}
+    <Group
+      justify="space-between"
+      wrap="nowrap"
+      gap="xs"
+    >
+      <Tooltip
+        label={`${isOptional ? "Optional" : "Mandatory"}. ${feeType?.description || ""}`}
+        position="bottom-start"
+        withArrow
+        color="indigo.9"
+      >
+        <Stack gap={2}>
+          <Text size="xs" fw={700} truncate>
+            {feeType?.name || "Unknown"} • {readableInterval}
           </Text>
-        )}
-      </Stack>
 
-      <Group gap="xs" wrap="nowrap">
-        <Text size="sm" fw={900} className="mono">
+          <Text size="xs" c="dimmed">
+            Due: {formatDate(bill.due_date)}
+          </Text>
+          {isPaid && (
+            <Text size="xs" c="teal">
+              Paid: {formatDate(bill.paid_date) || "—"}
+            </Text>
+          )}
+        </Stack>
+      </Tooltip>
+
+      <Group gap="xs" wrap="nowrap" style={{ flexShrink: 0 }}>
+        <Text size="sm" fw={900} className="mono" c={amountColor}>
           ${bill.amount.toLocaleString()}
         </Text>
 

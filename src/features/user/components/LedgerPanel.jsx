@@ -54,14 +54,7 @@ export default function LedgerPanel({
       <Stack gap="sm">
         {filteredBills.length > 0 ? (
           filteredBills.map((bill) => (
-            <Paper
-              key={bill.id}
-              style={{
-                background: "var(--color-bg-input)",
-              }}
-            >
-              <BillRow bill={bill} feeType={feeTypeMap[bill.fee_id]} />
-            </Paper>
+            <BillRow bill={bill} feeType={feeTypeMap[bill.fee_id]} />
           ))
         ) : (
           <Text size="xs" c="dimmed" ta="center" py="xl">

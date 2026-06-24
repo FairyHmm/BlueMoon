@@ -17,7 +17,7 @@
 }
 
 .status-badge {
-  min-width: 80px;
+  min-width: 100px;
   cursor: pointer;
   user-select: none;
   transition: filter 0.2s ease;
