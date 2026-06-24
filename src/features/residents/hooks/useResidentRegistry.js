@@ -50,10 +50,27 @@ export const useResidentRegistry = (query = "") => {
     });
 
     if (safeQuery) {
-      data = data.filter(
-        (apt) =>
-          String(apt.id).toLowerCase().includes(safeQuery) ||
-          apt.residents?.some((r) => r.name.toLowerCase().includes(safeQuery)),
+      const terms = safeQuery.split(" ").filter(Boolean);
+
+      data = data.filter((apt) =>
+        terms.every(
+          (term) =>
+            String(apt.id).toLowerCase().includes(term) ||
+            apt.type?.toLowerCase().includes(term) ||
+            apt.residents?.some(
+              (r) =>
+                r.name?.toLowerCase().includes(term) ||
+                r.status?.toLowerCase().includes(term) ||
+                r.absenceStatus?.toLowerCase().includes(term) ||
+                r.absenceType?.toLowerCase().includes(term),
+            ) ||
+            apt.allVehicles?.some(
+              (v) =>
+                v.plate_number?.toLowerCase().includes(term) ||
+                v.type?.toLowerCase().includes(term) ||
+                v.status?.toLowerCase().includes(term),
+            ),
+        ),
       );
     }
 
