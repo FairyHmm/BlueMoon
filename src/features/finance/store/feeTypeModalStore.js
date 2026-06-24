@@ -7,6 +7,10 @@ const INITIAL_FORM = {
   calc_method: "fixed",
   price: "",
   interval: BILLING_INTERVALS.MONTHLY,
+  optional: false,
+  description: "",
+  late_fee: "",
+  late_fee_type: "flat",
 };
 
 export const useFeeTypeModalStore = create((set, get) => ({
@@ -23,6 +27,10 @@ export const useFeeTypeModalStore = create((set, get) => ({
           calc_method: item.calc_method || "fixed",
           price: item.price ?? "",
           interval: item.interval || BILLING_INTERVALS.MONTHLY,
+          optional: item.optional ?? false,
+          description: item.description || "",
+          late_fee: item.late_fee ?? "",
+          late_fee_type: item.late_fee_type || "flat",
         },
       });
     }
@@ -48,6 +56,10 @@ export const useFeeTypeModalStore = create((set, get) => ({
       calc_method: "fixed",
       price: 0,
       interval: BILLING_INTERVALS.MONTHLY,
+      optional: false,
+      description: "",
+      late_fee: "",
+      late_fee_type: "flat",
     });
     set({ selectedId: newId });
   },

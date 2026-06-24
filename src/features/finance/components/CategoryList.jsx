@@ -18,7 +18,7 @@ export function CategoryList({ items, onDelete }) {
   const { selectedId, addNew } = useFeeTypeModalStore();
 
   return (
-    <Stack style={{ height: "360px" }}>
+    <Stack style={{ height: "400px" }}>
       <Stack gap="xs" style={{ flex: 1, minHeight: 0 }}>
         <Text size="sm" fw={700} tt="uppercase" c="dimmed">
           Categories
@@ -30,6 +30,7 @@ export function CategoryList({ items, onDelete }) {
                 key={item.id}
                 item={item}
                 isSelected={selectedId === item.id}
+                onDelete={onDelete}
               />
             ))}
           </Stack>
@@ -51,7 +52,7 @@ export function CategoryList({ items, onDelete }) {
   );
 }
 
-const CategoryItem = memo(({ item, isSelected }) => {
+const CategoryItem = memo(({ item, isSelected, onDelete }) => {
   const { selectItem } = useFeeTypeModalStore();
 
   const interval =
@@ -86,7 +87,10 @@ const CategoryItem = memo(({ item, isSelected }) => {
           variant="subtle"
           color="red"
           size="xs"
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (onDelete) onDelete(item.id);
+          }}
         >
           <IconTrash size={14} />
         </ActionIcon>

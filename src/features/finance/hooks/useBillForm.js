@@ -44,11 +44,18 @@ export const useBillForm = (initialData, onSaveSuccess) => {
   const updateField = useCallback((field, value) => {
     setFormData((prev) => {
       if (field === "fee_id") {
-        return { ...prev, fee_id: value, custom_rate: "", custom_quantity: "" };
+        const fee = feeTypeMap[value];
+        return {
+          ...prev,
+          fee_id: value,
+          custom_rate: "",
+          custom_quantity: "",
+          optional: fee?.optional ?? false,
+        };
       }
       return { ...prev, [field]: value };
     });
-  }, []);
+  }, [feeTypeMap]);
 
   const submitForm = useCallback(() => {
     if (!formData.apartment_id || !formData.fee_id) return false;
@@ -60,6 +67,7 @@ export const useBillForm = (initialData, onSaveSuccess) => {
       due_date: formData.due_date,
       status: BILL_STATUS.DUE.value,
       interval: selectedFee?.interval || "monthly",
+      optional: formData.optional,
     });
 
     onSaveSuccess?.();

@@ -7,6 +7,7 @@ import {
   Divider,
   Group,
   Button,
+  Checkbox,
 } from "@mantine/core";
 import { useFeeTypeModalStore } from "../store/feeTypeModalStore";
 import {
@@ -24,20 +25,37 @@ export function CategoryWorkspaceForm() {
     CALC_METHOD_MAP[formData.calc_method] ?? CALC_METHOD_MAP["fixed"];
 
   return (
-    <Stack justify="space-between" style={{ height: "360px" }}>
+    <Stack justify="space-between" style={{ height: "400px" }}>
       {isActive ? (
         <Stack>
           <Text size="sm" fw={700} tt="uppercase" c="dimmed">
             Configuration
           </Text>
 
+          <Group align="flex-end">
+            <TextInput
+              label="Category Name"
+              placeholder="e.g., Management"
+              value={formData.name}
+              onChange={(e) => updateField("name", e.target.value)}
+              autoFocus
+              required
+              style={{ flex: 1 }}
+            />
+            <Checkbox
+              label="Optional"
+              checked={formData.optional}
+              onChange={(e) => updateField("optional", e.currentTarget.checked)}
+              mb="sm"
+              variant="outline"
+            />
+          </Group>
+
           <TextInput
-            label="Category Name"
-            placeholder="e.g., Management"
-            value={formData.name}
-            onChange={(e) => updateField("name", e.target.value)}
-            autoFocus
-            required
+            label="Description"
+            placeholder="e.g., Monthly building maintenance fee"
+            value={formData.description}
+            onChange={(e) => updateField("description", e.target.value)}
           />
 
           <Group grow>
@@ -59,16 +77,28 @@ export function CategoryWorkspaceForm() {
             />
           </Group>
 
-          <NumberInput
-            label={calcMethod.priceLabel}
-            prefix="$ "
-            value={formData.price}
-            onChange={(val) => updateField("price", val)}
-            min={0}
-            decimalScale={2}
-            hideControls
-            required
-          />
+          <Group grow>
+            <NumberInput
+              label={calcMethod.priceLabel}
+              prefix="$ "
+              value={formData.price}
+              onChange={(val) => updateField("price", val)}
+              min={0}
+              decimalScale={2}
+              hideControls
+              required
+            />
+            <NumberInput
+              label="Late Fee"
+              placeholder="0"
+              value={formData.late_fee}
+              onChange={(val) => updateField("late_fee", val)}
+              min={0}
+              decimalScale={2}
+              hideControls
+              prefix="$ "
+            />
+          </Group>
         </Stack>
       ) : (
         <Stack align="center" justify="center" style={{ flex: 1 }}>

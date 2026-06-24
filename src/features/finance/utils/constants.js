@@ -90,6 +90,7 @@ export const DEFAULT_BILL_FORM = {
   custom_rate: "",
   custom_quantity: "",
   due_date: new Date().toISOString().split("T")[0],
+  optional: false,
 };
 
 export const FILTER_OPTIONS = [
