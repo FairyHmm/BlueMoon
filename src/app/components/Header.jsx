@@ -1,19 +1,20 @@
 import { ActionIcon, Group, Image, Menu, Text } from "@mantine/core";
 import { IconLogout, IconUserCircle } from "@tabler/icons-react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../shared/store/useAuthStore";
 import logo from "../../shared/assets/BlueMoon.svg?react";
 import classes from "../styles/header.module.css";
 
 export default function Header() {
-  const { user, logout } = useAuthStore();
-
+  const { user, ready, logout } = useAuthStore();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+  useEffect(() => {
+    if (ready && !user) {
+      navigate("/login", { replace: true });
+    }
+  }, [ready, user, navigate]);
 
   return (
     <Group
@@ -50,7 +51,7 @@ export default function Header() {
           <Menu.Item
             color="red"
             leftSection={<IconLogout size={14} />}
-            onClick={handleLogout}
+            onClick={logout}
           >
             Logout
           </Menu.Item>

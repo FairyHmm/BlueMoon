@@ -5,8 +5,13 @@ import PublicRoute from "./PublicRoute";
 import { NAV_ITEMS } from "../utils/navigationConfigs";
 import LoginForm from "../../features/auth/components/LoginForm";
 import RegisterForm from "../../features/auth/components/RegisterForm";
+import { useAuthStore } from "../../shared/store/useAuthStore";
 
 export default function AppRoutes() {
+  const ready = useAuthStore((s) => s.ready);
+
+  if (!ready) return null;
+
   return (
     <BrowserRouter>
       <Routes>

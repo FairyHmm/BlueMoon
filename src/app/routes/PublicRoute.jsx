@@ -2,10 +2,10 @@ import { Navigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "../../shared/store/useAuthStore";
 
 export default function PublicRoute({ element }) {
-  const { user, loading } = useAuthStore();
+  const { user, ready } = useAuthStore();
   const location = useLocation();
 
-  if (loading) return <div>Loading...</div>;
+  if (!ready) return null;
 
   if (user) {
     const from = location.state?.from?.pathname || "/dashboard";

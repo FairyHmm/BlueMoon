@@ -1,5 +1,6 @@
 import { Button, PasswordInput, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthLayout from "./AuthLayout";
 import { useAuthStore } from "../../../shared/store/useAuthStore";
@@ -7,6 +8,14 @@ import { useAuthStore } from "../../../shared/store/useAuthStore";
 export default function RegisterForm() {
   const navigate = useNavigate();
   const register = useAuthStore((s) => s.register);
+  const user = useAuthStore((s) => s.user);
+  const ready = useAuthStore((s) => s.ready);
+
+  useEffect(() => {
+    if (ready && user) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [ready, user, navigate]);
 
   const form = useForm({
     initialValues: {
@@ -38,10 +47,8 @@ export default function RegisterForm() {
       if (result.message.includes("Apartment"))
         form.setFieldError("apartmentId", result.message);
       else form.setErrors({ username: result.message });
-      return;
     }
-
-    navigate("/dashboard");
+    // Navigation is handled by the useEffect above once user is set.
   };
 
   return (
@@ -86,7 +93,7 @@ export default function RegisterForm() {
             {...form.getInputProps("apartmentId")}
           />
 
-          <Button type="submit" fullWidth>
+          <Button type="submit" fullWidth loading={form.submitting}>
             Create Account
           </Button>
         </Stack>

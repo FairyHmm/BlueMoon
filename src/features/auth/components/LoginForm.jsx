@@ -1,5 +1,6 @@
 import { Button, PasswordInput, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthLayout from "./AuthLayout";
 import { useAuthStore } from "../../../shared/store/useAuthStore";
@@ -7,6 +8,16 @@ import { useAuthStore } from "../../../shared/store/useAuthStore";
 export default function LoginForm() {
   const navigate = useNavigate();
   const login = useAuthStore((s) => s.login);
+  const user = useAuthStore((s) => s.user);
+  const ready = useAuthStore((s) => s.ready);
+
+  // Navigate only once auth state is confirmed — avoids the flicker from
+  // navigating immediately on submit before onAuthStateChanged fires.
+  useEffect(() => {
+    if (ready && user) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [ready, user, navigate]);
 
   const form = useForm({
     initialValues: { username: "", password: "" },
@@ -21,10 +32,8 @@ export default function LoginForm() {
 
     if (result && !result.success) {
       form.setFieldError("password", result.message || "Invalid credentials");
-      return;
     }
-
-    navigate("/dashboard");
+    // Navigation is handled by the useEffect above once user is set.
   };
 
   return (
@@ -47,7 +56,7 @@ export default function LoginForm() {
             placeholder="Enter password"
             {...form.getInputProps("password")}
           />
-          <Button type="submit" fullWidth>
+          <Button type="submit" fullWidth loading={form.submitting}>
             Sign In
           </Button>
         </Stack>
