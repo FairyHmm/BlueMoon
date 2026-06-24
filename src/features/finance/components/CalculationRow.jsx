@@ -7,25 +7,25 @@ export default function CalculationRow({
   formulaResult,
   labels,
   updateField,
+  customQuantity,
   customRate,
 }) {
-  const inputBaseProps = {
-    hideControls: true,
-    variant: "filled",
-    style: { minWidth: 80, flex: 1 },
-  };
+  const rateSuffix =
+    selectedFee?.interval === "one_time"
+      ? "(one-time)"
+      : `(/ ${selectedFee?.interval === "yearly" ? "yr" : "mo"})`;
 
-  // Generate contextual headers for the currency form fields
-  const rateSuffix = selectedFee?.interval === "one_time"
-    ? "(one-time)"
-    : `(/ ${selectedFee?.interval === "yearly" ? "yr" : "mo"})`;
+  const inputStyle = { minWidth: 80, flex: 1 };
 
   return (
     <Stack gap="xs">
       <Flex gap="xs" justify="center" align="center">
         <NumberInput
           label={labels.quantityLabel}
-          value={formulaResult.base}
+          hideControls
+          variant="filled"
+          style={inputStyle}
+          value={customQuantity !== "" ? customQuantity : formulaResult.base}
           onChange={(v) =>
             !labels.quantityDisabled &&
             updateField("custom_quantity", normaliseNumber(v))
@@ -35,7 +35,6 @@ export default function CalculationRow({
             input: { cursor: labels.quantityDisabled ? "not-allowed" : "" },
           }}
           min={1}
-          {...inputBaseProps}
         />
 
         <Text
@@ -48,12 +47,14 @@ export default function CalculationRow({
 
         <NumberInput
           label={`Rate ${rateSuffix}`}
+          hideControls
+          variant="filled"
+          style={inputStyle}
           value={customRate !== "" ? customRate : undefined}
           onChange={(v) => updateField("custom_rate", normaliseNumber(v))}
           min={0}
           leftSection={<IconCoin size={14} />}
-          placeholder={String(selectedFee.price || 0)}
-          {...inputBaseProps}
+          placeholder={String(selectedFee?.price || 0)}
         />
 
         <Text
@@ -66,6 +67,9 @@ export default function CalculationRow({
 
         <NumberInput
           label="Total"
+          hideControls
+          variant="filled"
+          style={inputStyle}
           value={formulaResult.total.toFixed(2)}
           readOnly
           styles={{
@@ -75,7 +79,6 @@ export default function CalculationRow({
               cursor: "not-allowed",
             },
           }}
-          {...inputBaseProps}
         />
       </Flex>
     </Stack>

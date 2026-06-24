@@ -14,7 +14,8 @@ export default function BillModal({ initialData, onSave, onCancel }) {
     submitForm,
   } = useBillForm(initialData, onSave);
 
-  const methodConfig = CALC_METHOD_MAP[selectedFee?.calc_method] || CALC_METHOD_MAP["fixed"];
+  const methodConfig =
+    CALC_METHOD_MAP[selectedFee?.calc_method] || CALC_METHOD_MAP["fixed"];
 
   const labels = {
     quantityDisabled: methodConfig.quantityDisabled,
@@ -55,6 +56,7 @@ export default function BillModal({ initialData, onSave, onCancel }) {
           formulaResult={formulaResult}
           labels={labels}
           updateField={updateField}
+          customQuantity={formData.custom_quantity}
           customRate={formData.custom_rate}
         />
       )}

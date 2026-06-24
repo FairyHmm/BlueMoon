@@ -55,7 +55,7 @@ export const useBillForm = (initialData, onSaveSuccess) => {
 
     financeActions.addBill({
       apartment_id: formData.apartment_id,
-      fee_id: Number(formData.fee_id),
+      fee_id: formData.fee_id,
       amount: formulaResult.total,
       due_date: formData.due_date,
       status: BILL_STATUS.DUE.value,

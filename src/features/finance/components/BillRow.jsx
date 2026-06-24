@@ -24,7 +24,7 @@ export default function BillRow({ bill, feeType, onUpdate, onDelete }) {
     <Group justify="space-between" wrap="nowrap" gap="xs">
       <Stack gap={2} style={{ flexGrow: 1, minWidth: 0 }}>
         <Text size="xs" fw={700} truncate>
-          {feeType.name} • {readableInterval}
+          {feeType?.name || "Unknown"} • {readableInterval}
         </Text>
 
         <Text size="xs" c="dimmed">

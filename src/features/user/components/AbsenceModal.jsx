@@ -21,7 +21,7 @@ export default function AbsenceModal({ opened, onClose, household = [], defaultR
 
   const handleSubmit = (values) => {
     userActions.logAbsence({
-      resident_id: Number(values.resident_id),
+      resident_id: values.resident_id,
       type: values.type,
       log_date: values.log_date,
     });
