@@ -15,30 +15,30 @@ export const CALC_METHODS = {
 export const CALC_METHOD_OPTIONS = [
   {
     value: CALC_METHODS.FIXED,
-    label: "Flat Rate",
+    label: "Mức cố định",
     color: "blue",
     icon: IconCalculator,
-    priceLabel: "Flat Rate Cost",
+    priceLabel: "Chi phí cố định",
     quantityDisabled: false,
-    quantityLabel: "Units",
+    quantityLabel: "Số lượng",
   },
   {
     value: CALC_METHODS.PER_M2,
-    label: "Per m²",
+    label: "Theo m²",
     color: "grape",
     icon: IconRulerMeasure,
-    priceLabel: "Price Rate per m²",
+    priceLabel: "Đơn giá theo m²",
     quantityDisabled: true,
-    quantityLabel: "Area (m²)",
+    quantityLabel: "Diện tích (m²)",
   },
   {
     value: CALC_METHODS.PER_UNIT,
-    label: "Per Unit",
+    label: "Theo đơn vị",
     color: "orange",
     icon: IconRulerMeasure,
-    priceLabel: "Price Rate per Unit",
+    priceLabel: "Đơn giá theo đơn vị",
     quantityDisabled: false,
-    quantityLabel: "Quantity",
+    quantityLabel: "Số lượng",
   },
 ];
 
@@ -55,19 +55,19 @@ export const BILLING_INTERVALS = {
 export const INTERVAL_OPTIONS = [
   {
     value: BILLING_INTERVALS.ONE_TIME,
-    label: "One-time",
+    label: "Một lần",
     color: "gray",
     icon: IconCalendarEvent,
   },
   {
     value: BILLING_INTERVALS.MONTHLY,
-    label: "Monthly",
+    label: "Hàng tháng",
     color: "blue",
     icon: IconCalendarMonth,
   },
   {
     value: BILLING_INTERVALS.YEARLY,
-    label: "Yearly",
+    label: "Hàng năm",
     color: "violet",
     icon: IconCalendar,
   },
@@ -78,10 +78,10 @@ export const INTERVAL_MAP = Object.fromEntries(
 );
 
 export const BILL_STATUS = {
-  PAID: { value: "paid", label: "Paid", color: "teal" },
-  DUE: { value: "due", label: "Due", color: "blue" },
-  OVERDUE: { value: "overdue", label: "Overdue", color: "red" },
-  WAIT: { value: "wait", label: "Wait", color: "gray" },
+  PAID: { value: "paid", label: "Thanh toán", color: "teal" },
+  DUE: { value: "due", label: "Đến hạn", color: "blue" },
+  OVERDUE: { value: "overdue", label: "Quá hạn", color: "red" },
+  WAIT: { value: "wait", label: "Chờ", color: "gray" },
 };
 
 export const FILTER_OPTIONS = [
@@ -94,7 +94,7 @@ export const FILTER_OPTIONS = [
     value: BILL_STATUS.PAID.value,
   },
   {
-    label: "All",
+    label: "Tất cả",
     value: "all",
   },
   {

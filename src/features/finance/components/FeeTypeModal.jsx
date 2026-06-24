@@ -10,7 +10,7 @@ export default function FeeTypeModal({ opened, onClose }) {
     <Modal
       opened={opened}
       onClose={onClose}
-      title="Fee Category Settings"
+      title="Cài đặt loại phí"
       centered
       zIndex={1000}
       size="lg"

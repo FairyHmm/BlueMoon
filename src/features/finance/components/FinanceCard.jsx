@@ -37,7 +37,7 @@ export default function FinanceCard({
   };
 
   const handleDelete = (billId) => {
-    if (window.confirm("Are you sure you want to delete this bill?")) {
+    if (window.confirm("Bạn có chắc muốn xóa hóa đơn này?")) {
       financeActions.deleteBill(billId);
     }
   };
@@ -51,7 +51,7 @@ export default function FinanceCard({
 
           <Group justify="space-between" px={4}>
             <Text size="xs" fw={700} c="dimmed">
-              TOTAL
+              TỔNG
             </Text>
 
             <Text
@@ -70,7 +70,7 @@ export default function FinanceCard({
       }
     >
       <RecordHeader
-        title="Billing Records"
+        title="Lịch sử hóa đơn"
         onAdd={() => onOpenAddBill(unit.id)}
         color="blue"
       />

@@ -24,7 +24,7 @@ export function getBillCalculation({
   const rate = customRate !== "" ? Number(customRate) : Number(fee.price || 0);
 
   const schedule =
-    fee.recurrence && fee.recurrence !== "none" ? "Recurring" : "One-time";
+    fee.recurrence && fee.recurrence !== "none" ? "Định kỳ" : "Một lần";
 
   switch (fee.calc_method) {
     case CALC_METHODS.PER_M2: {

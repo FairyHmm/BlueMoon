@@ -52,7 +52,7 @@ export const useFeeTypeModalStore = create((set, get) => ({
     const newId = crypto.randomUUID();
     financeActions.addFeeType({
       id: newId,
-      name: `New Category Rule ${currentCount + 1}`,
+      name: `Quy tắc danh mục mới ${currentCount + 1}`,
       calc_method: "fixed",
       price: 0,
       interval: BILLING_INTERVALS.MONTHLY,

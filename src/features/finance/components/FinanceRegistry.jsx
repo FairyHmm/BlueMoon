@@ -25,7 +25,7 @@ export default function FinanceRegistry() {
 
   return (
     <DataRegistry
-      title="Financial Management"
+      title="Quản lý tài chính"
       searchQuery={query}
       setSearchQuery={(val) => setQuery(typeof val === "string" ? val : "")}
       rightSection={
@@ -34,7 +34,7 @@ export default function FinanceRegistry() {
           onClick={feeActions.open}
           color="blue"
         >
-          Configure Fee Categories
+          Cấu hình loại phí
         </Button>
       }
     >
@@ -60,8 +60,8 @@ export default function FinanceRegistry() {
         onClose={billActions.close}
         title={
           activeUnitId
-            ? `Issue New Bill for Unit ${activeUnitId}`
-            : "Issue New Bill"
+            ? `Tạo hóa đơn mới cho căn hộ ${activeUnitId}`
+            : "Tạo hóa đơn mới"
         }
         centered
         zIndex={1000}

@@ -12,8 +12,8 @@ export default function CalculationRow({
 }) {
   const rateSuffix =
     selectedFee?.interval === "one_time"
-      ? "(one-time)"
-      : `(/ ${selectedFee?.interval === "yearly" ? "yr" : "mo"})`;
+      ? "(một lần)"
+      : `(/ ${selectedFee?.interval === "yearly" ? "năm" : "th"})`;
 
   const inputStyle = { minWidth: 80, flex: 1 };
 
@@ -46,7 +46,7 @@ export default function CalculationRow({
         </Text>
 
         <NumberInput
-          label={`Rate ${rateSuffix}`}
+          label={`Đơn giá ${rateSuffix}`}
           hideControls
           variant="filled"
           style={inputStyle}
@@ -66,7 +66,7 @@ export default function CalculationRow({
         </Text>
 
         <NumberInput
-          label="Total"
+          label="Tổng"
           hideControls
           variant="filled"
           style={inputStyle}

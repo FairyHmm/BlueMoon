@@ -27,8 +27,8 @@ export default function BillModal({ initialData, onSave, onCancel }) {
     <Stack spacing="sm">
       <Flex gap="xs" justify="center" align="center">
         <Select
-          label="Fee Category"
-          placeholder="Choose category"
+          label="Loại phí"
+          placeholder="Chọn loại phí"
           leftSection={<IconReceipt size={16} />}
           data={feeTypes.map((f) => ({
             value: String(f.id),
@@ -41,7 +41,7 @@ export default function BillModal({ initialData, onSave, onCancel }) {
         />
         <TextInput
           type="date"
-          label="Due Date"
+          label="Ngày đến hạn"
           leftSection={<IconCalendar size={16} />}
           value={formData.due_date}
           onChange={(e) => updateField("due_date", e.target.value)}
@@ -71,7 +71,7 @@ export default function BillModal({ initialData, onSave, onCancel }) {
           disabled={!formData.fee_id}
           onClick={submitForm}
         >
-          Generate Invoice
+          Tạo hóa đơn
         </Button>
       </Flex>
     </Stack>

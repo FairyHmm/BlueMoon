@@ -16,19 +16,19 @@ export default function BillRow({ bill, feeType, onUpdate, onDelete }) {
   const rawInterval = bill.interval || feeType?.interval || "monthly";
 
   const intervals = {
-    one_time: "One-Time",
-    yearly: "Yearly",
-    monthly: "Monthly",
+    one_time: "Một lần",
+    yearly: "Hàng năm",
+    monthly: "Hàng tháng",
   };
 
-  const readableInterval = intervals[rawInterval] || "Monthly";
+  const readableInterval = intervals[rawInterval] || "Hàng tháng";
 
   return (
     <RecordRow
       boldTitle={!bill.optional}
       title={
         <Tooltip
-          label={`${bill.optional ? "Optional" : "Mandatory"}. ${
+          label={`${bill.optional ? "Tự nguyện" : "Bắt buộc"}. ${
             feeType?.description || ""
           }`}
           position="bottom-start"
@@ -36,14 +36,14 @@ export default function BillRow({ bill, feeType, onUpdate, onDelete }) {
           color="indigo.9"
         >
           <span>
-            {feeType?.name || "Unknown"} • {readableInterval}
+            {feeType?.name || "Không xác định"} • {readableInterval}
           </span>
         </Tooltip>
       }
       subtext={
         <>
-          Due: {formatDate(bill.due_date)}
-          {isPaid && ` • Paid: ${formatDate(bill.paid_date) || "—"}`}
+          Đến hạn: {formatDate(bill.due_date)}
+          {isPaid && ` • Đã thanh toán: ${formatDate(bill.paid_date) || "—"}`}
         </>
       }
       right={

@@ -29,13 +29,13 @@ export function CategoryWorkspaceForm() {
       {isActive ? (
         <Stack>
           <Text size="sm" fw={700} tt="uppercase" c="dimmed">
-            Configuration
+            Cấu hình
           </Text>
 
           <Group align="flex-end">
             <TextInput
-              label="Category Name"
-              placeholder="e.g., Management"
+              label="Tên danh mục"
+              placeholder="VD: Quản lý"
               value={formData.name}
               onChange={(e) => updateField("name", e.target.value)}
               autoFocus
@@ -43,7 +43,7 @@ export function CategoryWorkspaceForm() {
               style={{ flex: 1 }}
             />
             <Checkbox
-              label="Optional"
+              label="Tùy chọn"
               checked={formData.optional}
               onChange={(e) => updateField("optional", e.currentTarget.checked)}
               mb="sm"
@@ -52,22 +52,22 @@ export function CategoryWorkspaceForm() {
           </Group>
 
           <TextInput
-            label="Description"
-            placeholder="e.g., Monthly building maintenance fee"
+            label="Mô tả"
+            placeholder="VD: Phí bảo trì tòa nhà hàng tháng"
             value={formData.description}
             onChange={(e) => updateField("description", e.target.value)}
           />
 
           <Group grow>
             <Select
-              label="Calculation Method"
+              label="Phương pháp tính"
               data={CALC_METHOD_OPTIONS}
               value={formData.calc_method}
               onChange={(val) => updateField("calc_method", val || "fixed")}
               comboboxProps={{ zIndex: 5000, withinPortal: true }}
             />
             <Select
-              label="Billing Interval"
+              label="Chu kỳ thanh toán"
               data={INTERVAL_OPTIONS}
               value={formData.interval}
               onChange={(val) =>
@@ -89,7 +89,7 @@ export function CategoryWorkspaceForm() {
               required
             />
             <NumberInput
-              label="Late Fee"
+              label="Phí trễ hạn"
               placeholder="0"
               value={formData.late_fee}
               onChange={(val) => updateField("late_fee", val)}
@@ -103,7 +103,7 @@ export function CategoryWorkspaceForm() {
       ) : (
         <Stack align="center" justify="center" style={{ flex: 1 }}>
           <Text size="sm" c="dimmed" ta="center">
-            Select or create a fee category to edit its properties.
+            Chọn hoặc tạo danh mục phí để chỉnh sửa.
           </Text>
         </Stack>
       )}
@@ -115,7 +115,7 @@ export function CategoryWorkspaceForm() {
             size="sm"
             onClick={() => useFeeTypeModalStore.getState().reset()}
           >
-            Done
+            Xong
           </Button>
         </Group>
       </Stack>

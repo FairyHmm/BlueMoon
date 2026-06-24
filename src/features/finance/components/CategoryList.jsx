@@ -21,7 +21,7 @@ export function CategoryList({ items, onDelete }) {
     <Stack style={{ height: "400px" }}>
       <Stack gap="xs" style={{ flex: 1, minHeight: 0 }}>
         <Text size="sm" fw={700} tt="uppercase" c="dimmed">
-          Categories
+          Danh mục
         </Text>
         <ScrollArea offsetScrollbars>
           <Stack gap={4} pr="xs">
@@ -45,7 +45,7 @@ export function CategoryList({ items, onDelete }) {
           rightSection={<IconPlus size={14} />}
           onClick={() => addNew(items.length)}
         >
-          Add New Category
+            Thêm danh mục
         </Button>
       </Stack>
     </Stack>
@@ -75,7 +75,7 @@ const CategoryItem = memo(({ item, isSelected, onDelete }) => {
         </ThemeIcon>
         <Group gap="0" style={{ overflow: "hidden" }}>
           <Text size="sm" fw={isSelected ? 600 : 500} truncate>
-            {item.name || "Untitled Rule"}
+            {item.name || "Quy tắc chưa đặt tên"}
           </Text>
           <Text size="xs" c="dimmed">
             {price} • {interval.label}
