@@ -18,7 +18,7 @@ export default function ResidentRegistry() {
 
   return (
     <DataRegistry
-      title="Resident Management"
+      title="Quản lý cư dân"
       searchQuery={query}
       setSearchQuery={(val) => setQuery(typeof val === "string" ? val : "")}
       rightSection={
@@ -28,7 +28,7 @@ export default function ResidentRegistry() {
           className={classes["add-unit-button"]}
           color="blue"
         >
-          Add Unit
+          Thêm căn hộ
         </Button>
       }
     >
@@ -45,7 +45,7 @@ export default function ResidentRegistry() {
       <Modal
         opened={isAddingUnit}
         onClose={() => setIsAddingUnit(false)}
-        title="Create New Unit"
+        title="Tạo căn hộ mới"
         centered
         zIndex={1000}
         classNames={{

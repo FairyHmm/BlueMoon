@@ -5,9 +5,9 @@ import {
 } from "@tabler/icons-react";
 
 export const RESIDENT_STATUS = {
-  ACTIVE: { value: "active", label: "Active", color: "green" },
-  PENDING: { value: "pending", label: "Pending", color: "orange" },
-  INACTIVE: { value: "inactive", label: "Inactive", color: "red" },
+  ACTIVE: { value: "active", label: "Hoạt động", color: "green" },
+  PENDING: { value: "pending", label: "Đang chờ", color: "orange" },
+  INACTIVE: { value: "inactive", label: "Ngừng hoạt động", color: "red" },
 };
 
 export const getStatusConfig = (statusValue) =>
@@ -15,8 +15,8 @@ export const getStatusConfig = (statusValue) =>
   RESIDENT_STATUS.PENDING;
 
 export const VEHICLE_STATUS = {
-  ACTIVE: { value: "active", label: "Active", color: "green" },
-  PENDING: { value: "pending", label: "Pending", color: "orange" },
+  ACTIVE: { value: "active", label: "Hoạt động", color: "green" },
+  PENDING: { value: "pending", label: "Đang chờ", color: "orange" },
 };
 
 export const getVehicleStatusConfig = (statusValue) =>
@@ -24,8 +24,8 @@ export const getVehicleStatusConfig = (statusValue) =>
   VEHICLE_STATUS.PENDING;
 
 export const ABSENCE_STATUS = {
-  PENDING: { value: "pending", label: "Pending", color: "orange" },
-  APPROVED: { value: "approved", label: "Away", color: "gray" },
+  PENDING: { value: "pending", label: "Đang chờ", color: "orange" },
+  APPROVED: { value: "approved", label: "Vắng mặt", color: "gray" },
 };
 
 export const getAbsenceStatusConfig = (statusValue) =>
@@ -41,7 +41,7 @@ export const UNIT_TYPES = {
   },
   STANDARD: {
     value: "standard",
-    label: "Standard",
+    label: "Tiêu chuẩn",
     color: "indigo",
     icon: IconHome,
   },

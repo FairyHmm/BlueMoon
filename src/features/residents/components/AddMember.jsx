@@ -19,7 +19,7 @@ export default function AddMember({ unitId, isAdding, setIsAdding }) {
       >
         <IconUserPlus size={14} className={classes["add-icon"]} />
         <Text size="xs" fw={700} ml={6}>
-          Add members
+          Thêm thành viên
         </Text>
       </Button>
     );
@@ -28,7 +28,7 @@ export default function AddMember({ unitId, isAdding, setIsAdding }) {
   return (
     <Select
       autoFocus
-      placeholder="Search..."
+      placeholder="Tìm kiếm..."
       data={availableResidents.map((r) => ({
         value: String(r.id),
         label: r.name,

@@ -86,7 +86,7 @@ export default function ApartmentCard({ unit }) {
               <RecordRow
                 indented
                 title={res.absenceType}
-                subtext={`Logged: ${res.absenceDate}`}
+                subtext={`Đã ghi: ${res.absenceDate}`}
                 status={{
                   value: res.absenceStatus,
                   options: ABSENCE_STATUS,

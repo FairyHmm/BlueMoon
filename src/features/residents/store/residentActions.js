@@ -65,7 +65,7 @@ export const residentActions = {
         String(apt.id).toLowerCase() === String(newUnit.id).toLowerCase(),
     );
 
-    if (exists) return { success: false, error: "Unit ID already exists" };
+    if (exists) return { success: false, error: "Mã căn hộ đã tồn tại" };
 
     store.addApartments(newUnit);
     return { success: true };

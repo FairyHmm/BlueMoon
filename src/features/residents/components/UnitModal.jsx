@@ -22,8 +22,8 @@ export default function UnitModal({ onSave }) {
   return (
     <Box className={classes["form-container"]}>
       <TextInput
-        label="Unit ID"
-        placeholder="e.g. 101"
+        label="Mã căn hộ"
+        placeholder="VD: 101"
         className={classes["modal-input"]}
         classNames={{ input: "mono" }}
         value={formData.id}
@@ -31,7 +31,7 @@ export default function UnitModal({ onSave }) {
       />
 
       <NumberInput
-        label="Area (m²)"
+        label="Diện tích (m²)"
         className={classes["modal-input"]}
         classNames={{ input: "mono" }}
         value={formData.area}
@@ -41,7 +41,7 @@ export default function UnitModal({ onSave }) {
       />
 
       <Select
-        label="Unit Type"
+        label="Loại căn hộ"
         className={classes["modal-input"]}
         value={formData.type}
         onChange={(val) => setFormData({ ...formData, type: val || "" })}
@@ -58,7 +58,7 @@ export default function UnitModal({ onSave }) {
         onClick={handleSubmit}
         className={classes["submit-button"]}
       >
-        Create Unit
+        Tạo căn hộ
       </Button>
     </Box>
   );
