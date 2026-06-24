@@ -3,6 +3,7 @@ import {
   IconCar,
   IconCurrencyDollar,
   IconAlertCircle,
+  IconHeartHandshake,
 } from "@tabler/icons-react";
 
 export const chartConfig = (stats) => [
@@ -131,5 +132,13 @@ export const kpiConfig = (stats) => [
     description: "Registered permits",
     icon: IconCar,
     color: "var(--color-text-muted)",
+  },
+  {
+    key: "voluntary-payments",
+    label: "Voluntary Payments",
+    value: `$${stats.billing.optional.revenue.toLocaleString()}`,
+    description: `${stats.billing.optional.paid} optional bills paid`,
+    icon: IconHeartHandshake,
+    color: "var(--color-success)",
   },
 ];

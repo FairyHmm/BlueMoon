@@ -20,11 +20,15 @@ export function useManagerStats() {
     const heads = residents.filter((r) => r.is_head).length;
 
     // 3. Billing split using your custom selector function rule
-    const { paid = [], unpaid = [] } = groupBy(bills, (b) => {
+    const { paid = [], unpaid = [], wait = [] } = groupBy(bills, (b) => {
       if (b.status === "paid") return "paid";
       if (b.status === "due" || b.status === "overdue") return "unpaid";
       return "wait";
     });
+
+    const mandatoryUnpaid = unpaid.filter((b) => !b.optional);
+    const optionalPaid = paid.filter((b) => b.optional);
+    const optionalTotal = bills.filter((b) => b.optional).length;
 
     // 4. Recent Activity
     const recentActivity = [...paid]
@@ -62,9 +66,14 @@ export function useManagerStats() {
       },
       billing: {
         revenue: sumBy(paid, (b) => b.amount),
-        outstanding: sumBy(unpaid, (b) => b.amount),
+        outstanding: sumBy(mandatoryUnpaid, (b) => b.amount),
         paid: paid.length,
-        unpaid: unpaid.length,
+        unpaid: mandatoryUnpaid.length,
+        optional: {
+          paid: optionalPaid.length,
+          revenue: sumBy(optionalPaid, (b) => b.amount),
+          total: optionalTotal,
+        },
         byFee: paid.reduce((acc, b) => {
           acc[b.fee_id] = (acc[b.fee_id] || 0) + b.amount;
           return acc;
