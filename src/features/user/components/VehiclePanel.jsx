@@ -1,16 +1,16 @@
 import { Button, Badge } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
-import { VEHICLE_CONFIG } from "../utils/constants";
-import DashboardCard, { DashboardRow } from "../../../shared/components/DashboardCard";
+import { useDisclosure } from "@mantine/hooks";
+import CardSection from "../../../shared/components/CardSection";
+import RecordRow from "../../../shared/components/RecordRow";
 import VehicleModal from "./VehicleModal";
-
+import { VEHICLE_CONFIG } from "../utils/constants";
 export default function VehiclePanel({ vehicles = [], apartmentId }) {
   const [opened, { open, close }] = useDisclosure(false);
 
   return (
     <>
-      <DashboardCard
+      <CardSection
         title="Registered Vehicles"
         items={vehicles}
         emptyMessage="No registered vehicles."
@@ -30,12 +30,10 @@ export default function VehiclePanel({ vehicles = [], apartmentId }) {
           const pending = vehicle.status === "pending";
 
           return (
-            <DashboardRow
-              rowKey={vehicle.plate_number}
-              icon={Icon}
-              iconColor={pending ? "yellow" : color}
-              label={vehicle.plate_number}
-              mono
+            <RecordRow
+              key={vehicle.plate_number}
+              title={vehicle.plate_number}
+              icon={<Icon size={14} color={color} />}
               badge={
                 pending && (
                   <Badge size="xs" color="var(--color-warning)">

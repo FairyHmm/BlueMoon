@@ -1,12 +1,9 @@
 import { useMemo, useState } from "react";
 import { Stack, Text, Group, Divider, SegmentedControl } from "@mantine/core";
-
-import UnitCard from "../../../shared/components/UnitCard";
+import CardSection from "../../../shared/components/CardSection";
 import BillRow from "../../finance/components/BillRow";
-
 import { filterBills } from "../../finance/utils/billing";
 import { FILTER_OPTIONS } from "../../finance/utils/constants";
-
 import scClasses from "../../../shared/styles/mantine/segmented-control.module.css";
 
 export default function LedgerPanel({
@@ -27,7 +24,7 @@ export default function LedgerPanel({
   );
 
   return (
-    <UnitCard
+    <CardSection
       header="Detailed bill list"
       footer={
         <>
@@ -65,7 +62,7 @@ export default function LedgerPanel({
       />
 
       <Stack gap="sm">
-        {filteredBills.length > 0 ? (
+        {filteredBills.length ? (
           filteredBills.map((bill) => (
             <BillRow
               key={bill.id}
@@ -79,6 +76,6 @@ export default function LedgerPanel({
           </Text>
         )}
       </Stack>
-    </UnitCard>
+    </CardSection>
   );
 }

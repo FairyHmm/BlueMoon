@@ -1,9 +1,8 @@
-import { Paper, SegmentedControl, Stack, Text } from "@mantine/core";
-
+import { SegmentedControl } from "@mantine/core";
 import { IconUserShield } from "@tabler/icons-react";
-
-import DashboardCard from "../../../shared/components/DashboardCard";
-import RegistryRow from "../../residents/components/RegistryRow";
+import CardSection from "../../../shared/components/CardSection";
+import RecordRow from "../../../shared/components/RecordRow";
+import StatusMenu from "../../../shared/components/StatusMenu";
 
 import { FILTER_OPTIONS, USER_ROLES, getRoleConfig } from "../utils/constants";
 
@@ -21,51 +20,74 @@ export default function AccountDirectoryPanel({
     residents.map((resident) => [resident.id, resident.name]),
   );
 
-  const renderEmptyState = () => (
-    <Text size="xs" c="dimmed" ta="center" py="xl">
-      No record found.
-    </Text>
-  );
-
   const renderAccount = (account) => {
     const residentName = residentMap.get(account.resident_id);
 
     const isCurrentUser = account.id === currentUser?.id;
 
     return (
-      <Paper key={account.id} bg="var(--color-bg-input)">
-        <RegistryRow
-          title={account.username}
-          boldTitle={isCurrentUser}
-          subtext={
-            residentName
-              ? `Linked Resident: ${residentName}`
-              : "Staff Account / No linked resident"
-          }
-          icon={
-            <IconUserShield
-              size={14}
-              color={
-                isCurrentUser
-                  ? "var(--color-primary)"
-                  : "var(--color-text-muted)"
-              }
-            />
-          }
-          status={{
-            value: account.role,
-            options: USER_ROLES,
-            getConfig: getRoleConfig,
-            onUpdate: (role) => handleRoleUpdate(account.id, role),
-          }}
-          readOnly={isCurrentUser}
-        />
-      </Paper>
+      <RecordRow
+        key={account.id}
+        title={account.username}
+        boldTitle={isCurrentUser}
+        subtext={
+          residentName
+            ? `Linked Resident: ${residentName}`
+            : "Staff Account / No linked resident"
+        }
+        icon={
+          <IconUserShield
+            size={14}
+            color={
+              isCurrentUser ? "var(--color-primary)" : "var(--color-text-muted)"
+            }
+          />
+        }
+        status={{
+          value: account.role,
+          options: USER_ROLES,
+          getConfig: getRoleConfig,
+          onUpdate: (role) => handleRoleUpdate(account.id, role),
+        }}
+        readOnly={isCurrentUser}
+      />
     );
   };
 
   return (
-    <DashboardCard title="Account Directory & Permissions">
+    <CardSection
+      title="Account Directory & Permissions"
+      items={filteredUsers}
+      emptyMessage="No records found."
+      renderItem={(account) => {
+        const residentName = residentMap.get(account.resident_id);
+
+        const isCurrentUser = account.id === currentUser?.id;
+
+        return (
+          <RecordRow
+            key={account.id}
+            title={account.username}
+            boldTitle={isCurrentUser}
+            subtext={
+              residentName
+                ? `Linked Resident: ${residentName}`
+                : "Staff Account / No linked resident"
+            }
+            icon={<IconUserShield size={14} />}
+            right={
+              <StatusMenu
+                value={account.role}
+                options={Object.values(USER_ROLES)}
+                getConfig={getRoleConfig}
+                onUpdate={(role) => handleRoleUpdate(account.id, role)}
+                readOnly={isCurrentUser}
+              />
+            }
+          />
+        );
+      }}
+    >
       <SegmentedControl
         size="xs"
         fullWidth
@@ -79,12 +101,6 @@ export default function AccountDirectoryPanel({
           indicator: scClasses["control-indicator"],
         }}
       />
-
-      <Stack gap="sm">
-        {filteredUsers.length
-          ? filteredUsers.map(renderAccount)
-          : renderEmptyState()}
-      </Stack>
-    </DashboardCard>
+    </CardSection>
   );
 }

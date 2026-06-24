@@ -1,13 +1,11 @@
-import { useState, useMemo } from "react";
-import { SegmentedControl, Stack, Divider, Text, Group } from "@mantine/core";
-import UnitCard from "../../../shared/components/UnitCard";
-import BillRow from "./BillRow";
+import { useMemo, useState } from "react";
+import { Divider, Group, SegmentedControl, Text } from "@mantine/core";
+import CardSection from "../../../shared/components/CardSection";
+import UnitHeader from "../../../shared/components/UnitHeader";
 import RecordHeader from "../../../shared/components/RecordHeader";
+import BillRow from "./BillRow";
 import { FILTER_OPTIONS } from "../utils/constants";
-import {
-  filterBills,
-  getBillsTotal,
-} from "../utils/billing";
+import { filterBills, getBillsTotal } from "../utils/billing";
 import { financeActions } from "../store/financeActions";
 import scClasses from "../../../shared/styles/mantine/segmented-control.module.css";
 
@@ -30,12 +28,13 @@ export default function FinanceCard({
   );
 
   const feeTypeMap = useMemo(
-    () => Object.fromEntries(feeTypes.map((f) => [f.id, f])),
+    () => Object.fromEntries(feeTypes.map((fee) => [fee.id, fee])),
     [feeTypes],
   );
 
-  const handleStatusUpdate = (billId, newStatus) =>
+  const handleStatusUpdate = (billId, newStatus) => {
     financeActions.updateBillStatus(billId, newStatus);
+  };
 
   const handleDelete = (billId) => {
     if (window.confirm("Are you sure you want to delete this bill?")) {
@@ -44,12 +43,12 @@ export default function FinanceCard({
   };
 
   return (
-    <UnitCard
-      unit={unit}
-      isReadOnly
+    <CardSection
+      header={<UnitHeader unit={unit} isReadOnly />}
       footer={
         <>
           <Divider variant="dotted" mb="sm" />
+
           <Group justify="space-between" px={4}>
             <Text size="xs" fw={700} c="dimmed">
               TOTAL
@@ -91,23 +90,15 @@ export default function FinanceCard({
         }}
       />
 
-      <Stack gap="sm">
-        {filteredBills.length > 0 ? (
-          filteredBills.map((bill) => (
-            <BillRow
-              key={bill.id}
-              bill={bill}
-              feeType={feeTypeMap[bill.fee_id]}
-              onUpdate={handleStatusUpdate}
-              onDelete={handleDelete}
-            />
-          ))
-        ) : (
-          <Text size="xs" c="dimmed" ta="center" py="sm">
-            No records found
-          </Text>
-        )}
-      </Stack>
-    </UnitCard>
+      {filteredBills.map((bill) => (
+        <BillRow
+          key={bill.id}
+          bill={bill}
+          feeType={feeTypeMap[bill.fee_id]}
+          onUpdate={handleStatusUpdate}
+          onDelete={handleDelete}
+        />
+      ))}
+    </CardSection>
   );
 }

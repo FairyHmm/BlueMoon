@@ -6,8 +6,9 @@ import {
   IconUserStar,
   IconTrash,
 } from "@tabler/icons-react";
-import UnitCard from "../../../shared/components/UnitCard";
-import RegistryRow from "./RegistryRow";
+import CardSection from "../../../shared/components/CardSection";
+import UnitHeader from "../../../shared/components/UnitHeader";
+import RecordRow from "../../../shared/components/RecordRow";
 import AddMember from "./AddMember";
 import { residentActions } from "../store/residentActions";
 import {
@@ -32,19 +33,23 @@ export default function ApartmentCard({ unit }) {
   const { id, residents, allVehicles } = unit;
 
   return (
-    <UnitCard
-      unit={unit}
-      onUpdateUnit={updateApartment}
-      onRemoveUnit={removeApartment}
+    <CardSection
+      header={
+        <UnitHeader
+          unit={unit}
+          onUpdate={updateApartment}
+          onRemove={removeApartment}
+        />
+      }
       footer={
         <AddMember unitId={id} isAdding={isAdding} setIsAdding={setIsAdding} />
       }
     >
-      {/* Members and Sub-Absences */}
+      {/* Members */}
       <Stack gap={4}>
         {residents?.map((res) => (
           <Stack key={res.id} gap={0}>
-            <RegistryRow
+            <RecordRow
               title={res.name}
               boldTitle={res.is_head}
               status={{
@@ -53,7 +58,7 @@ export default function ApartmentCard({ unit }) {
                 getConfig: getStatusConfig,
                 onUpdate: (s) => updateResident(res.id, { status: s }),
               }}
-              hoverActions={
+              right={
                 <>
                   {!res.is_head && (
                     <ActionIcon
@@ -64,6 +69,7 @@ export default function ApartmentCard({ unit }) {
                       <IconUserStar size={12} />
                     </ActionIcon>
                   )}
+
                   <ActionIcon
                     variant="subtle"
                     color="red"
@@ -75,10 +81,11 @@ export default function ApartmentCard({ unit }) {
                 </>
               }
             />
+
             {res.absenceStatus && (
-              <RegistryRow
+              <RecordRow
                 indented
-                title={`${res.absenceType}`}
+                title={res.absenceType}
                 subtext={`Logged: ${res.absenceDate}`}
                 status={{
                   value: res.absenceStatus,
@@ -99,7 +106,7 @@ export default function ApartmentCard({ unit }) {
           <Divider my="xs" variant="dotted" />
           <Stack gap={4}>
             {allVehicles.map((v) => (
-              <RegistryRow
+              <RecordRow
                 key={v.plate_number}
                 title={v.plate_number}
                 boldTitle
@@ -121,6 +128,6 @@ export default function ApartmentCard({ unit }) {
           </Stack>
         </>
       )}
-    </UnitCard>
+    </CardSection>
   );
 }

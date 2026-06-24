@@ -1,7 +1,8 @@
 import { Button, Badge } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconCalendarMinus, IconClock, IconUser } from "@tabler/icons-react";
-import DashboardCard, { DashboardRow } from "../../../shared/components/DashboardCard";
+import CardSection from "../../../shared/components/CardSection";
+import RecordRow from "../../../shared/components/RecordRow";
 
 import AbsenceModal from "./AbsenceModal";
 
@@ -20,7 +21,7 @@ export default function HouseholdPanel({
 
   return (
     <>
-      <DashboardCard
+      <CardSection
         title="Members"
         items={household}
         emptyMessage="No members."
@@ -38,18 +39,17 @@ export default function HouseholdPanel({
           const pending = pendingResidentIds.has(member.id);
 
           return (
-            <DashboardRow
-              rowKey={member.id}
-              icon={pending ? IconClock : IconUser}
-              iconColor={pending ? "yellow" : member.is_head ? "blue" : "gray"}
-              label={member.name}
-              badge={
-                pending && (
-                  <Badge size="xs" color="var(--color-warning)">
-                    Absence Pending
-                  </Badge>
+            <RecordRow
+              key={member.id}
+              title={member.name}
+              icon={
+                pending ? (
+                  <IconClock size={14} color="var(--color-warning)" />
+                ) : (
+                  <IconUser size={14} />
                 )
               }
+              badge={pending && <Badge size="xs">Absence Pending</Badge>}
             />
           );
         }}
