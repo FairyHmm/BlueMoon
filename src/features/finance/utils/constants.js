@@ -14,7 +14,7 @@ export const CALC_METHODS = {
 
 export const CALC_METHOD_OPTIONS = [
   {
-    value:  CALC_METHODS.FIXED,
+    value: CALC_METHODS.FIXED,
     label: "Flat Rate",
     color: "blue",
     icon: IconCalculator,
@@ -84,6 +84,25 @@ export const BILL_STATUS = {
   WAIT: { value: "wait", label: "Wait", color: "gray" },
 };
 
+export const FILTER_OPTIONS = [
+  {
+    label: BILL_STATUS.DUE.label,
+    value: BILL_STATUS.DUE.value,
+  },
+  {
+    label: BILL_STATUS.PAID.label,
+    value: BILL_STATUS.PAID.value,
+  },
+  {
+    label: "All",
+    value: "all",
+  },
+  {
+    label: BILL_STATUS.WAIT.label,
+    value: BILL_STATUS.WAIT.value,
+  },
+];
+
 export const DEFAULT_BILL_FORM = {
   apartment_id: "",
   fee_id: "",
@@ -92,10 +111,3 @@ export const DEFAULT_BILL_FORM = {
   due_date: new Date().toISOString().split("T")[0],
   optional: false,
 };
-
-export const FILTER_OPTIONS = [
-  { label: "Due", value: "due" },
-  { label: "Paid", value: "paid" },
-  { label: "All", value: "all" },
-  { label: "Wait", value: "wait" },
-];

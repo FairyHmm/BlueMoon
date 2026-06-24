@@ -22,36 +22,38 @@ export function getBillCalculation({
   }
 
   const rate = customRate !== "" ? Number(customRate) : Number(fee.price || 0);
+
   const schedule =
     fee.recurrence && fee.recurrence !== "none" ? "Recurring" : "One-time";
 
   switch (fee.calc_method) {
     case CALC_METHODS.PER_M2: {
       const area = Number(apartment?.area || 0);
+
       return {
         base: area,
-        rate: rate,
+        rate,
         total: area * rate,
-        schedule: schedule,
+        schedule,
       };
     }
 
-    case CALC_METHODS.FIXED: {
+    case CALC_METHODS.FIXED:
       return {
         base: 1,
-        rate: rate,
+        rate,
         total: rate,
-        schedule: schedule,
+        schedule,
       };
-    }
 
     default: {
       const quantity = customQuantity !== "" ? Number(customQuantity) : 1;
+
       return {
         base: quantity,
-        rate: rate,
+        rate,
         total: quantity * rate,
-        schedule: schedule,
+        schedule,
       };
     }
   }
@@ -61,20 +63,45 @@ export function getBillCalculation({
 export const getBillStatusConfig = (status) =>
   Object.values(BILL_STATUS).find((s) => s.value === status) || BILL_STATUS.DUE;
 
-// Filter ledger matrices securely using global status logic pipelines
+export const getUnpaidBills = (bills) =>
+  bills.filter(
+    (b) =>
+      b.status !== BILL_STATUS.PAID.value &&
+      b.status !== BILL_STATUS.WAIT.value &&
+      b.optional !== true,
+  );
+
+export const getBillsTotal = (bills) =>
+  bills.reduce((sum, bill) => sum + Number(bill.amount || 0), 0);
+
+export const getBalanceDue = (bills) => getBillsTotal(getUnpaidBills(bills));
+
 export const filterBills = (bills, activeFilter) => {
   const now = new Date();
-  return bills.filter((b) => {
-    const isFuture = new Date(b.due_date) > now;
+
+  return bills.filter((bill) => {
+    const isFuture = new Date(bill.due_date) > now;
+
     switch (activeFilter) {
-      case "paid":
-        return b.status === "paid";
-      case "due":
-        return b.status === "due" || b.status === "overdue";
+      case BILL_STATUS.PAID.value:
+        return bill.status === BILL_STATUS.PAID.value;
+
+      case BILL_STATUS.DUE.value:
+        return (
+          bill.status === BILL_STATUS.DUE.value ||
+          bill.status === BILL_STATUS.OVERDUE.value
+        );
+
       case "all":
-        return ["paid", "due", "overdue"].includes(b.status);
-      case "wait":
-        return b.status === "wait" || isFuture;
+        return [
+          BILL_STATUS.PAID.value,
+          BILL_STATUS.DUE.value,
+          BILL_STATUS.OVERDUE.value,
+        ].includes(bill.status);
+
+      case BILL_STATUS.WAIT.value:
+        return bill.status === BILL_STATUS.WAIT.value || isFuture;
+
       default:
         return true;
     }
@@ -83,9 +110,11 @@ export const filterBills = (bills, activeFilter) => {
 
 const normaliseDate = (dateStr) => {
   if (!dateStr) return null;
-  const d = new Date(dateStr);
-  d.setHours(0, 0, 0, 0);
-  return d;
+
+  const date = new Date(dateStr);
+  date.setHours(0, 0, 0, 0);
+
+  return date;
 };
 
 export const isDateFuture = (dateStr) => {
@@ -104,11 +133,17 @@ export const isDateOverdue = (dateStr) => {
 
 // Determines the visual status of a bill
 export const getBillDisplayStatus = (bill) => {
-  if (bill.status === "paid") return "paid";
-  const isDue = isDateOverdue(bill.due_date);
-  if (bill.status === "wait")
-    return isDue ? "overdue" : "wait";
-  return isDue ? "overdue" : "due";
+  if (bill.status === BILL_STATUS.PAID.value) {
+    return BILL_STATUS.PAID.value;
+  }
+
+  const overdue = isDateOverdue(bill.due_date);
+
+  if (bill.status === BILL_STATUS.WAIT.value) {
+    return overdue ? BILL_STATUS.OVERDUE.value : BILL_STATUS.WAIT.value;
+  }
+
+  return overdue ? BILL_STATUS.OVERDUE.value : BILL_STATUS.DUE.value;
 };
 
 // Format date string to DD/MM/YYYY

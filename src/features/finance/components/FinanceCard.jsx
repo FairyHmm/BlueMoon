@@ -3,8 +3,11 @@ import { SegmentedControl, Stack, Divider, Text, Group } from "@mantine/core";
 import UnitCard from "../../../shared/components/UnitCard";
 import BillRow from "./BillRow";
 import RecordHeader from "../../../shared/components/RecordHeader";
-import { BILL_STATUS } from "../utils/constants";
-import { filterBills } from "../utils/billing";
+import { FILTER_OPTIONS } from "../utils/constants";
+import {
+  filterBills,
+  getBillsTotal,
+} from "../utils/billing";
 import { financeActions } from "../store/financeActions";
 import scClasses from "../../../shared/styles/mantine/segmented-control.module.css";
 
@@ -16,24 +19,24 @@ export default function FinanceCard({
 }) {
   const [filter, setFilter] = useState("due");
 
-  const filterOptions = [
-    { label: BILL_STATUS.PAID.label, value: "paid" },
-    { label: BILL_STATUS.DUE.label, value: "due" },
-    { label: "All", value: "all" },
-    { label: BILL_STATUS.WAIT.label, value: "wait" },
-  ];
-
   const filteredBills = useMemo(
     () => filterBills(bills, filter),
     [bills, filter],
   );
+
   const totalAmount = useMemo(
-    () => filteredBills.reduce((sum, b) => sum + b.amount, 0),
+    () => getBillsTotal(filteredBills),
     [filteredBills],
+  );
+
+  const feeTypeMap = useMemo(
+    () => Object.fromEntries(feeTypes.map((f) => [f.id, f])),
+    [feeTypes],
   );
 
   const handleStatusUpdate = (billId, newStatus) =>
     financeActions.updateBillStatus(billId, newStatus);
+
   const handleDelete = (billId) => {
     if (window.confirm("Are you sure you want to delete this bill?")) {
       financeActions.deleteBill(billId);
@@ -43,7 +46,7 @@ export default function FinanceCard({
   return (
     <UnitCard
       unit={unit}
-      isReadOnly={true}
+      isReadOnly
       footer={
         <>
           <Divider variant="dotted" mb="sm" />
@@ -51,6 +54,7 @@ export default function FinanceCard({
             <Text size="xs" fw={700} c="dimmed">
               TOTAL
             </Text>
+
             <Text
               size="xs"
               fw={900}
@@ -77,7 +81,7 @@ export default function FinanceCard({
         fullWidth
         value={filter}
         onChange={setFilter}
-        data={filterOptions}
+        data={FILTER_OPTIONS}
         mb="xs"
         classNames={{
           root: scClasses["base-control"],
@@ -93,7 +97,7 @@ export default function FinanceCard({
             <BillRow
               key={bill.id}
               bill={bill}
-              feeType={feeTypes.find((f) => f.id == bill.fee_id)}
+              feeType={feeTypeMap[bill.fee_id]}
               onUpdate={handleStatusUpdate}
               onDelete={handleDelete}
             />

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useDbStore } from "../../../shared/store/useDbStore";
 import { useAuthStore } from "../../../shared/store/useAuthStore";
-import { getBillDisplayStatus } from "../../finance/utils/billing";
+import { getBalanceDue } from "../../finance/utils/billing";
 
 export function useUserDashboard() {
   const db = useDbStore();
@@ -22,21 +22,24 @@ export function useUserDashboard() {
     );
 
     const apartmentId = myResidentProfile?.apartment_id;
+
     if (!apartmentId) return null;
 
-    const myApartment = apartments.find((a) => a.id === apartmentId);
+    const myApartment = apartments.find(
+      (a) => a.id === apartmentId,
+    );
+
     const householdMembers = residents.filter(
       (r) => r.apartment_id === apartmentId,
     );
+
     const registeredVehicles = vehicles.filter(
       (v) => v.apartment_id === apartmentId,
     );
-    const myBills = bills.filter((b) => b.apartment_id === apartmentId);
 
-    const unpaidBills = myBills.filter((b) => {
-      const status = getBillDisplayStatus(b);
-      return status === "due" || status === "overdue";
-    });
+    const myBills = bills.filter(
+      (b) => b.apartment_id === apartmentId,
+    );
 
     return {
       profile: myResidentProfile,
@@ -47,10 +50,18 @@ export function useUserDashboard() {
       feeTypes,
       absenceLogs,
       stats: {
-        balanceDue: unpaidBills.reduce((sum, b) => sum + b.amount, 0),
+        balanceDue: getBalanceDue(myBills),
         vehicleCount: registeredVehicles.length,
         householdSize: householdMembers.length,
       },
     };
-  }, [apartments, residents, vehicles, bills, feeTypes, absenceLogs, currentUser]);
+  }, [
+    apartments,
+    residents,
+    vehicles,
+    bills,
+    feeTypes,
+    absenceLogs,
+    currentUser,
+  ]);
 }

@@ -82,6 +82,7 @@ export const financeActions = {
             due_date: nextDueDate,
             interval: fee.interval,
             status: "wait",
+            optional: bill.optional ?? false,
           });
         }
       }
