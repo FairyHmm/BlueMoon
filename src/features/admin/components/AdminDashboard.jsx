@@ -7,7 +7,7 @@ export default function AdminDashboard() {
   const dashboard = useAdminDashboard();
 
   return (
-    <Stack gap="xl" py="xl">
+    <Stack gap="xl" py="xl" m="md">
       <Title order={2} fw={900}>
         Administrator Dashboard
       </Title>
