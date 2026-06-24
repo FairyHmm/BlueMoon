@@ -35,7 +35,7 @@ export default function Header() {
           <ActionIcon
             size="lg"
             className={classes["icon-button"]}
-            aria-label="User menu"
+            aria-label="Trình đơn người dùng"
           >
             <IconUserCircle />
           </ActionIcon>
@@ -53,7 +53,7 @@ export default function Header() {
             leftSection={<IconLogout size={14} />}
             onClick={logout}
           >
-            Logout
+            Đăng xuất
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>

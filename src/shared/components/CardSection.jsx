@@ -8,7 +8,7 @@ export default function CardSection({
 
   items,
   renderItem,
-  emptyMessage = "No records found.",
+  emptyMessage = "Không có dữ liệu.",
 
   children,
   footer,

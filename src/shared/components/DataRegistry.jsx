@@ -25,7 +25,7 @@ export default function DataRegistry({
         {/* Group the search bar and the feature button together */}
         <Group gap="sm">
           <TextInput
-            placeholder="Filter..."
+            placeholder="Lọc..."
             size="xs"
             variant="filled"
             value={searchQuery}

@@ -34,7 +34,7 @@ export default function UnitHeader({
           <Icon size={16} color={dynamicColor} />
           <Group gap={4}>
             <Text fw={900} size="sm" className={classes["title-label"]}>
-              Unit
+              Căn hộ
             </Text>
             <EditableField
               value={unit.id}
@@ -100,10 +100,10 @@ export default function UnitHeader({
                 color="red"
                 leftSection={<IconTrash size={14} />}
                 onClick={() =>
-                  window.confirm(`Delete ${unit.id}?`) && onRemove?.(unit.id)
+                  window.confirm(`Xóa ${unit.id}?`) && onRemove?.(unit.id)
                 }
               >
-                Delete Unit
+                Xóa căn hộ
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>
