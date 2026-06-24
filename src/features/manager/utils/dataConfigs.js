@@ -9,20 +9,20 @@ import {
 export const chartConfig = (stats) => [
   {
     key: "residents-status",
-    title: "Resident Status",
+    title: "Trạng thái cư dân",
     data: [
       {
-        name: "Active",
+        name: "Hoạt động",
         value: stats.residents.status.active || 0,
         color: "var(--color-success)",
       },
       {
-        name: "Pending",
+        name: "Đang chờ",
         value: stats.residents.status.pending || 0,
         color: "var(--color-incomplete)",
       },
       {
-        name: "Inactive",
+        name: "Ngừng hoạt động",
         value: stats.residents.status.inactive || 0,
         color: "var(--color-danger)",
       },
@@ -30,15 +30,15 @@ export const chartConfig = (stats) => [
   },
   {
     key: "vehicle-types",
-    title: "Vehicle Types",
+    title: "Loại xe",
     data: [
       {
-        name: "Car",
+        name: "Ô tô",
         value: stats.vehicles.types.car || 0,
         color: "var(--color-warning)",
       },
       {
-        name: "Motorbike",
+        name: "Xe máy",
         value: stats.vehicles.types.motorbike || 0,
         color: "var(--color-incomplete)",
       },
@@ -46,15 +46,15 @@ export const chartConfig = (stats) => [
   },
   {
     key: "unit-occupancy",
-    title: "Unit Occupancy",
+    title: "Tình trạng căn hộ",
     data: [
       {
-        name: "Occupied",
+        name: "Có người ở",
         value: stats.units.occupied,
         color: "var(--color-primary)",
       },
       {
-        name: "Vacant",
+        name: "Trống",
         value: stats.units.vacant,
         color: "var(--color-text-muted)",
       },
@@ -63,10 +63,10 @@ export const chartConfig = (stats) => [
 
   {
     key: "apartment-types",
-    title: "Apartment Types",
+    title: "Loại căn hộ",
     data: [
       {
-        name: "Standard",
+        name: "Tiêu chuẩn",
         value: stats.units.types.standard || 0,
         color: "var(--color-primary)",
       },
@@ -87,57 +87,57 @@ export const chartConfig = (stats) => [
 export const kpiConfig = (stats) => [
   {
     key: "revenue",
-    label: "Recent Revenue",
+    label: "Doanh thu gần đây",
     value: `$${stats.billing.revenue.toLocaleString()}`,
-    description: `${stats.billing.paid} bills paid`,
+    description: `${stats.billing.paid} hóa đơn đã thanh toán`,
     icon: IconCurrencyDollar,
     color: "var(--color-success)",
   },
   {
     key: "debt",
-    label: "Outstanding Debt",
+    label: "Nợ chưa thanh toán",
     value: `$${stats.billing.outstanding.toLocaleString()}`,
-    description: `${stats.billing.unpaid} unpaid bills`,
+    description: `${stats.billing.unpaid} hóa đơn chưa thanh toán`,
     icon: IconAlertCircle,
     color: "var(--color-danger)",
   },
   {
     key: "vacancy-alert",
-    label: "Vacant Units",
+    label: "Căn hộ trống",
     value: stats.units.vacant,
-    description: `${stats.units.total} total units`,
+    description: `${stats.units.total} tổng số căn hộ`,
     icon: IconAlertCircle,
     color: "var(--color-danger)",
   },
   {
     key: "residents",
-    label: "Residents",
+    label: "Cư dân",
     value: stats.residents.total,
-    description: `${stats.residents.status.pending || 0} pending approval`,
+    description: `${stats.residents.status.pending || 0} đang chờ phê duyệt`,
     icon: IconUsers,
     color: "var(--color-primary)",
   },
   {
     key: "resident-heads",
-    label: "Resident Heads",
+    label: "Chủ hộ",
     value: stats.residents.heads,
-    description: `${stats.residents.dependents} dependents`,
+    description: `${stats.residents.dependents} người phụ thuộc`,
     icon: IconUsers,
     color: "var(--color-success)",
   },
   {
     key: "vehicles",
-    label: "Vehicles",
+    label: "Xe cộ",
     value: stats.vehicles.total,
-    description: "Registered permits",
+    description: "Giấy phép đã đăng ký",
     icon: IconCar,
     color: "var(--color-text-muted)",
   },
   {
     key: "voluntary-payments",
-    label: "Voluntary Payments",
+    label: "Thanh toán tự nguyện",
     value: `$${stats.billing.optional.revenue.toLocaleString()}`,
-    description: `${stats.billing.optional.paid} optional bills paid`,
+    description: `${stats.billing.optional.paid} hóa đơn tự nguyện đã thanh toán`,
     icon: IconHeartHandshake,
     color: "var(--color-success)",
   },

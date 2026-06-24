@@ -6,7 +6,7 @@ export default function AdminRecentActivity({ stats: { recentActivity } }) {
     <Paper bg="var(--color-bg-card)">
       <Group justify="space-between" mb="md">
         <Text fw={700} size="sm">
-          Recent Payments
+          Thanh toán gần đây
         </Text>
         <IconReceipt size={18} color="var(--color-text-muted)" />
       </Group>
@@ -27,7 +27,7 @@ export default function AdminRecentActivity({ stats: { recentActivity } }) {
                   fw={600}
                   ff="var(--font-family-mono)"
                 >
-                  Apt {item.apt} • #{item.id}
+                  Căn hộ {item.apt} • #{item.id}
                 </Text>
                 <Text size="xs" c="var(--color-text-muted)">
                   {item.date}
@@ -41,7 +41,7 @@ export default function AdminRecentActivity({ stats: { recentActivity } }) {
           ))
         ) : (
           <Text size="xs" c="var(--color-text-muted)" align="center" py="lg">
-            No recent activity.
+            Không có hoạt động gần đây.
           </Text>
         )}
       </Stack>

@@ -8,14 +8,14 @@ export default function ManagerDashboard() {
   const stats = useManagerStats();
 
   const sections = [
-    { label: "Overview", component: OverviewCharts },
-    { label: "Details", component: KPIGrid },
-    { label: "Recent Activities", component: RecentActivity },
+    { label: "Tổng quan", component: OverviewCharts },
+    { label: "Chi tiết", component: KPIGrid },
+    { label: "Hoạt động gần đây", component: RecentActivity },
   ];
 
   return (
     <Stack gap="xl">
-      <Title order={2}>Manager Dashboard</Title>
+      <Title order={2}>Bảng điều khiển quản lý</Title>
 
       {sections.map(({ label, component: SectionComponent }) => (
         <Stack key={label}>
