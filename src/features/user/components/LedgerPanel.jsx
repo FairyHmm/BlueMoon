@@ -25,14 +25,14 @@ export default function LedgerPanel({
 
   return (
     <CardSection
-      header="Detailed bill list"
+      title="Danh sách hóa đơn chi tiết"
       footer={
         <>
           <Divider variant="dotted" mb="sm" />
 
           <Group justify="space-between" px={4}>
             <Text size="xs" fw={700} c="dimmed">
-              TOTAL DEBT
+              TỔNG NỢ
             </Text>
 
             <Text
@@ -72,7 +72,7 @@ export default function LedgerPanel({
           ))
         ) : (
           <Text size="xs" c="dimmed" ta="center" py="sm">
-            No records found
+            Không có hóa đơn
           </Text>
         )}
       </Stack>

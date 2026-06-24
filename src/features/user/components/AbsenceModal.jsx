@@ -10,7 +10,7 @@ export default function AbsenceModal({ opened, onClose, household = [], defaultR
       log_date: new Date().toISOString().split("T")[0],
     },
     validate: {
-      resident_id: (value) => (!value ? "Please select a member" : null),
+      resident_id: (value) => (!value ? "Vui lòng chọn thành viên" : null),
     },
   });
 
@@ -30,30 +30,30 @@ export default function AbsenceModal({ opened, onClose, household = [], defaultR
   };
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Report Temporary Absence" centered size="sm">
+    <Modal opened={opened} onClose={onClose} title="Báo vắng mặt tạm thời" centered size="sm">
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap="sm">
           <Select
             required
-            label="Select Member"
-            placeholder="Choose who will be absent"
+            label="Chọn thành viên"
+            placeholder="Chọn người vắng mặt"
             data={memberOptions}
             {...form.getInputProps("resident_id")}
           />
           <Select
-            label="Reason"
+            label="Lý do"
             data={[
-              { value: "vacation", label: "Vacation / Travel" },
-              { value: "business", label: "Business Trip" },
-              { value: "hospital", label: "Medical / Hospital" },
-              { value: "moved_out", label: "Moved Out" },
+              { value: "vacation", label: "Nghỉ phép / Du lịch" },
+              { value: "business", label: "Công tác" },
+              { value: "hospital", label: "Y tế / Bệnh viện" },
+              { value: "moved_out", label: "Đã chuyển đi" },
             ]}
             {...form.getInputProps("type")}
           />
-          <TextInput type="date" label="Start Date" {...form.getInputProps("log_date")} />
+          <TextInput type="date" label="Ngày bắt đầu" {...form.getInputProps("log_date")} />
           <Group justify="flex-end" mt="md">
-            <Button variant="light" color="gray" onClick={onClose} size="xs">Cancel</Button>
-            <Button type="submit" size="xs">Confirm</Button>
+            <Button variant="light" color="gray" onClick={onClose} size="xs">Hủy</Button>
+            <Button type="submit" size="xs">Xác nhận</Button>
           </Group>
         </Stack>
       </form>

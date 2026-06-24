@@ -12,10 +12,10 @@ export default function UserDashboard() {
   if (!data) {
     return (
       <Stack gap="md" p="md">
-        <Title order={2}>Account Pending</Title>
+        <Title order={2}>Tài khoản đang chờ</Title>
         <Text size="sm" c="dimmed">
-          Your account is pending approval.
-          Please contact your building manager.
+          Tài khoản của bạn đang chờ phê duyệt.
+          Vui lòng liên hệ quản lý tòa nhà.
         </Text>
       </Stack>
     );
@@ -34,10 +34,10 @@ export default function UserDashboard() {
 
   return (
     <Stack gap="md" p="md">
-      <Title order={2}>Welcome back, {profile?.name || "Cư dân"}</Title>
+      <Title order={2}>Chào mừng trở lại, {profile?.name || "Cư dân"}</Title>
 
       <Text size="sm">
-        Unit {apartment?.id || "—"} • {apartment?.type || "—"}
+        Căn hộ {apartment?.id || "—"} • {apartment?.type || "—"}
       </Text>
 
       <Grid gutter="md">

@@ -11,9 +11,9 @@ export default function VehiclePanel({ vehicles = [], apartmentId }) {
   return (
     <>
       <CardSection
-        title="Registered Vehicles"
+        title="Xe đã đăng ký"
         items={vehicles}
-        emptyMessage="No registered vehicles."
+        emptyMessage="Không có xe nào."
         footer={
           <Button
             size="xs"
@@ -21,7 +21,7 @@ export default function VehiclePanel({ vehicles = [], apartmentId }) {
             onClick={open}
             leftSection={<IconPlus size={14} />}
           >
-            Register Vehicle
+            Đăng ký xe
           </Button>
         }
         renderItem={(vehicle) => {
@@ -37,7 +37,7 @@ export default function VehiclePanel({ vehicles = [], apartmentId }) {
               badge={
                 pending && (
                   <Badge size="xs" color="var(--color-warning)">
-                    Pending
+                    Đang chờ
                   </Badge>
                 )
               }

@@ -7,7 +7,7 @@ export default function VehicleModal({ opened, onClose, apartmentId }) {
     initialValues: { plate_number: "", type: "car" },
     validate: {
       plate_number: (val) =>
-        val.trim().length < 4 ? "Invalid plate number" : null,
+        val.trim().length < 4 ? "Biển số không hợp lệ" : null,
     },
   });
 
@@ -25,7 +25,7 @@ export default function VehicleModal({ opened, onClose, apartmentId }) {
     <Modal
       opened={opened}
       onClose={onClose}
-      title="Register New Vehicle Permit"
+      title="Đăng ký xe mới"
       centered
       size="sm"
     >
@@ -33,24 +33,24 @@ export default function VehicleModal({ opened, onClose, apartmentId }) {
         <Stack gap="sm">
           <TextInput
             required
-            label="Plate Number"
-            placeholder="e.g., 30A-12345"
+            label="Biển số xe"
+            placeholder="VD: 30A-12345"
             {...form.getInputProps("plate_number")}
           />
           <Select
-            label="Vehicle Type"
+            label="Loại xe"
             data={[
-              { value: "car", label: "Car" },
-              { value: "motorbike", label: "Motorbike" },
+              { value: "car", label: "Ô tô" },
+              { value: "motorbike", label: "Xe máy" },
             ]}
             {...form.getInputProps("type")}
           />
           <Group justify="flex-end" mt="md">
             <Button variant="light" color="gray" onClick={onClose} size="xs">
-              Cancel
+              Hủy
             </Button>
             <Button type="submit" size="xs">
-              Register
+              Đăng ký
             </Button>
           </Group>
         </Stack>

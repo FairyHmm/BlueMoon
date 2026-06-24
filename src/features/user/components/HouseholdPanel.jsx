@@ -22,9 +22,9 @@ export default function HouseholdPanel({
   return (
     <>
       <CardSection
-        title="Members"
+        title="Thành viên"
         items={household}
-        emptyMessage="No members."
+        emptyMessage="Không có thành viên."
         footer={
           <Button
             size="xs"
@@ -32,7 +32,7 @@ export default function HouseholdPanel({
             onClick={open}
             leftSection={<IconCalendarMinus size={14} />}
           >
-            Report Absence
+            Báo vắng mặt
           </Button>
         }
         renderItem={(member) => {
@@ -49,7 +49,7 @@ export default function HouseholdPanel({
                   <IconUser size={14} />
                 )
               }
-              badge={pending && <Badge size="xs">Absence Pending</Badge>}
+              badge={pending && <Badge size="xs">Đang báo vắng</Badge>}
             />
           );
         }}
