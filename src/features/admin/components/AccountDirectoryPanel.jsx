@@ -32,8 +32,8 @@ export default function AccountDirectoryPanel({
         boldTitle={isCurrentUser}
         subtext={
           residentName
-            ? `Linked Resident: ${residentName}`
-            : "Staff Account / No linked resident"
+            ? `Cư dân liên kết: ${residentName}`
+            : "Tài khoản nhân viên / Không có cư dân liên kết"
         }
         icon={
           <IconUserShield
@@ -56,9 +56,9 @@ export default function AccountDirectoryPanel({
 
   return (
     <CardSection
-      title="Account Directory & Permissions"
+      title="Danh bạ tài khoản & Phân quyền"
       items={filteredUsers}
-      emptyMessage="No records found."
+      emptyMessage="Không có dữ liệu."
       renderItem={(account) => {
         const residentName = residentMap.get(account.resident_id);
 
@@ -71,8 +71,8 @@ export default function AccountDirectoryPanel({
             boldTitle={isCurrentUser}
             subtext={
               residentName
-                ? `Linked Resident: ${residentName}`
-                : "Staff Account / No linked resident"
+                ? `Cư dân liên kết: ${residentName}`
+                : "Tài khoản nhân viên / Không có cư dân liên kết"
             }
             icon={<IconUserShield size={14} />}
             right={

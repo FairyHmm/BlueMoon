@@ -15,17 +15,17 @@ export default function OverviewGrid({ stats }) {
   const kpiCards = [
     {
       key: "total-accounts",
-      label: "Total System Accounts",
+      label: "Tổng số tài khoản",
       value: stats.totalAccounts,
-      description: "Active system logins",
+      description: "Đăng nhập hệ thống đang hoạt động",
       icon: IconUsers,
       color: "var(--color-primary)",
     },
     {
       key: "management-staff",
-      label: "Management Staff",
+      label: "Nhân viên quản lý",
       value: stats.totalStaff,
-      description: "Admin & Manager privileges",
+      description: "Quyền Quản trị & Quản lý",
       icon: IconShield,
       color: "var(--color-success)",
     },

@@ -9,7 +9,7 @@ export default function AdminDashboard() {
   return (
     <Stack gap="xl" py="xl" m="md">
       <Title order={2} fw={900}>
-        Administrator Dashboard
+        Bảng điều khiển quản trị
       </Title>
 
       <OverviewGrid stats={dashboard.stats} />

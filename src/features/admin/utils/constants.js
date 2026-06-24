@@ -7,34 +7,34 @@ export const ROLES = {
 export const USER_ROLES = {
   ADMIN: {
     value: ROLES.ADMIN,
-    label: "Admin",
+    label: "Quản trị",
     color: "red",
   },
 
   MANAGER: {
     value: ROLES.MANAGER,
-    label: "Manager",
+    label: "Quản lý",
     color: "teal",
   },
 
   USER: {
     value: ROLES.USER,
-    label: "Resident",
+    label: "Cư dân",
     color: "blue",
   },
 };
 
 export const FILTER_OPTIONS = [
   {
-    label: "All Accounts",
+    label: "Tất cả tài khoản",
     value: "all",
   },
   {
-    label: "Staff",
+    label: "Nhân viên",
     value: "staff",
   },
   {
-    label: "Residents",
+    label: "Cư dân",
     value: ROLES.USER,
   },
 ];
