@@ -5,7 +5,7 @@ import UnitHeader from "../../../shared/components/UnitHeader";
 import RecordHeader from "../../../shared/components/RecordHeader";
 import BillRow from "./BillRow";
 import { FILTER_OPTIONS } from "../utils/constants";
-import { filterBills, getBillsTotal } from "../utils/billing";
+import { filterBills, getBalanceDue } from "../utils/billing";
 import { financeActions } from "../store/financeActions";
 import scClasses from "../../../shared/styles/mantine/segmented-control.module.css";
 
@@ -23,7 +23,7 @@ export default function FinanceCard({
   );
 
   const totalAmount = useMemo(
-    () => getBillsTotal(filteredBills),
+    () => getBalanceDue(filteredBills),
     [filteredBills],
   );
 

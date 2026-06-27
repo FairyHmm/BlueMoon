@@ -65,7 +65,13 @@ export default function BillRow({ bill, feeType, onUpdate, onDelete }) {
 
           <StatusMenu
             value={displayStatus}
-            options={BILL_STATUS}
+            options={Object.fromEntries(
+              Object.entries(BILL_STATUS).filter(
+                ([k]) =>
+                  (k !== "OVERDUE" && k !== "DUE") ||
+                  k === (displayStatus === "overdue" ? "OVERDUE" : "DUE"),
+              ),
+            )}
             getConfig={getBillStatusConfig}
             onUpdate={
               onUpdate ? (status) => onUpdate(bill.id, status) : undefined

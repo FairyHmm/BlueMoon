@@ -88,15 +88,14 @@ export const filterBills = (bills, activeFilter) => {
 
       case BILL_STATUS.DUE.value:
         return (
-          bill.status === BILL_STATUS.DUE.value ||
-          bill.status === BILL_STATUS.OVERDUE.value
+          bill.status === BILL_STATUS.DUE.value &&
+          !(bill.optional && isDateOverdue(bill.due_date))
         );
 
       case "all":
         return [
           BILL_STATUS.PAID.value,
           BILL_STATUS.DUE.value,
-          BILL_STATUS.OVERDUE.value,
         ].includes(bill.status);
 
       case BILL_STATUS.WAIT.value:

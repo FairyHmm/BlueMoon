@@ -56,7 +56,7 @@ export const financeActions = {
     // Auto-Generation Logic
     if (
       newStatus === "paid" &&
-      (bill.status === "due" || bill.status === "overdue")
+      bill.status === "due"
     ) {
       const fee = fee_types.find((f) => f.id == bill.fee_id);
 

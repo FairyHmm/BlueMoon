@@ -1,6 +1,10 @@
 import { useMemo } from "react";
 import { useDbStore } from "../../../shared/store/useDbStore";
 import { indexOne } from "../../../shared/utils/dataEngine";
+import {
+  matchesSearch,
+  searchTerms,
+} from "../../../shared/utils/queryManipulation";
 
 export const useFinanceRegistry = (query = "") => {
   const db = useDbStore();
@@ -10,12 +14,10 @@ export const useFinanceRegistry = (query = "") => {
   const feeTypes = db.fee_types || [];
 
   const filteredApartments = useMemo(() => {
-    const safeQuery =
-      typeof query === "string" ? query.toLowerCase().trim() : "";
+    const terms = searchTerms(query);
 
-    if (!safeQuery) return apartments;
+    if (!terms.length) return apartments;
 
-    const terms = safeQuery.split(" ").filter(Boolean);
     const feeTypeIndex = indexOne(feeTypes, "id");
 
     return apartments.filter((apt) => {
@@ -23,22 +25,26 @@ export const useFinanceRegistry = (query = "") => {
 
       return terms.every(
         (term) =>
-          String(apt.id).toLowerCase().includes(term) ||
+          matchesSearch(term, apt.id) ||
           aptBills.some((b) => {
             const feeType = feeTypeIndex[b.fee_id];
-            return (
-              feeType?.name?.toLowerCase().includes(term) ||
-              feeType?.interval?.toLowerCase().includes(term) ||
-              (feeType?.optional !== undefined &&
-                (term === "optional"
-                  ? feeType.optional === true
-                  : term === "mandatory"
-                    ? feeType.optional === false
-                    : false)) ||
-              b.status?.toLowerCase().includes(term) ||
-              b.due_date?.toLowerCase().includes(term) ||
-              b.paid_date?.toLowerCase().includes(term) ||
-              String(b.amount).includes(term)
+
+            const optionalText =
+              feeType?.optional === undefined
+                ? ""
+                : feeType.optional
+                  ? "tùy chọn optional"
+                  : "bắt buộc required mandatory";
+
+            return matchesSearch(
+              term,
+              feeType?.name,
+              feeType?.interval,
+              optionalText,
+              b.status,
+              b.due_date,
+              b.paid_date,
+              b.amount,
             );
           }),
       );
