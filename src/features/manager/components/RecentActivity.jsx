@@ -35,7 +35,7 @@ export default function AdminRecentActivity({ stats: { recentActivity } }) {
               </Stack>
 
               <Text size="sm" fw={700} c="var(--color-success)">
-                +${item.amount.toLocaleString()}
+                +{item.amount.toLocaleString()} ₫
               </Text>
             </Group>
           ))

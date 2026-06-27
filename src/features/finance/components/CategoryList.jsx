@@ -57,7 +57,7 @@ const CategoryItem = memo(({ item, isSelected, onDelete }) => {
 
   const interval =
     INTERVAL_MAP[item.interval] ?? INTERVAL_MAP[BILLING_INTERVALS.MONTHLY];
-  const price = `$${Number(item.price || 0).toFixed(2)}`;
+  const price = `${Number(item.price || 0).toLocaleString()} ₫`;
 
   return (
     <UnstyledButton

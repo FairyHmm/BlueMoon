@@ -80,11 +80,11 @@ export function CategoryWorkspaceForm() {
           <Group grow>
             <NumberInput
               label={calcMethod.priceLabel}
-              prefix="$ "
+              suffix=" ₫"
               value={formData.price}
               onChange={(val) => updateField("price", val)}
               min={0}
-              decimalScale={2}
+              decimalScale={0}
               hideControls
               required
             />
@@ -94,9 +94,9 @@ export function CategoryWorkspaceForm() {
               value={formData.late_fee}
               onChange={(val) => updateField("late_fee", val)}
               min={0}
-              decimalScale={2}
+              decimalScale={0}
               hideControls
-              prefix="$ "
+              suffix=" ₫"
             />
           </Group>
         </Stack>

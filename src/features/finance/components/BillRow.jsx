@@ -49,7 +49,7 @@ export default function BillRow({ bill, feeType, onUpdate, onDelete }) {
       right={
         <>
           <Text size="sm" fw={900} className="mono">
-            ${bill.amount.toLocaleString()}
+            {bill.amount.toLocaleString()} ₫
           </Text>
 
           {onDelete && (

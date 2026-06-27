@@ -88,7 +88,7 @@ export const kpiConfig = (stats) => [
   {
     key: "revenue",
     label: "Doanh thu gần đây",
-    value: `$${stats.billing.revenue.toLocaleString()}`,
+    value: `${stats.billing.revenue.toLocaleString()} ₫`,
     description: `${stats.billing.paid} hóa đơn đã thanh toán`,
     icon: IconCurrencyDollar,
     color: "var(--color-success)",
@@ -96,7 +96,7 @@ export const kpiConfig = (stats) => [
   {
     key: "debt",
     label: "Nợ chưa thanh toán",
-    value: `$${stats.billing.outstanding.toLocaleString()}`,
+    value: `${stats.billing.outstanding.toLocaleString()} ₫`,
     description: `${stats.billing.unpaid} hóa đơn chưa thanh toán`,
     icon: IconAlertCircle,
     color: "var(--color-danger)",
@@ -136,7 +136,7 @@ export const kpiConfig = (stats) => [
   {
     key: "voluntary-payments",
     label: "Thanh toán tự nguyện",
-    value: `$${stats.billing.optional.revenue.toLocaleString()}`,
+    value: `${stats.billing.optional.revenue.toLocaleString()} ₫`,
     description: `${stats.billing.optional.paid} hóa đơn tự nguyện đã thanh toán`,
     icon: IconHeartHandshake,
     color: "var(--color-success)",

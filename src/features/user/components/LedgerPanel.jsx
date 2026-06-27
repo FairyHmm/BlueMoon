@@ -40,7 +40,7 @@ export default function LedgerPanel({
               fw={900}
               c={balanceDue > 0 ? "red" : "var(--color-text)"}
             >
-              ${balanceDue.toLocaleString()}
+              {balanceDue.toLocaleString()} ₫
             </Text>
           </Group>
         </>

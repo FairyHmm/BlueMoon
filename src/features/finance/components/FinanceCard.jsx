@@ -63,7 +63,7 @@ export default function FinanceCard({
                   : "var(--color-text)"
               }
             >
-              ${totalAmount.toLocaleString()}
+              {totalAmount.toLocaleString()} ₫
             </Text>
           </Group>
         </>
