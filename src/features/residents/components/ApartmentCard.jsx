@@ -9,6 +9,7 @@ import {
 import CardSection from "../../../shared/components/CardSection";
 import UnitHeader from "../../../shared/components/UnitHeader";
 import RecordRow from "../../../shared/components/RecordRow";
+import StatusMenu from "../../../shared/components/StatusMenu";
 import AddMember from "./AddMember";
 import { residentActions } from "../store/residentActions";
 import {
@@ -52,12 +53,6 @@ export default function ApartmentCard({ unit }) {
             <RecordRow
               title={res.name}
               boldTitle={res.is_head}
-              status={{
-                value: res.status,
-                options: RESIDENT_STATUS,
-                getConfig: getStatusConfig,
-                onUpdate: (s) => updateResident(res.id, { status: s }),
-              }}
               right={
                 <>
                   {!res.is_head && (
@@ -78,6 +73,12 @@ export default function ApartmentCard({ unit }) {
                   >
                     <IconTrash size={12} />
                   </ActionIcon>
+                  <StatusMenu
+                    value={res.status}
+                    options={Object.values(RESIDENT_STATUS)}
+                    getConfig={getStatusConfig}
+                    onUpdate={(s) => updateResident(res.id, { status: s })}
+                  />
                 </>
               }
             />
@@ -87,13 +88,16 @@ export default function ApartmentCard({ unit }) {
                 indented
                 title={res.absenceType}
                 subtext={`Đã ghi: ${res.absenceDate}`}
-                status={{
-                  value: res.absenceStatus,
-                  options: ABSENCE_STATUS,
-                  getConfig: getAbsenceStatusConfig,
-                  onUpdate: (s) =>
-                    handleAbsenceLog(res.absenceLogId, s === "approved"),
-                }}
+                right={
+                  <StatusMenu
+                    value={res.absenceStatus}
+                    options={Object.values(ABSENCE_STATUS)}
+                    getConfig={getAbsenceStatusConfig}
+                    onUpdate={(s) =>
+                      handleAbsenceLog(res.absenceLogId, s === "approved")
+                    }
+                  />
+                }
               />
             )}
           </Stack>
@@ -117,12 +121,14 @@ export default function ApartmentCard({ unit }) {
                     <IconMotorbike size={14} />
                   )
                 }
-                status={{
-                  value: v.status || "pending",
-                  options: VEHICLE_STATUS,
-                  getConfig: getVehicleStatusConfig,
-                  onUpdate: (s) => handleVehiclePermit(v.plate_number, s),
-                }}
+                right={
+                  <StatusMenu
+                    value={v.status || "pending"}
+                    options={Object.values(VEHICLE_STATUS)}
+                    getConfig={getVehicleStatusConfig}
+                    onUpdate={(s) => handleVehiclePermit(v.plate_number, s)}
+                  />
+                }
               />
             ))}
           </Stack>
