@@ -71,6 +71,7 @@ export default function FinanceRegistry() {
           title: drClasses["modal-title"],
           close: drClasses["modal-close"],
         }}
+        size="lg"
       >
         <BillModal
           initialData={{ apartment_id: activeUnitId }}

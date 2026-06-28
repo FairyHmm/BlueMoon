@@ -38,6 +38,7 @@ export default function BillModal({ initialData, onSave, onCancel }) {
           onChange={(v) => updateField("fee_id", v || "")}
           variant="filled"
           comboboxProps={{ zIndex: 5000, withinPortal: true }}
+          w={400}
         />
         <TextInput
           type="date"
@@ -46,7 +47,7 @@ export default function BillModal({ initialData, onSave, onCancel }) {
           value={formData.due_date}
           onChange={(e) => updateField("due_date", e.target.value)}
           variant="filled"
-          w={150}
+          w={200}
         />
       </Flex>
 

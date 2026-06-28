@@ -19,7 +19,7 @@ export const CALC_METHOD_OPTIONS = [
     color: "blue",
     icon: IconCalculator,
     priceLabel: "Chi phí cố định",
-    quantityDisabled: false,
+    quantityDisabled: true,
     quantityLabel: "Số lượng",
   },
   {
